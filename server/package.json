@@ -1,0 +1,36 @@
+{
+  "name": "navifit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lawyerdnet/web-lawyerd"
+  },
+  "author": "vosquery@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "connect-mongo": "^2.0.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0",
+    "helmet": "^4.3.1",
+    "moment": "^2.24.0",
+    "mongoose": "^7.2.3",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "tunnel-ssh": "^4.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

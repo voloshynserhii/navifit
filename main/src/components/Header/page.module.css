@@ -6,3 +6,9 @@
     justify-content: space-between;
     padding: 0 10%;
 }
+.iconsGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}

@@ -8,6 +8,9 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
   --background-rgb: 10, 10, 10;
+  --foregroundLight-rgb: 255, 255, 255;
+  --footer-border: 204, 255, 51, 0.1;
+  
   --foreground-rgb: 204, 255, 51;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -98,6 +101,15 @@ body {
     )
     rgb(var(--background-start-rgb)); */
   background: rgb(var(--background-rgb));
+}
+
+h1 {
+  font-size: 30px !important;
+  color: rgb(var( --foregroundLight-rgb)) !important;
+}
+
+.coloredTitle {
+  color: rgb(var(--foreground-rgb)) !important;
 }
 
 a {

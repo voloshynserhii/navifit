@@ -1,6 +1,6 @@
 import styles from './icons.module.css'
 
-export default function Menu({ fillColor = "#CCFF33" }) {
+export default function Menu({ fillColor = "white" }) {
     return (
         <div className={styles.icon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">

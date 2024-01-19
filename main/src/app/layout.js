@@ -1,4 +1,6 @@
 import { Inter } from 'next/font/google'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
+// import ThemeRegistry from './utils/ThemeRegistry'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import './globals.css'
@@ -11,12 +13,15 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
       <body className={inter.className}>
+        {/* <ThemeRegistry options={{ key: 'mui-theme' }}> */}
         <Header />
-        {children}
+        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
         <Footer />
+        {/* </ThemeRegistry> */}
       </body>
     </html>
   )

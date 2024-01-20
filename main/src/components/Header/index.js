@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import { Container } from '@mui/material';
-import MenuIcon from '../Icons/Menu';
 import HelpIcon from '../Icons/Help';
+import Drawer from '../Drawer';
 import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
 import { useUserStore } from '@src/store/useUserStore';
 import styles from './page.module.css';
@@ -15,10 +15,12 @@ const Header = () => {
     return (
         <Container>
             <div className={styles.header}>
-                <p>NAVIFIT</p>
+                <Link href="/">
+                    NAVIFIT
+                </Link>
                 <div className={styles.iconsGroup}>
                     <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    <MenuIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    <Drawer isDarkTheme={isDarkTheme} />
                 </div>
             </div>
         </Container>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Container, Typography } from '@mui/material';
 import FacebookIcon from '../Icons/Facebook';
 import InstagramIcon from '../Icons/Instagram';
@@ -14,12 +15,18 @@ const Footer = () => {
     const isDarkTheme = theme === 'dark';
 
     return (
-        <Container>
+        <Container disableGutters maxWidth={false}>
             <div className={styles.footer}>
                 <div className={styles.iconsContainer}>
-                    <FacebookIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    <InstagramIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    <YoutubeIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    <Link href="https://facebook.com">
+                        <FacebookIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    </Link>
+                    <Link href="https://instagram.com">
+                        <InstagramIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    </Link>
+                    <Link href="https://youtube.com">
+                        <YoutubeIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    </Link>
                 </div>
                 <Typography variant="h6">
                     © {new Date().getFullYear()} navifit.pl

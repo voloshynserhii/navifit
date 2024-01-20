@@ -12,17 +12,19 @@ import styles from './page.module.css'
 const Footer = () => {
     const { theme } = useUserStore();
     const isDarkTheme = theme === 'dark';
-    
+
     return (
-        <Container className={styles.footer}>
-            <div className={styles.iconsContainer}>
-                <FacebookIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                <InstagramIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                <YoutubeIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+        <Container>
+            <div className={styles.footer}>
+                <div className={styles.iconsContainer}>
+                    <FacebookIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    <InstagramIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    <YoutubeIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                </div>
+                <Typography variant="h6">
+                    © {new Date().getFullYear()} navifit.pl
+                </Typography>
             </div>
-            <Typography variant="h6">
-                © {new Date().getFullYear()} navifit.pl
-            </Typography>
         </Container>
     )
 }

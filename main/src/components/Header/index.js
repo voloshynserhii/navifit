@@ -13,13 +13,14 @@ const Header = () => {
     const isDarkTheme = theme === 'dark';
 
     return (
-        <Container className={styles.header}>
-            <p>NAVIFIT</p>
-            <div className={styles.iconsGroup}>
-                <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                <MenuIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+        <Container>
+            <div className={styles.header}>
+                <p>NAVIFIT</p>
+                <div className={styles.iconsGroup}>
+                    <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                    <MenuIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                </div>
             </div>
-
         </Container>
     )
 };

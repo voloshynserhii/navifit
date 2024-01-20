@@ -2,8 +2,16 @@
     height: var(--footer-height);
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0 10%;
-    border: 1px solid rgb(var(--footer-border));
+    border-top: 1px solid rgb(var(--footer-border));
+    gap: 9px;
+}
+.iconsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }

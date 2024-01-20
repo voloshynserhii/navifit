@@ -93,7 +93,8 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: rgb(var( --foregroundLight-rgb));
+  /* color: rgb(var(--foreground-rgb)); */
   /* background: linear-gradient(
       to bottom,
       transparent,
@@ -105,7 +106,9 @@ body {
 
 h1 {
   font-size: 30px !important;
-  color: rgb(var( --foregroundLight-rgb)) !important;
+}
+h6 {
+  font-size: 12px !important;
 }
 
 .coloredTitle {

@@ -8,6 +8,7 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
   --background-rgb: 10, 10, 10;
+  --backgroundDrawer-rgb: 214, 219, 220;
   --foregroundLight-rgb: 255, 255, 255;
   --footer-border: 204, 255, 51, 0.1;
   
@@ -106,6 +107,9 @@ body {
 main {
   background-image: url('../../public/bg.png');
   background-repeat: round;
+}
+.MuiPaper-root {
+  background: rgb(var(--backgroundDrawer-rgb));
 }
 h1 {
   font-size: 30px !important;

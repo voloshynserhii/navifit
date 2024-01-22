@@ -93,6 +93,10 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+h1, h2, h3, h4, h5, h6, span, p {
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 body {
@@ -106,10 +110,12 @@ body {
     rgb(var(--background-start-rgb)); */
   background: rgb(var(--background-rgb));
 }
+
 main {
   background-image: url('../../public/bg.png');
   background-repeat: round;
 }
+
 .MuiPaper-root {
   background: rgb(var(--backgroundDrawer-rgb));
 }

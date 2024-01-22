@@ -1,7 +1,8 @@
 'use client'
-import { Stack, Checkbox, Container, Grid, Paper, Typography } from '@mui/material'
+import { Stack, Container, Grid, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
 import Button from './components/Button'
+import Checkbox from './components/Checkbox'
 import styles from './index.module.css'
 import { styled } from '@mui/material/styles';
 
@@ -53,8 +54,8 @@ export default function Main() {
       <Grid container spacing={2} sx={{ marginTop: 2 }}>
         <Grid item xs={12} md={6}>
           <Stack direction="row" alignItems='flex-start'>
-            <Checkbox {...label} defaultChecked />
-            <Typography variant='h5'>
+            <Checkbox />
+            <Typography variant='h5' sx={{ fontWeight: 100, fontSize: '18px', letterSpacing: '1.5px' }}>
               Chciałbym otrzymywać informacje o produktach, usługach i ofertach specjalnych od Myfitplan za pośrednictwem poczty elektronicznej
             </Typography>
           </Stack>

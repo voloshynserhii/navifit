@@ -10,6 +10,8 @@
   --background-rgb: 10, 10, 10;
   --backgroundDrawer-rgb: 214, 219, 220;
   --foregroundLight-rgb: 255, 255, 255;
+  --cardBackground-rgb: 255, 255, 255, 0.05;
+  --cardBorder-rgb: 255, 255, 255, 0.11;
   --footer-border: 204, 255, 51, 0.1;
   
   --foreground-rgb: 204, 255, 51;

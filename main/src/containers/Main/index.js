@@ -1,19 +1,24 @@
 'use client'
-import { Container, Grid, Paper, Typography } from '@mui/material'
+import { Stack, Checkbox, Container, Grid, Paper, Typography } from '@mui/material'
+import Image from 'next/image'
+import Button from './components/Button'
 import styles from './index.module.css'
 import { styled } from '@mui/material/styles';
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
+  position: 'relative',
   height: 345,
-  padding: theme.spacing(2),
-  ...theme.typography.body2,
-  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  backgroundColor: 'rgba(var(--cardBackground-rgb))',
   borderRadius: theme.spacing(3),
-  border: '1px solid rgba(255, 255, 255, 0.11)'
+  border: '1px solid rgba(var(--cardBorder-rgb))',
+  cursor: 'pointer',
+  '&:hover': {
+    border: '1px solid rgba(var(--foreground-rgb))',
+  },
 }));
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export default function Main() {
-
   return (
     <Container>
       <div className={styles.title}>
@@ -22,13 +27,41 @@ export default function Main() {
         </Typography>
       </div>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <DemoPaper variant="elevation">Card Yes</DemoPaper>
+        <Grid item xs={12} md={6}>
+          <DemoPaper>
+            <Image
+              src="/TakImage.png"
+              width={500}
+              height={343}
+              alt="Tak"
+            />
+            <Button title='Tak' />
+          </DemoPaper>
         </Grid>
-        <Grid item xs={6}>
-          <DemoPaper variant="outlined">Car No</DemoPaper>
+        <Grid item xs={12} md={6}>
+          <DemoPaper>
+            <Image
+              src="/NieImage.png"
+              width={500}
+              height={343}
+              alt="Nie"
+            />
+            <Button title='Nie' />
+          </DemoPaper>
         </Grid>
       </Grid>
+      <Grid container spacing={2} sx={{ marginTop: 2 }}>
+        <Grid item xs={12} md={6}>
+          <Stack direction="row" alignItems='flex-start'>
+            <Checkbox {...label} defaultChecked />
+            <Typography variant='h5'>
+              Chciałbym otrzymywać informacje o produktach, usługach i ofertach specjalnych od Myfitplan za pośrednictwem poczty elektronicznej
+            </Typography>
+          </Stack>
+
+        </Grid>
+      </Grid>
+
     </Container>
   )
 }

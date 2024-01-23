@@ -1,27 +1,23 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+const BorderLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    // backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-    backgroundColor: '#FFF'
+    backgroundColor: 'rgba(var(--cardBorder-rgb))'
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: 'black'
-    // backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+    backgroundColor: 'rgba(var(--foreground-rgb))'
   },
 }));
 
-
-export default function CustomizedProgressBars() {
+export default function CustomizedProgressBars({ progress }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <BorderLinearProgress variant="determinate" value={50} />
+      <BorderLinearProgress variant="determinate" value={progress} sx={{ marginTop: 4, marginBottom: 5 }}/>
     </Box>
   );
 }

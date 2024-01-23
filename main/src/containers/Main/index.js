@@ -61,7 +61,6 @@ export default function Main({ onChooseOption }) {
 
         </Grid>
       </Grid>
-
     </Container>
   )
 }

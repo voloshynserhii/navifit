@@ -17,9 +17,8 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     border: '1px solid rgba(var(--foreground-rgb))',
   },
 }));
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-export default function Main() {
+export default function Main({ onChooseOption }) {
   return (
     <Container>
       <div className={styles.title}>
@@ -36,7 +35,7 @@ export default function Main() {
               height={343}
               alt="Tak"
             />
-            <Button title='Tak' />
+            <Button title='Tak' onClick={() => onChooseOption('tak')} />
           </DemoPaper>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -47,14 +46,14 @@ export default function Main() {
               height={343}
               alt="Nie"
             />
-            <Button title='Nie' />
+            <Button title='Nie' onClick={() => onChooseOption('nie')}/>
           </DemoPaper>
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ marginTop: 2 }}>
         <Grid item xs={12} md={6}>
           <Stack direction="row" alignItems='flex-start'>
-            <Checkbox />
+            <Checkbox onGetChecked={(checked) => console.log('Agree', checked)} />
             <Typography variant='h5' sx={{ fontWeight: 100, fontSize: '18px', letterSpacing: '1.5px' }}>
               Chciałbym otrzymywać informacje o produktach, usługach i ofertach specjalnych od Myfitplan za pośrednictwem poczty elektronicznej
             </Typography>

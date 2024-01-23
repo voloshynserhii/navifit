@@ -22,7 +22,7 @@ export default function Main({ onChooseOption }) {
   return (
     <Container>
       <div className={styles.title}>
-        <Typography variant="h1">
+        <Typography variant="h2">
           Czy chcesz schudnąć? <span className='coloredTitle'>My Fit Plan</span>
         </Typography>
       </div>

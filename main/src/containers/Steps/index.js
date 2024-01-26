@@ -43,7 +43,7 @@ const Steps = ({ onGetBack }) => {
 
                     {steps[step - 1].options?.map(option => {
                         return (
-                            <OptionCard option={option} onChooseOption={stepAheadHandler}/>
+                            <OptionCard key={option.title} option={option} onChooseOption={stepAheadHandler}/>
                         )
                     })}
 

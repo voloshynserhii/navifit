@@ -16,7 +16,7 @@ const CustomCheckbox = ({ onGetChecked, isDarkTheme }) => {
     }
 
     return (
-        <div onClick={checkboxHandler}>
+        <div style={{ height: 25 }} onClick={checkboxHandler}>
             <label>
                 <CheckboxIcon fillColor={isDarkTheme ? iconDarkColor : 'rgba(var(--greyText-rgb))'} checked={isChecked} />
                 <Checkbox

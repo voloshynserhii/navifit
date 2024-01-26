@@ -1,6 +1,7 @@
 import { Stack, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
 import { styled } from '@mui/material/styles';
+import Checkbox from '../../Main/components/Checkbox'
 
 const OptionContainer = styled(Paper)(({ theme }) => ({
     position: 'relative',
@@ -18,10 +19,14 @@ const OptionContainer = styled(Paper)(({ theme }) => ({
 export default function Option({ option, onChooseOption }) {
 
     return (
-        <OptionContainer onClick={onChooseOption}>
+        <OptionContainer onClick={!option.checkbox ? onChooseOption : () => {}}>
             <Stack direction='row' alignItems='center' justifyContent='space-between'>
                 <Stack>
-                    <Typography variant='h5'>{option.title}</Typography>
+                    <Stack direction='row' alignItems='center'>
+                    {option.checkbox && <Checkbox isDarkTheme={false} onGetChecked={(checked) => console.log('Check', checked)} />}
+                        <Typography variant='h5'>{option.title}</Typography>
+                    </Stack>
+
                     <Typography variant='body2'>{option.subTitle}</Typography>
                 </Stack>
 

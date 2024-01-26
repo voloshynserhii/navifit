@@ -16,6 +16,9 @@
   --foreground-rgb: 28, 34, 39, 1; 
   --mainGreen-rgb: 204, 255, 51; 
   
+  --mainGrey-rgb: 239, 241, 244, 1;
+  --greyText-rgb: 28, 34, 39, 0.43;
+  
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
@@ -63,10 +66,10 @@ body {
   background: rgb(var(--background-rgb));
 }
 
-main {
+/* main {
   background-image: url('../../public/bg.png');
   background-repeat: round;
-}
+} */
 
 .MuiPaper-root {
   background: rgb(var(--backgroundDrawer-rgb));

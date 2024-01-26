@@ -3,6 +3,7 @@ import { Container, Stack, Typography } from '@mui/material'
 import Progress from './components/Progress'
 import Button from './components/Button'
 import EmailModal from './components/EmailModal'
+import OptionCard from './components/OptionCard'
 import { steps } from './utils'
 
 const totalSteps = steps.length
@@ -20,7 +21,7 @@ const Steps = ({ onGetBack }) => {
     }
 
     return (
-        <Container>
+        <Container maxWidth='sm'>
             {step === totalSteps ? <EmailModal open={step === totalSteps} onClose={stepBackHandler} /> : (
                 <>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -30,15 +31,21 @@ const Steps = ({ onGetBack }) => {
 
                     <Progress progress={(step / totalSteps) * 100} />
 
-                    <Typography variant="h2">
+                    <Typography variant="h2" sx={{ marginBottom: 1, textAlign: 'center' }}>
                         {steps[step - 1]?.title}
                     </Typography>
 
                     {steps[step - 1]?.subTitle && (
-                        <Typography variant="h4">
+                        <Typography variant="h4" sx={{ marginBottom: 1, textAlign: 'center' }}>
                             {steps[step - 1]?.subTitle}
                         </Typography>
                     )}
+
+                    {steps[step - 1].options?.map(option => {
+                        return (
+                            <OptionCard option={option} onChooseOption={stepAheadHandler}/>
+                        )
+                    })}
 
                     {step <= totalSteps && <Stack alignItems='center' justifyContent='center' sx={{ marginTop: 8 }}>
                         <Button type='primary' title='Dalej' onClick={stepAheadHandler} />

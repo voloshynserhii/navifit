@@ -1,14 +1,50 @@
 const steps = [
     {
         title: 'Wybierz płeć',
+        options: [
+            {
+                title: 'Mężczyzna'
+            },
+            {
+                title: 'Kobieta'
+            },
+        ]
     },
     {
         title: 'Jaki jest Twój typ sylwetki?',
-        subTitle: 'Każdy typ ciała ma określoną strukturę metaboliczną'
+        subTitle: 'Każdy typ ciała ma określoną strukturę metaboliczną',
+        options: [
+            {
+                title: 'Ektomorficzny',
+                subTitle: 'Szczupły i długi, szybki metabolizm'
+            },
+            {
+                title: 'Mezomorficzny',
+                subTitle: 'Umięśniony i dobrze zbudowany, średni metabolizm'
+            },
+            {
+                title: 'Endomorficzny',
+                subTitle: 'Okrągła, szeroka sylwetka, powolny metabolizm'
+            },
+        ]
     },
     {
         title: 'Opisz swój typowy dzień',
-        subTitle: 'Mężczyźni którzy chcą schudnąć, wymagają bardziej spersonalizowanego podejścia w zależności od aktualnego stylu życia.'
+        subTitle: 'Mężczyźni którzy chcą schudnąć, wymagają bardziej spersonalizowanego podejścia w zależności od aktualnego stylu życia.',
+        options: [
+            {
+                title: 'Przeważnie w domu'
+            },
+            {
+                title: 'W biurze'
+            },
+            {
+                title: 'Chodzę na długie spacery'
+            },
+            {
+                title: 'Praca fizyczna'
+            },
+        ]
     },
     {
         title: 'Zmiana zachowania a restrykcyjna dieta',

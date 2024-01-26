@@ -10,7 +10,7 @@ import { useUserStore } from '@src/store/useUserStore';
 const DemoPaper = styled(Paper)(({ theme }) => ({
   position: 'relative',
   height: 345,
-  backgroundColor: 'rgba(var(--cardBackground-rgb))',
+  backgroundColor: 'rgba(var(--mainGrey-rgb))',
   borderRadius: theme.spacing(3),
   border: '1px solid rgba(var(--cardBorder-rgb))',
   cursor: 'pointer',
@@ -26,8 +26,9 @@ export default function Main({ onChooseOption }) {
   return (
     <Container>
       <div className={styles.title}>
-        <Typography variant="h2">
-          Czy chcesz schudnąć? <span className='coloredTitle'>My Fit Plan</span>
+        <Typography variant="h2" sx={{ width: '100%', textAlign: 'center' }}>
+          Czy chcesz schudnąć? 
+          {/* <span className='coloredTitle'>My Fit Plan</span> */}
         </Typography>
       </div>
       <Grid container spacing={2}>
@@ -58,7 +59,7 @@ export default function Main({ onChooseOption }) {
         <Grid item xs={12} md={6}>
           <Stack direction="row" alignItems='flex-start'>
             <Checkbox isDarkTheme={isDarkTheme} onGetChecked={(checked) => console.log('Agree', checked)} />
-            <Typography variant='h5' sx={{ fontWeight: 100, fontSize: '18px', letterSpacing: '1.5px' }}>
+            <Typography variant='h5' sx={{ fontWeight: 100, fontSize: '18px', letterSpacing: '1.5px', color: 'rgba(var(--greyText-rgb))' }}>
               Chciałbym otrzymywać informacje o produktach, usługach i ofertach specjalnych od Myfitplan za pośrednictwem poczty elektronicznej
             </Typography>
           </Stack>

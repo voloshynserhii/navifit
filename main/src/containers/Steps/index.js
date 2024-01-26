@@ -9,10 +9,10 @@ import { steps } from './utils'
 const totalSteps = steps.length
 
 const Steps = ({ onGetBack }) => {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
 
     const stepBackHandler = () => {
-        if (step === 1) return onGetBack();
+        if (step === 2) return onGetBack();
         setStep(state => state - 1);
     }
 
@@ -43,7 +43,7 @@ const Steps = ({ onGetBack }) => {
 
                     {steps[step - 1].options?.map(option => {
                         return (
-                            <OptionCard key={option.title} option={option} onChooseOption={stepAheadHandler}/>
+                            <OptionCard key={option.title} option={option} onChooseOption={stepAheadHandler} />
                         )
                     })}
 

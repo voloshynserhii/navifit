@@ -14,17 +14,20 @@ const Header = () => {
     const isDarkTheme = theme === 'dark';
 
     return (
-        <Container>
-            <div className={styles.header}>
-                <Link href="/">
-                    <LogoIcon />
-                </Link>
-                <div className={styles.iconsGroup}>
-                    <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    <Drawer isDarkTheme={isDarkTheme} />
+        <div className={styles.headerContainer}>
+            <Container>
+                <div className={styles.header}>
+                    <Link href="/">
+                        <LogoIcon />
+                    </Link>
+                    <div className={styles.iconsGroup}>
+                        <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                        <Drawer isDarkTheme={isDarkTheme} />
+                    </div>
                 </div>
-            </div>
-        </Container>
+            </Container>
+        </div>
+
     )
 };
 

@@ -21,7 +21,7 @@ const SmallButton = styled(Button)(({ theme }) => ({
   borderColor: 'rgba(var(--foreground-rgb))',
   fontWeight: '200',
   fontSize: '20px',
-  borderRadius: 24,
+  borderRadius: theme.spacing(2),
   textTransform: 'capitalize',
   padding: '5px 20px',
   '&:hover': {

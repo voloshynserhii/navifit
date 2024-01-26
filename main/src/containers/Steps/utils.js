@@ -1,4 +1,5 @@
 const steps = [
+    {},
     {
         title: 'Wybierz płeć',
         options: [

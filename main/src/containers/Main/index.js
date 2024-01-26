@@ -2,10 +2,15 @@
 import { Stack, Container, Grid, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
 import { styled } from '@mui/material/styles';
-import Button from './components/Button'
-import Checkbox from './components/Checkbox'
-import styles from './index.module.css'
 import { useUserStore } from '@src/store/useUserStore';
+import Button from './components/Button'
+import ProgressButton from '../Steps/components/Button'
+import Checkbox from './components/Checkbox'
+import Progress from '../Steps/components/Progress'
+import { steps } from '../Steps/utils'
+import styles from './index.module.css'
+
+const totalSteps = steps.length
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   position: 'relative',
@@ -22,13 +27,19 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
 export default function Main({ onChooseOption }) {
   const { theme } = useUserStore();
   const isDarkTheme = theme === 'dark';
-  
+
   return (
     <Container>
+      <Container maxWidth='sm'>
+        <Stack direction='row' justifyContent='flex-end' alignItems='center'>
+          <ProgressButton title={`1 / ${totalSteps}`} noIcon />
+        </Stack>
+        <Progress progress={(1 / totalSteps) * 100} />
+      </Container>
+
       <div className={styles.title}>
         <Typography variant="h2" sx={{ width: '100%', textAlign: 'center' }}>
-          Czy chcesz schudnąć? 
-          {/* <span className='coloredTitle'>My Fit Plan</span> */}
+          Czy chcesz schudnąć?
         </Typography>
       </div>
       <Grid container spacing={2}>
@@ -51,7 +62,7 @@ export default function Main({ onChooseOption }) {
               height={343}
               alt="Nie"
             />
-            <Button title='Nie' onClick={() => onChooseOption('nie')}/>
+            <Button title='Nie' onClick={() => onChooseOption('nie')} />
           </DemoPaper>
         </Grid>
       </Grid>

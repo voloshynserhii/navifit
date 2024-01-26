@@ -4,14 +4,14 @@ import ArrowIcon from '@src/components/Icons/Arrow'
 
 const LargeButton = styled(Button)(({ theme }) => ({
   color: 'black',
-  backgroundColor: 'rgba(var(--foreground-rgb))',
+  backgroundColor: 'rgba(var(--mainGreen-rgb))',
   fontWeight: '700',
   fontSize: '18px',
   borderRadius: 24,
   textTransform: 'capitalize',
   padding: '10px 90px',
   '&:hover': {
-    backgroundColor: 'rgba(var(--foreground-rgb))',
+    backgroundColor: 'rgba(var(--mainGreen-rgb))',
     opacity: '0.4',
   },
 }));

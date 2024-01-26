@@ -1,10 +1,11 @@
 'use client'
 import { Stack, Container, Grid, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
+import { styled } from '@mui/material/styles';
 import Button from './components/Button'
 import Checkbox from './components/Checkbox'
 import styles from './index.module.css'
-import { styled } from '@mui/material/styles';
+import { useUserStore } from '@src/store/useUserStore';
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   position: 'relative',
@@ -14,11 +15,14 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
   border: '1px solid rgba(var(--cardBorder-rgb))',
   cursor: 'pointer',
   '&:hover': {
-    border: '1px solid rgba(var(--foreground-rgb))',
+    border: '1px solid rgba(var(--mainGreen-rgb))',
   },
 }));
 
 export default function Main({ onChooseOption }) {
+  const { theme } = useUserStore();
+  const isDarkTheme = theme === 'dark';
+  
   return (
     <Container>
       <div className={styles.title}>
@@ -53,7 +57,7 @@ export default function Main({ onChooseOption }) {
       <Grid container spacing={2} sx={{ marginTop: 2 }}>
         <Grid item xs={12} md={6}>
           <Stack direction="row" alignItems='flex-start'>
-            <Checkbox onGetChecked={(checked) => console.log('Agree', checked)} />
+            <Checkbox isDarkTheme={isDarkTheme} onGetChecked={(checked) => console.log('Agree', checked)} />
             <Typography variant='h5' sx={{ fontWeight: 100, fontSize: '18px', letterSpacing: '1.5px' }}>
               Chciałbym otrzymywać informacje o produktach, usługach i ofertach specjalnych od Myfitplan za pośrednictwem poczty elektronicznej
             </Typography>

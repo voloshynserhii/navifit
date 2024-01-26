@@ -7,13 +7,13 @@ const ColorButton = styled(Button)(({ theme }) => ({
     top: '20%',
     right: '10%',
     color: 'black',
-    backgroundColor: 'rgba(var(--foreground-rgb))',
+    backgroundColor: 'rgba(var(--mainGreen-rgb))',
     fontWeight: '700',
     fontSize: '25px',
     borderRadius: 15,
     padding: '10px 28px',
     '&:hover': {
-        backgroundColor: 'rgba(var(--foreground-rgb))',
+        backgroundColor: 'rgba(var(--mainGreen-rgb))',
       opacity: '0.4',
     },
   }));

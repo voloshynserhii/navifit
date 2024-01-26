@@ -60,6 +60,9 @@ const steps = [
     },
     {
         title: 'Sprawdźmy wymiary twojego ciała',
+    },
+    {
+        title: '',
     }
 ]
 

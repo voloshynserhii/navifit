@@ -6,6 +6,7 @@ import HelpIcon from '../Icons/Help';
 import Drawer from '../Drawer';
 import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
 import { useUserStore } from '@src/store/useUserStore';
+import LogoIcon from '../Icons/Logo';
 import styles from './page.module.css';
 
 const Header = () => {
@@ -16,7 +17,7 @@ const Header = () => {
         <Container>
             <div className={styles.header}>
                 <Link href="/">
-                    NAVIFIT
+                    <LogoIcon />
                 </Link>
                 <div className={styles.iconsGroup}>
                     <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />

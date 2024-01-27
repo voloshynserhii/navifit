@@ -7,6 +7,7 @@ import OptionCard from './components/OptionCard'
 import { steps } from './utils'
 
 const totalSteps = steps.length
+const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20]
 
 const Steps = ({ onGetBack }) => {
     const [step, setStep] = useState(2);
@@ -63,7 +64,7 @@ const Steps = ({ onGetBack }) => {
                         )
                     })}
 
-                    {step <= totalSteps && <Stack alignItems='center' justifyContent='center' sx={{ marginTop: 8 }}>
+                    {optionsWithNextBtn.includes(step) && step <= totalSteps && <Stack alignItems='center' justifyContent='center' sx={{ marginTop: 8 }}>
                         <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                     </Stack>}
                 </>

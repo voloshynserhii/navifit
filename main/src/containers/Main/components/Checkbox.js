@@ -1,15 +1,11 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Checkbox } from '@mui/material';
 import CheckboxIcon from '../../../components/Icons/Checkbox'
 import { iconDarkColor } from '../../../app/utils/consts';
 
-const CustomCheckbox = ({ checked = true, onGetChecked, isDarkTheme }) => {
+const CustomCheckbox = ({ checked = false, onGetChecked, isDarkTheme }) => {
     const [isChecked, setIsChecked] = useState(checked);
-
-    useEffect(() => {
-        onGetChecked(isChecked);
-    }, [isChecked])
 
     const checkboxHandler = () => {
         setIsChecked(state => !state)
@@ -22,9 +18,11 @@ const CustomCheckbox = ({ checked = true, onGetChecked, isDarkTheme }) => {
                 <Checkbox
                     checked={isChecked}
                     sx={{ opacity: '0', transform: 'translateY(-30px)' }}
+                    onChange={(e) => onGetChecked(e.target.checked)}
                 />
             </label>
         </div>
     );
 };
+
 export default CustomCheckbox;

@@ -71,7 +71,8 @@ export default function Main({ onChooseOption }) {
       <Grid container spacing={2} sx={{ marginTop: 2 }}>
         <Grid item xs={12} md={6}>
           <Stack direction="row" alignItems='flex-start'>
-            <Checkbox isDarkTheme={isDarkTheme} onGetChecked={(checked) => console.log('Agree', checked)} />
+            {/* TO DO: save agree value */}
+            <Checkbox checked isDarkTheme={isDarkTheme} onGetChecked={(checked) => console.log('Agree', checked)} />
             <Typography variant='h5' sx={{ fontWeight: 100, fontSize: '18px', letterSpacing: '1.5px', color: 'rgba(var(--greyText-rgb))' }}>
               Chciałbym otrzymywać informacje o produktach, usługach i ofertach specjalnych od Myfitplan za pośrednictwem poczty elektronicznej
             </Typography>

@@ -1,7 +1,6 @@
 import styles from './icons.module.css'
 
 export default function Checkbox({ fillColor = 'white', checked }) {
-    console.log(fillColor)
     return (
         <div className={styles.iconContainer}>
             {checked ? (

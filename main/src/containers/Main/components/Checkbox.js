@@ -4,8 +4,8 @@ import { Checkbox } from '@mui/material';
 import CheckboxIcon from '../../../components/Icons/Checkbox'
 import { iconDarkColor } from '../../../app/utils/consts';
 
-const CustomCheckbox = ({ onGetChecked, isDarkTheme }) => {
-    const [isChecked, setIsChecked] = useState(true);
+const CustomCheckbox = ({ checked = true, onGetChecked, isDarkTheme }) => {
+    const [isChecked, setIsChecked] = useState(checked);
 
     useEffect(() => {
         onGetChecked(isChecked);

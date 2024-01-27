@@ -14,13 +14,13 @@ const totalSteps = steps.length
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   position: 'relative',
-  height: 345,
+  height: 240,
   backgroundColor: 'rgba(var(--mainGrey-rgb))',
   borderRadius: theme.spacing(3),
   border: '1px solid rgba(var(--cardBorder-rgb))',
   cursor: 'pointer',
   '&:hover': {
-    border: '1px solid rgba(var(--mainGreen-rgb))',
+    // border: '1px solid rgba(var(--mainGreen-rgb))',
   },
 }));
 
@@ -29,7 +29,7 @@ export default function Main({ onChooseOption }) {
   const isDarkTheme = theme === 'dark';
 
   return (
-    <Container>
+    <Container maxWidth='md'>
       <Container maxWidth='sm'>
         <Stack direction='row' justifyContent='flex-end' alignItems='center'>
           <ProgressButton title={`1 / ${totalSteps}`} noIcon />
@@ -43,26 +43,28 @@ export default function Main({ onChooseOption }) {
         </Typography>
       </div>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <DemoPaper>
             <Image
-              src="/TakImage.png"
-              width={500}
-              height={343}
+            style={{ position: 'absolute', bottom: 0 }}
+              src="/tak.png"
+              width={220}
+              height={220}
               alt="Tak"
             />
-            <Button title='Tak' onClick={() => onChooseOption('tak')} />
+            <Button title='Tak' onClick={() => onChooseOption(1)} />
           </DemoPaper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <DemoPaper>
             <Image
-              src="/NieImage.png"
-              width={500}
-              height={343}
+            style={{ position: 'absolute', bottom: 0 }}
+              src="/nie.png"
+              width={340}
+              height={240}
               alt="Nie"
             />
-            <Button title='Nie' onClick={() => onChooseOption('nie')} />
+            <Button title='Nie' onClick={() => onChooseOption(2)} />
           </DemoPaper>
         </Grid>
       </Grid>

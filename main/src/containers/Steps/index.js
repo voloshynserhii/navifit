@@ -10,6 +10,7 @@ const totalSteps = steps.length
 
 const Steps = ({ onGetBack }) => {
     const [step, setStep] = useState(2);
+    const [answers, setAnswers] = useState({})
 
     const stepBackHandler = () => {
         if (step === 2) return onGetBack();
@@ -20,6 +21,21 @@ const Steps = ({ onGetBack }) => {
         if (step < totalSteps) setStep(state => state + 1);
     }
 
+    const selectOptionHandler = (val, key) => {
+        if (!key) {
+            setAnswers(prev => ({
+                ...prev,
+                [steps[step - 1].value]: val
+            }))
+            stepAheadHandler();
+        } else {
+            setAnswers(prev => ({
+                ...prev,
+                [steps[step - 1].value]: { ...answers[steps[step - 1].value], [key]: val }
+            }))
+        }
+    }
+    console.log('ANSWERS', answers)
     return (
         <Container maxWidth='sm'>
             {step === totalSteps ? <EmailModal open={step === totalSteps} onClose={stepBackHandler} /> : (
@@ -36,14 +52,14 @@ const Steps = ({ onGetBack }) => {
                     </Typography>
 
                     {steps[step - 1]?.subTitle && (
-                        <Typography variant="h4" sx={{ marginBottom: 1, textAlign: 'center' }}>
+                        <Typography variant="h5" sx={{ marginBottom: 1, textAlign: 'center' }}>
                             {steps[step - 1]?.subTitle}
                         </Typography>
                     )}
 
                     {steps[step - 1].options?.map(option => {
                         return (
-                            <OptionCard key={option.title} option={option} onChooseOption={stepAheadHandler} />
+                            <OptionCard key={option.title} option={option} prevData={answers[steps[step - 1].value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                         )
                     })}
 

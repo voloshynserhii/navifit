@@ -2,54 +2,67 @@ const steps = [
     {},
     {
         title: 'Wybierz płeć',
+        value: 'sex',
         options: [
             {
-                title: 'Mężczyzna'
+                title: 'Mężczyzna',
+                value: 'male'
             },
             {
-                title: 'Kobieta'
+                title: 'Kobieta',
+                value: 'female'
             },
         ]
     },
     {
         title: 'Jaki jest Twój typ sylwetki?',
         subTitle: 'Każdy typ ciała ma określoną strukturę metaboliczną',
+        value: 'bodyType',
         options: [
             {
                 title: 'Ektomorficzny',
-                subTitle: 'Szczupły i długi, szybki metabolizm'
+                subTitle: 'Szczupły i długi, szybki metabolizm',
+                value: '1'
             },
             {
                 title: 'Mezomorficzny',
-                subTitle: 'Umięśniony i dobrze zbudowany, średni metabolizm'
+                subTitle: 'Umięśniony i dobrze zbudowany, średni metabolizm',
+                value: '2'
             },
             {
                 title: 'Endomorficzny',
-                subTitle: 'Okrągła, szeroka sylwetka, powolny metabolizm'
+                subTitle: 'Okrągła, szeroka sylwetka, powolny metabolizm',
+                value: '3'
             },
         ]
     },
     {
         title: 'Opisz swój typowy dzień',
         subTitle: 'Mężczyźni którzy chcą schudnąć, wymagają bardziej spersonalizowanego podejścia w zależności od aktualnego stylu życia.',
+        value: 'dayType',
         options: [
             {
-                title: 'Przeważnie w domu'
+                title: 'Przeważnie w domu',
+                value: '1'
             },
             {
-                title: 'W biurze'
+                title: 'W biurze',
+                value: '2'
             },
             {
-                title: 'Chodzę na długie spacery'
+                title: 'Chodzę na długie spacery',
+                value: '3'
             },
             {
-                title: 'Praca fizyczna'
+                title: 'Praca fizyczna',
+                value: '4'
             },
         ]
     },
     {
         title: 'Zmiana zachowania a restrykcyjna dieta',
-        subTitle: 'Pracujemy poprzez tworzenie nawyków, co zapewnia długotrwałe rezultaty'
+        subTitle: 'Pracujemy poprzez tworzenie nawyków, co zapewnia długotrwałe rezultaty',
+        value: 'diet',
     },
     {
         title: 'Czy odczuwasz dolegliwości żołądkowe w ciągu dnia?',
@@ -81,26 +94,32 @@ const steps = [
     },
     {
         title: 'Wybierz wszystko, co dotyczy Ciebie:',
+        value: 'checkbox1',
         options: [
             {
                 checkbox: true,
-                title: 'Jem późno w nocy'
+                title: 'Jem późno w nocy',
+                value: '1'
             },
             {
                 checkbox: true,
-                title: 'Nie śpię wystarczająco'
+                title: 'Nie śpię wystarczająco',
+                value: '2'
             },
             {
                 checkbox: true,
-                title: 'Nie mogę zrezygnować z jedzenia słodyczy'
+                title: 'Nie mogę zrezygnować z jedzenia słodyczy',
+                value: '3'
             },
             {
                 checkbox: true,
-                title: 'Uwielbiam napoje gazowane'
+                title: 'Uwielbiam napoje gazowane',
+                value: '4'
             },
             {
                 checkbox: true,
-                title: 'Spożywam dużo soli'
+                title: 'Spożywam dużo soli',
+                value: '5'
             },
         ]
     },

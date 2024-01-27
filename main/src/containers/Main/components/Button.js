@@ -4,14 +4,15 @@ import ArrowIcon from '@src/components/Icons/Arrow'
 
 const ColorButton = styled(Button)(({ theme }) => ({
     position: 'absolute',
-    top: '20%',
-    right: '10%',
+    top: '1rem',
+    right: '1rem',
     color: 'black',
     backgroundColor: 'rgba(var(--mainGreen-rgb))',
-    fontWeight: '700',
+    fontWeight: '500',
     fontSize: '25px',
     borderRadius: 15,
     padding: '10px 28px',
+    textTransform: 'capitalize',
     '&:hover': {
         backgroundColor: 'rgba(var(--mainGreen-rgb))',
       opacity: '0.4',

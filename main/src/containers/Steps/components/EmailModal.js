@@ -10,8 +10,9 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 700,
-  bgcolor: 'red',
-  border: '2px solid #000',
+  borderRadius: '1rem',
+  bgcolor: 'rgba(var(--background-rgb))',
+  // border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -35,10 +36,10 @@ export default function TransitionsModal({ open, onClose }) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
+            <Typography id="transition-modal-title" variant="h3" sx={{ mb: 2 }}>
             Wpisz swój adres e-mail, aby dowiedzieć się, jak schudnąć z Myfitplan
             </Typography>
-            <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+            <TextField id="outlined-basic" label="E-mail" variant='filled' fullWidth sx={{ mt: 2 }}/>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
             Myfitplan nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
             </Typography>

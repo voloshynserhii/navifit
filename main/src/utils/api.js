@@ -12,7 +12,7 @@ axios.interceptors.request.use(conf => ({
 }));
 
 const request = (promise, noParse) =>
-  Promise.resolve()
+  new Promise.resolve()
     .then(() => promise)
     .then(res => {
       const { error } = res.data || {};

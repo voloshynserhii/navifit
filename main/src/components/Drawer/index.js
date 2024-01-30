@@ -1,18 +1,21 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-// import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { useState, Fragment } from 'react';
+import { Accordion, AccordionSummary, AccordionDetails, Box, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '../Icons/Menu';
 import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
 
+const CustomAccordion = styled((props) => (
+    <Accordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+    border: 'none',
+    '&::before': {
+        display: 'none',
+    },
+}));
+
 export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
-    const [state, setState] = React.useState({
+    const [state, setState] = useState({
         right: false,
     });
 
@@ -32,29 +35,34 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
         <Box
             sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
+        // onClick={toggleDrawer(anchor, false)}
+        // onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                <CustomAccordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                    >
+                        Moje Konto
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <ListItem disablePadding>
+                            <ListItemButton>
+                                <ListItemText primary='Mój plan posiłków' />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <ListItemButton>
+                                <ListItemText primary='Moja subskrypcja' />
+                            </ListItemButton>
+                        </ListItem>
+                    </AccordionDetails>
+                </CustomAccordion>
+                {['Sklep', 'O nas', 'Skontaktuj się z nami', 'Wsparcie', 'Warunki i zasady'].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
-                            {/* <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon> */}
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            {/* <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon> */}
                             <ListItemText primary={text} />
                         </ListItemButton>
                     </ListItem>
@@ -66,10 +74,10 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
     return (
         <div>
             {['right'].map((anchor) => (
-                <React.Fragment key={anchor}>
-                    <Button onClick={toggleDrawer(anchor, true)}>
+                <Fragment key={anchor}>
+                    <IconButton onClick={toggleDrawer(anchor, true)}>
                         <MenuIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    </Button>
+                    </IconButton>
                     <SwipeableDrawer
                         anchor={anchor}
                         open={state[anchor]}
@@ -78,7 +86,7 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                     >
                         {list(anchor)}
                     </SwipeableDrawer>
-                </React.Fragment>
+                </Fragment>
             ))}
         </div>
     );

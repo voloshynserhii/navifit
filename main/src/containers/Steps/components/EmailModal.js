@@ -1,18 +1,14 @@
-import { Backdrop, TextField} from '@mui/material';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
+import { Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material';
+import Button from './Button'
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 700,
+  width: '50%',
   borderRadius: '1rem',
   bgcolor: 'rgba(var(--background-rgb))',
-  // border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -37,12 +33,13 @@ export default function TransitionsModal({ open, onClose }) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h3" sx={{ mb: 2 }}>
-            Wpisz swój adres e-mail, aby dowiedzieć się, jak schudnąć z Myfitplan
+              Wpisz swój adres e-mail, aby dowiedzieć się, jak schudnąć z Navifit
             </Typography>
-            <TextField id="outlined-basic" label="E-mail" variant='filled' fullWidth sx={{ mt: 2 }}/>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-            Myfitplan nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
+            <TextField id="outlined-basic" label="E-mail" variant='filled' fullWidth sx={{ mt: 2 }} />
+            <Typography id="transition-modal-description" variant="h6" sx={{ mt: 2 }}>
+              Navifit nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
             </Typography>
+            <Button title="Dalej" type="primary" sx={{ width: '100%', mt: 2 }} onClick={() => alert('Your data is processing!')} />
           </Box>
         </Fade>
       </Modal>

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Container, Typography } from '@mui/material';
+import { Container, IconButton, Typography } from '@mui/material';
 import FacebookIcon from '../Icons/Facebook';
 import InstagramIcon from '../Icons/Instagram';
 import YoutubeIcon from '../Icons/Youtube';
@@ -16,22 +16,22 @@ const Footer = () => {
 
     return (
         <Container disableGutters maxWidth={false}>
-            <div className={styles.footer}>
+            <footer className={styles.footer}>
                 <div className={styles.iconsContainer}>
-                    <Link href="https://facebook.com">
+                    <IconButton href="https://facebook.com">
                         <FacebookIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    </Link>
-                    <Link href="https://instagram.com">
+                    </IconButton>
+                    <IconButton href="https://instagram.com">
                         <InstagramIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    </Link>
-                    <Link href="https://youtube.com">
+                    </IconButton>
+                    <IconButton href="https://youtube.com">
                         <YoutubeIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    </Link>
+                    </IconButton>
                 </div>
                 <Typography variant="h6">
                     © {new Date().getFullYear()} navifit.pl
                 </Typography>
-            </div>
+            </footer>
         </Container>
     )
 }

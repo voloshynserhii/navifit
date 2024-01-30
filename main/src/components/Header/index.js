@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { Container } from '@mui/material';
+import { Button, Container, IconButton } from '@mui/material';
 import HelpIcon from '../Icons/Help';
 import Drawer from '../Drawer';
 import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
@@ -14,19 +13,23 @@ const Header = () => {
     const isDarkTheme = theme === 'dark';
 
     return (
-        <div className={styles.headerContainer}>
+        <header className={styles.headerContainer}>
             <Container>
                 <div className={styles.header}>
-                    <Link href="/">
+                    <Button href="/" onClick={() => window?.location?.reload()}>
                         <LogoIcon />
-                    </Link>
+                    </Button>
                     <div className={styles.iconsGroup}>
-                        <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                        <Drawer isDarkTheme={isDarkTheme} />
+                        <IconButton>
+                            <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                        </IconButton>
+                        <nav>
+                            <Drawer isDarkTheme={isDarkTheme} />
+                        </nav>
                     </div>
                 </div>
             </Container>
-        </div>
+        </header>
 
     )
 };

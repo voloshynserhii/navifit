@@ -29,10 +29,10 @@ const SmallButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const MainButton = ({ type = 'secondary', title = '', noIcon, onClick }) => {
+const MainButton = ({ type = 'secondary', title = '', noIcon, onClick, ...props }) => {
   if (type === 'primary') {
-    return (<LargeButton variant="contained" endIcon={!noIcon && <ArrowIcon type='short' />} onClick={onClick}>{title}</LargeButton>)
+    return (<LargeButton {...props} variant="contained" endIcon={!noIcon && <ArrowIcon type='short' />} onClick={onClick}>{title}</LargeButton>)
   }
-  return <SmallButton variant="outlined" startIcon={!noIcon && <ArrowIcon type='short' direction='back' fillColor='rgba(var(--foreground-rgb))' />} onClick={onClick}>{title}</SmallButton>
+  return <SmallButton {...props} variant="outlined" startIcon={!noIcon && <ArrowIcon type='short' direction='back' fillColor='rgba(var(--foreground-rgb))' />} onClick={onClick}>{title}</SmallButton>
 }
 export default MainButton

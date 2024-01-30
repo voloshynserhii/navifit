@@ -9,7 +9,7 @@ const CustomCheckbox = ({ checked = false, onGetChecked, isDarkTheme }) => {
 
     useEffect(() => {
         if (checked !== isChecked) setIsChecked(checked)
-    }, [checked])
+    }, [checked, isChecked])
 
     const checkboxHandler = () => {
         setIsChecked(state => !state)

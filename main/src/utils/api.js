@@ -24,11 +24,11 @@ const request = (promise, noParse) =>
 
         // const errorMessage = i18n.t(`Errors.${error.code}`);
 
-        if (errorMessage.includes('Errors')) {
-          throw error;
-        } else {
-          throw { ...error, message: errorMessage };
-        }
+        // if (errorMessage.includes('Errors')) {
+        //   throw error;
+        // } else {
+        //   throw { ...error, message: errorMessage };
+        // }
       }
 
     //   actions.session.updateTimer();

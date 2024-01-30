@@ -1,19 +1,18 @@
 import axios from 'axios';
 // import i18n from 'i18next';
 
-const URL_ROOT = 'http://localhost:8003' 
+const URL_ROOT = 'http://localhost:8003'
 // process.env.DB_HOST;
 const options = { withCredentials: true };
 
 axios.interceptors.request.use(conf => ({
   ...conf,
-//   headers: { 'Accept-Language': i18n.language },
+  //   headers: { 'Accept-Language': i18n.language },
   url: `${conf.url}${conf.url.includes('?') ? '&' : '?'}r=${Math.random()}`,
 }));
 
-const request = (promise, noParse) =>
-  new Promise.resolve()
-    .then(() => promise)
+const request = async (promise, noParse) => {
+  await promise.then()
     .then(res => {
       const { error } = res.data || {};
 
@@ -31,7 +30,7 @@ const request = (promise, noParse) =>
         // }
       }
 
-    //   actions.session.updateTimer();
+      //   actions.session.updateTimer();
 
       return res;
     })
@@ -43,6 +42,8 @@ const request = (promise, noParse) =>
 
       throw error;
     });
+}
+
 
 const requests = {
   get: ({ url, params = {}, noParse, opts = {} }) => request(axios.get(`${URL_ROOT}${url}`, {

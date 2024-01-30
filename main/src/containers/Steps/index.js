@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Container, Stack, Typography } from '@mui/material'
+import { useRouter } from 'next/navigation'
+import api from '../../utils/api'
 import Progress from './components/Progress'
 import Button from './components/Button'
 import EmailModal from './components/EmailModal'
@@ -10,8 +12,10 @@ const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20]
 
 const Steps = ({ onGetBack }) => {
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState({})
+
+    const router = useRouter()
 
     const stepBackHandler = () => {
         if (step === 2) return onGetBack();
@@ -36,10 +40,21 @@ const Steps = ({ onGetBack }) => {
             }))
         }
     }
-    console.log('ANSWERS', answers)
+
+    const sendDataHandler = (email) => {
+        const data = {
+            email,
+            userData: answers
+        }
+
+        api.user.sendAnswers(data).then(() => {           
+            router.push('/order', { scroll: false });
+        }).catch(() => router.push('/'))
+    }
+
     return (
         <Container maxWidth='sm'>
-            {step === totalSteps ? <EmailModal open={step === totalSteps} onClose={stepBackHandler} /> : (
+            {step === totalSteps ? <EmailModal open={step === totalSteps} onClose={stepBackHandler} onGetEmail={sendDataHandler} /> : (
                 <>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <Button title='Powrot' onClick={stepBackHandler} />

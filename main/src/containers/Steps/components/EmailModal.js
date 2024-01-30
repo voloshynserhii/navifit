@@ -1,4 +1,5 @@
-import { Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material';
+import { useState } from 'react'
+import { Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material'
 import Button from './Button'
 
 const style = {
@@ -11,9 +12,14 @@ const style = {
   bgcolor: 'rgba(var(--background-rgb))',
   boxShadow: 24,
   p: 4,
-};
+}
 
-export default function TransitionsModal({ open, onClose }) {
+export default function TransitionsModal({ open, onClose, onGetEmail }) {
+  const [email, setEmail] = useState('')
+
+  const sendEmailHandler = () => {
+    onGetEmail(email)
+  }
 
   return (
     <div>
@@ -35,11 +41,11 @@ export default function TransitionsModal({ open, onClose }) {
             <Typography id="transition-modal-title" variant="h3" sx={{ mb: 2 }}>
               Wpisz swój adres e-mail, aby dowiedzieć się, jak schudnąć z Navifit
             </Typography>
-            <TextField id="outlined-basic" label="E-mail" variant='filled' fullWidth sx={{ mt: 2 }} />
+            <TextField id="outlined-basic" label="E-mail" variant='filled' fullWidth sx={{ mt: 2 }} value={email} onChange={(e) => setEmail(e.target.value)} />
             <Typography id="transition-modal-description" variant="h6" sx={{ mt: 2 }}>
               Navifit nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
             </Typography>
-            <Button title="Dalej" type="primary" sx={{ width: '100%', mt: 2 }} onClick={() => alert('Your data is processing!')} />
+            <Button title="Dalej" type="primary" sx={{ width: '100%', mt: 2 }} onClick={sendEmailHandler} />
           </Box>
         </Fade>
       </Modal>

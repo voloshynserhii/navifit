@@ -47,7 +47,7 @@ const Steps = ({ onGetBack }) => {
             userData: answers
         }
 
-        api.user.sendAnswers(data).then(() => {           
+        api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {           
             router.push('/order', { scroll: false });
         }).catch(() => router.push('/'))
     }

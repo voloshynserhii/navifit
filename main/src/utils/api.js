@@ -46,18 +46,18 @@ const request = async (promise, noParse) => {
 
 
 const requests = {
-  get: ({ url, params = {}, noParse, opts = {} }) => request(axios.get(`${URL_ROOT}${url}`, {
+  get: ({ url, params = {}, noParse, opts = {} }) => request(axios.get(`${url}`, {
     ...opts, ...options,
     params
   }), noParse),
-  delete: ({ url, data = {}, noParse }) => request(axios.delete(`${URL_ROOT}${url}`, { ...options, data }), noParse),
-  put: ({ url, body = {}, noParse }) => request(axios.put(`${URL_ROOT}${url}`, body, options), noParse),
+  delete: ({ url, data = {}, noParse }) => request(axios.delete(`${url}`, { ...options, data }), noParse),
+  put: ({ url, body = {}, noParse }) => request(axios.put(`${url}`, body, options), noParse),
   post: ({ url, body = {}, opt = {}, noParse }) =>
-    request(axios.post(`${URL_ROOT}${url}`, body, { ...options, ...opt }), noParse),
+    request(axios.post(`${url}`, body, { ...options, ...opt }), noParse),
 };
 
 export default {
   user: {
-    sendAnswers: body => requests.post({ url: '/api/user/answer', body }),
+    sendAnswers: (url, body) => requests.post({ url: `${url}/api/user/answer`, body }),
   },
 };

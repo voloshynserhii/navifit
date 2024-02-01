@@ -140,6 +140,16 @@ if (config.server.env === 'development') {
   )
 }
 
+if (config.server.env === 'production') {
+  app.use(
+    cors({
+      origin: ['https://navifit.vercel.app'],
+      optionsSuccessStatus: 200,
+      credentials: true,
+    })
+  )
+}
+
 /**
  * Init session
  */

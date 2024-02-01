@@ -1,14 +1,12 @@
 import axios from 'axios';
 // import i18n from 'i18next';
 
-const URL_ROOT = 'http://localhost:8003'
-// process.env.DB_HOST;
 const options = { withCredentials: true };
 
 axios.interceptors.request.use(conf => ({
   ...conf,
   //   headers: { 'Accept-Language': i18n.language },
-  url: `${conf.url}`,
+  url: `${conf.url}${conf.url.includes('?') ? '&' : '?'}r=${Math.random()}`,
 }));
 
 const request = async (promise, noParse) => {

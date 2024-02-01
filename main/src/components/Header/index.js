@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import { Container } from '@mui/material';
+import { Button, Container, IconButton } from '@mui/material';
 import HelpIcon from '../Icons/Help';
 import Drawer from '../Drawer';
 import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
 import { useUserStore } from '@src/store/useUserStore';
+import LogoIcon from '../Icons/Logo';
 import styles from './page.module.css';
 
 const Header = () => {
@@ -13,17 +13,24 @@ const Header = () => {
     const isDarkTheme = theme === 'dark';
 
     return (
-        <Container>
-            <div className={styles.header}>
-                <Link href="/">
-                    NAVIFIT
-                </Link>
-                <div className={styles.iconsGroup}>
-                    <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
-                    <Drawer isDarkTheme={isDarkTheme} />
+        <header className={styles.headerContainer}>
+            <Container>
+                <div className={styles.header}>
+                    <Button href="/" onClick={() => window?.location?.reload()}>
+                        <LogoIcon />
+                    </Button>
+                    <div className={styles.iconsGroup}>
+                        <IconButton>
+                            <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                        </IconButton>
+                        <nav>
+                            <Drawer isDarkTheme={isDarkTheme} />
+                        </nav>
+                    </div>
                 </div>
-            </div>
-        </Container>
+            </Container>
+        </header>
+
     )
 };
 

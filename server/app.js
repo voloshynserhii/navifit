@@ -14,8 +14,7 @@ if (!config.server.port || !config.server.env) {
 }
 
 const routes = require('./routes')
-const Session = require('./util/Session')
-
+// const Session = require('./util/Session')
 /**
  * Init Express
  */
@@ -134,7 +133,7 @@ app.use(morgan('dev'))
 if (config.server.env === 'development') {
   app.use(
     cors({
-      origin: ['http://localhost:8000', 'http://localhost:8001'],
+      origin: ['http://localhost:3000'],
       optionsSuccessStatus: 200,
       credentials: true,
     })
@@ -144,7 +143,7 @@ if (config.server.env === 'development') {
 /**
  * Init session
  */
-app.use(Session.init())
+// app.use(Session.init())
 
 /**
  * Routes

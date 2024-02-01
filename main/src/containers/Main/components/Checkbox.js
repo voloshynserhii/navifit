@@ -1,25 +1,32 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Checkbox } from '@mui/material';
-import Checked from '../../../components/Icons/Checked'
+import CheckboxIcon from '../../../components/Icons/Checkbox'
+import { iconDarkColor } from '../../../app/utils/consts';
 
-const CustomCheckbox = () => {
-    const [isChecked, setIsChecked] = useState(true);
+const CustomCheckbox = ({ checked = false, onGetChecked, isDarkTheme }) => {
+    const [isChecked, setIsChecked] = useState(checked);
+
+    useEffect(() => {
+        if (checked !== isChecked) setIsChecked(checked)
+    }, [checked, isChecked])
 
     const checkboxHandler = () => {
         setIsChecked(state => !state)
     }
 
     return (
-        <div onClick={checkboxHandler}>
+        <div style={{ height: 25 }} onClick={checkboxHandler}>
             <label>
-                {isChecked ? <Checked /> : <>[  ]</>}
+                <CheckboxIcon fillColor={isDarkTheme ? iconDarkColor : 'rgba(var(--greyText-rgb))'} checked={isChecked} />
                 <Checkbox
                     checked={isChecked}
                     sx={{ opacity: '0', transform: 'translateY(-30px)' }}
+                    onChange={(e) => onGetChecked(e.target.checked)}
                 />
             </label>
         </div>
     );
 };
+
 export default CustomCheckbox;

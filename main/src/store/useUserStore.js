@@ -1,4 +1,4 @@
 export const useUserStore = () => ({
-    theme: 'dark',
+    theme: 'light',
     user: null,
   })

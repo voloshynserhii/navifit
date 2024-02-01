@@ -8,7 +8,7 @@ const options = { withCredentials: true };
 axios.interceptors.request.use(conf => ({
   ...conf,
   //   headers: { 'Accept-Language': i18n.language },
-  url: `${conf.url}${conf.url.includes('?') ? '&' : '?'}r=${Math.random()}`,
+  url: `${conf.url}`,
 }));
 
 const request = async (promise, noParse) => {

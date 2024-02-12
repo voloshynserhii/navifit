@@ -1,20 +1,11 @@
 'use client';
 // Adapted from https://github.com/garronej/tss-react/blob/main/src/next/appDir.tsx
-import { FunctionComponent, ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
 import createCache from '@emotion/cache';
 import { CacheProvider as DefaultCacheProvider } from '@emotion/react';
-import type { EmotionCache, Options as OptionsOfCreateCache } from '@emotion/cache';
 
-type Props = {
-  /** This is the options passed to createCache() from 'import createCache from "@emotion/cache"' */
-  options: Omit<OptionsOfCreateCache, 'insertionPoint'>;
-  /** By default <CacheProvider /> from 'import { CacheProvider } from "@emotion/react"' */
-  CacheProvider?: (props: { value: EmotionCache; children: ReactNode }) => JSX.Element | null;
-  children: ReactNode;
-};
-
-const EmotionCacheProvider: FunctionComponent<Props> = ({
+const EmotionCacheProvider = ({
   options,
   CacheProvider = DefaultCacheProvider,
   children,
@@ -23,7 +14,7 @@ const EmotionCacheProvider: FunctionComponent<Props> = ({
     const cache = createCache(options);
     cache.compat = true;
     const prevInsert = cache.insert;
-    let inserted: { name: string; isGlobal: boolean }[] = [];
+    let inserted = [];
     cache.insert = (...args) => {
       const [selector, serialized] = args;
       if (cache.inserted[serialized.name] === undefined) {
@@ -50,10 +41,7 @@ const EmotionCacheProvider: FunctionComponent<Props> = ({
     let styles = '';
     let dataEmotionAttribute = registry.cache.key;
 
-    const globals: {
-      name: string;
-      style: string;
-    }[] = [];
+    const globals = [];
 
     inserted.forEach(({ name, isGlobal }) => {
       const style = registry.cache.inserted[name];

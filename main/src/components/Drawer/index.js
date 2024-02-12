@@ -3,7 +3,7 @@ import { Accordion, AccordionSummary, AccordionDetails, Box, IconButton, List, L
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '../Icons/Menu';
-import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
+import { iconDarkColor, iconLightColor } from '../../utils/consts';
 
 const CustomAccordion = styled((props) => (
     <Accordion disableGutters elevation={0} square {...props} />

@@ -3,12 +3,16 @@
 import { Button, Container, IconButton } from '@mui/material';
 import HelpIcon from '../Icons/Help';
 import Drawer from '../Drawer';
-import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
+import { iconDarkColor, iconLightColor } from '../../utils/consts';
 import { useUserStore } from '@src/store/useUserStore';
+import { useAppStore } from '@src/store';
+import { useEventSwitchDarkMode } from '../../hooks';
 import LogoIcon from '../Icons/Logo';
 import styles from './page.module.css';
 
 const Header = () => {
+    const onSwitchDarkMode = useEventSwitchDarkMode();
+    const [state] = useAppStore();
     const { theme } = useUserStore();
     const isDarkTheme = theme === 'dark';
 
@@ -20,6 +24,7 @@ const Header = () => {
                         <LogoIcon />
                     </Button>
                     <div className={styles.iconsGroup}>
+                        <span onClick={onSwitchDarkMode}>{state.darkMode ? 'dark' : 'light'}</span>
                         <IconButton>
                             <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
                         </IconButton>

@@ -5,7 +5,7 @@ import { Container, IconButton, Typography } from '@mui/material';
 import FacebookIcon from '../Icons/Facebook';
 import InstagramIcon from '../Icons/Instagram';
 import YoutubeIcon from '../Icons/Youtube';
-import { iconDarkColor, iconLightColor } from '../../app/utils/consts';
+import { iconDarkColor, iconLightColor } from '../../utils/consts';
 import { useUserStore } from '@src/store/useUserStore';
 
 import styles from './page.module.css'

@@ -1,6 +1,6 @@
 import styles from '../page.module.css'
 
-const Order = () => {
+const Subscriptions = () => {
 
   return (
     <main className={styles.main}>
@@ -9,4 +9,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default Subscriptions;

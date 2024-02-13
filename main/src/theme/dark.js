@@ -1,10 +1,9 @@
-import { ThemeOptions } from '@mui/material';
 import { PALETTE_COLORS } from './colors';
 
 /**
  * MUI theme options for "Dark Mode"
  */
-export const DARK_THEME: ThemeOptions = {
+export const DARK_THEME = {
   palette: {
     mode: 'dark',
     // background: {

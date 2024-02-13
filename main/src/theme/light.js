@@ -1,10 +1,9 @@
-import { ThemeOptions } from '@mui/material';
 import { PALETTE_COLORS } from './colors';
 
 /**
  * MUI theme options for "Light Mode"
  */
-export const LIGHT_THEME: ThemeOptions = {
+export const LIGHT_THEME = {
   palette: {
     mode: 'light',
     // background: {

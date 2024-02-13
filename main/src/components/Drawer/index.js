@@ -1,9 +1,33 @@
 import { useState, Fragment } from 'react';
+import { useRouter } from 'next/navigation'
 import { Accordion, AccordionSummary, AccordionDetails, Box, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '../Icons/Menu';
 import { iconDarkColor, iconLightColor } from '../../utils/consts';
+
+const menu = [
+    {
+        title: 'Sklep',
+        link: '/shop'
+    },
+    {
+        title: 'O nas',
+        link: '/about'
+    },
+    {
+        title: 'Skontaktuj się z nami',
+        link: '/contact'
+    },
+    {
+        title: 'Wsparcie',
+        link: '/about'
+    },
+    {
+        title: 'Warunki i zasady',
+        link: '/conditions'
+    },
+];
 
 const CustomAccordion = styled((props) => (
     <Accordion disableGutters elevation={0} square {...props} />
@@ -15,6 +39,7 @@ const CustomAccordion = styled((props) => (
 }));
 
 export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
+    const router = useRouter();
     const [state, setState] = useState({
         right: false,
     });
@@ -49,21 +74,21 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                     </AccordionSummary>
                     <AccordionDetails>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => router.push('/account/plan', { scroll: false })}>
                                 <ListItemText primary='Mój plan posiłków' />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => router.push('/account/subscription', { scroll: false })}>
                                 <ListItemText primary='Moja subskrypcja' />
                             </ListItemButton>
                         </ListItem>
                     </AccordionDetails>
                 </CustomAccordion>
-                {['Sklep', 'O nas', 'Skontaktuj się z nami', 'Wsparcie', 'Warunki i zasady'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemText primary={text} />
+                {menu.map(({ title, link }) => (
+                    <ListItem key={title} disablePadding>
+                        <ListItemButton onClick={() => router.push(link, { scroll: false })}>
+                            <ListItemText primary={title} />
                         </ListItemButton>
                     </ListItem>
                 ))}

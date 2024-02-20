@@ -22,20 +22,15 @@ export default function TransitionsModal() {
   const [email, setEmail] = useState('')
 
   const sendEmailHandler = () => {
+    // const data = {
+    //   email,
+    //   userData: answers
+    // }
     
-    router.push('/subscriptions', { scroll: false })
+    // api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {
+      router.push('/subscriptions', { scroll: false });
+    // }).catch(() => router.push('/subscriptions'))
   }
-  
-  // const sendDataHandler = (email) => {
-  //   const data = {
-  //     email,
-  //     userData: answers
-  //   }
-
-  //   api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {
-  //     router.push('/subscriptions', { scroll: false });
-  //   }).catch(() => router.push('/'))
-  // }
 
   return (
     <main>

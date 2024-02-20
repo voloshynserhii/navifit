@@ -4,28 +4,27 @@ import { Box, CircularProgress } from '@mui/material'
 export default function Loader({ onFinishLoad }) {
 
     const [uploadOrDownloadCount,
-        setUploadOrDownloadCount] = useState(10);
+        setUploadOrDownloadCount] = useState(1);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setUploadOrDownloadCount(
-                (beforeValue) => (beforeValue >= 100 ? 0
-                    : beforeValue + 10));
-        }, 800);
+                (beforeValue) => beforeValue + 1);
+        }, 70);
         return () => {
             clearInterval(timer);
         };
     }, []);
     
     useEffect(() => {
-        if (uploadOrDownloadCount === 100) onFinishLoad()
+        if (uploadOrDownloadCount === 110) onFinishLoad()
     }, [uploadOrDownloadCount])
 
     return (
         <div>
             <Box position="relative" display="inline-flex">
                 <CircularProgress variant="determinate"
-                    value={uploadOrDownloadCount} />
+                    value={uploadOrDownloadCount < 101 ? uploadOrDownloadCount : 100} />
                 <Box
                     bottom={0}
                     right={0}
@@ -36,7 +35,7 @@ export default function Loader({ onFinishLoad }) {
                     alignItems="center"
                     position="absolute"
                 >
-                    {`${Math.round(uploadOrDownloadCount)}%`}
+                    {uploadOrDownloadCount < 101 ? `${Math.round(uploadOrDownloadCount)}%` : 100}
                 </Box>
             </Box>
         </div>

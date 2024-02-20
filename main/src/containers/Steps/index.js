@@ -48,6 +48,7 @@ const Steps = ({ onGetBack }) => {
     }
 
     const finishLoadingHandler = () => {
+        setLoading(false)
         router.push('/email', { scroll: false })
         // api.plans.getOptions(process.env.NEXT_PUBLIC_DB_HOST, { data: answers }).then(({ plans = [] }) => {
         //     console.log('Push')

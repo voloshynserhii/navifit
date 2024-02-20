@@ -6,12 +6,14 @@ import Progress from './components/Progress'
 import Button from './components/Button'
 import OptionCard from './components/OptionCard'
 import InputNumber from './components/InputNumber'
+import Loader from './components/Loader'
 import { steps } from './utils'
 
 const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20]
 
 const Steps = ({ onGetBack }) => {
+    const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState({})
 
@@ -21,26 +23,13 @@ const Steps = ({ onGetBack }) => {
         if (step === 2) return onGetBack();
         setStep(state => state - 1);
     }
-    
-  // const sendDataHandler = (email) => {
-  //   const data = {
-  //     email,
-  //     userData: answers
-  //   }
 
-  //   api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {
-  //     router.push('/subscriptions', { scroll: false });
-  //   }).catch(() => router.push('/'))
-  // }
-  
     const stepAheadHandler = () => {
-        console.log(step, totalSteps)
         if (step === totalSteps - 1) {
-            //send data to api for getting plans and then redirect to email 
-            router.push('/email', { scroll: false })
+            setLoading(true)
+        } else {
+            setStep(state => state + 1)
         }
-        
-        if (step < totalSteps) setStep(state => state + 1);
     }
 
     const selectOptionHandler = (val, key) => {
@@ -58,12 +47,22 @@ const Steps = ({ onGetBack }) => {
         }
     }
 
+    const finishLoadingHandler = () => {
+        router.push('/email', { scroll: false })
+        // api.plans.getOptions(process.env.NEXT_PUBLIC_DB_HOST, { data: answers }).then(({ plans = [] }) => {
+        //     console.log('Push')
+        //     router.push('/email', { scroll: false })
+        // }).catch(() => router.push('/'))
+    }
+    
     let btnDisabled = false
-    
+
     if (steps[step - 1].value === 'desiredWeight' && !answers[steps[step - 1].value]) btnDisabled = true
-    
+
     if (steps[step - 1].value === 'dimensions' && (!answers[steps[step - 1].value] || Object.values(answers[steps[step - 1].value]).length !== 3)) btnDisabled = true
 
+    if (loading) return <Loader onFinishLoad={finishLoadingHandler}/>
+    
     return (
         <Container maxWidth='sm'>
 

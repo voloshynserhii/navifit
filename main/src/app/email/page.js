@@ -22,6 +22,7 @@ export default function TransitionsModal() {
   const [email, setEmail] = useState('')
 
   const sendEmailHandler = () => {
+    
     router.push('/subscriptions', { scroll: false })
   }
   

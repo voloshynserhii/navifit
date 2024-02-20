@@ -58,4 +58,7 @@ export default {
   user: {
     sendAnswers: (url, body) => requests.post({ url: `${url}/api/user/answer`, body }),
   },
+  plans: {
+    getOptions: (url, body) => requests.post({ url: `${url}/api/plans`, body }),
+  },
 };

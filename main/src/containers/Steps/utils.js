@@ -460,9 +460,33 @@ const steps = [
     },
     {
         title: 'Jaka jest Twoja pożądana waga?',
+        value: 'desiredWeight',
+        min: 30,
+        max: 200
     },
     {
         title: 'Sprawdźmy wymiary twojego ciała',
+        value: 'dimensions',
+        inputTypes: [
+            {
+                title: 'Wiek',
+                value: 'age',
+                min: 10,
+                max: 100
+            },
+            {
+                title: 'Wysokość',
+                value: 'height',
+                min: 100,
+                max: 230
+            },
+            {
+                title: 'Aktualna waga',
+                value: 'weight',
+                min: 30,
+                max: 300
+            },
+        ]
     },
     {
         title: '',

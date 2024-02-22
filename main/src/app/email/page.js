@@ -4,13 +4,14 @@ import { useRouter } from 'next/navigation'
 import { Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material'
 import api from '../../utils/api'
 import Button from '../../containers/Steps/components/Button'
+import { useAppStore } from '../../store';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
+  width: { xs: '95%', md: '70%', lg: '50%' },
   borderRadius: '1rem',
   bgcolor: 'rgba(var(--background-rgb))',
   boxShadow: 24,
@@ -19,17 +20,23 @@ const style = {
 
 export default function TransitionsModal() {
   const router = useRouter()
+  const [state, dispatch] = useAppStore();
   const [email, setEmail] = useState('')
 
   const sendEmailHandler = () => {
-    // const data = {
-    //   email,
-    //   userData: answers
-    // }
+    const data = {
+      email,
+      userData: state.userData
+    }
     
-    // api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {
+    dispatch({
+      type: 'USER_DATA',
+      payload: { email, ...state.userData },
+    });
+
+    api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {
       router.push('/subscriptions', { scroll: false });
-    // }).catch(() => router.push('/subscriptions'))
+    }).catch(() => router.push('/subscriptions'))
   }
 
   return (

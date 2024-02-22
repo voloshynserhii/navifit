@@ -9,12 +9,18 @@ import { localStorageSet } from '../utils/localStorage';
  * @param {*} [action.payload] - optional data object or the function to get data object
  */
 const AppReducer = (state, action) => {
-  // console.log('AppReducer() - action:', action);
+  console.log('AppReducer() - action:', action);
   switch (action.type || action.action) {
     case 'CURRENT_USER':
       return {
         ...state,
         currentUser: action?.currentUser || action?.payload,
+        isAuthenticated: true,
+      };
+    case 'USER_DATA':
+      return {
+        ...state,
+        userData: action?.userData || action?.payload,
       };
     case 'SIGN_UP':
     case 'LOG_IN':

@@ -488,9 +488,6 @@ const steps = [
             },
         ]
     },
-    {
-        title: '',
-    }
 ]
 
 export { steps }

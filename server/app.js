@@ -5,6 +5,12 @@ const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const config = require('./config')
 
+// const XLSX = require('xlsx')
+// const workbook = XLSX.readFile('assets/plans.xlsx')
+// const sheet_name_list = workbook.SheetNames
+// const output = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
+// console.log(output)
+
 /**
  * Check config
  */

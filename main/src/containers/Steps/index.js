@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Container, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import api from '../../utils/api'
 import Progress from './components/Progress'
 import Button from './components/Button'
 import OptionCard from './components/OptionCard'
 import InputNumber from './components/InputNumber'
 import Loader from './components/Loader'
+import { useAppStore } from '../../store';
 import { steps } from './utils'
 
 const totalSteps = steps.length
@@ -16,6 +16,7 @@ const Steps = ({ onGetBack }) => {
     const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState({})
+    const [, dispatch] = useAppStore();
 
     const router = useRouter()
 
@@ -25,7 +26,7 @@ const Steps = ({ onGetBack }) => {
     }
 
     const stepAheadHandler = () => {
-        if (step === totalSteps - 1) {
+        if (step === totalSteps) {
             setLoading(true)
         } else {
             setStep(state => state + 1)
@@ -49,30 +50,37 @@ const Steps = ({ onGetBack }) => {
 
     const finishLoadingHandler = () => {
         setLoading(false)
+
+        dispatch({
+            type: 'USER_DATA',
+            payload: answers,
+        });
+
         router.push('/email', { scroll: false })
+
         // api.plans.getOptions(process.env.NEXT_PUBLIC_DB_HOST, { data: answers }).then(({ plans = [] }) => {
         //     console.log('Push')
         //     router.push('/email', { scroll: false })
         // }).catch(() => router.push('/'))
     }
-    
+
     let btnDisabled = false
 
     if (steps[step - 1].value === 'desiredWeight' && !answers[steps[step - 1].value]) btnDisabled = true
 
     if (steps[step - 1].value === 'dimensions' && (!answers[steps[step - 1].value] || Object.values(answers[steps[step - 1].value]).length !== 3)) btnDisabled = true
 
-    if (loading) return <Loader onFinishLoad={finishLoadingHandler}/>
-    
+    if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
+
     return (
         <Container maxWidth='sm'>
 
             <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Button title='Powrot' onClick={stepBackHandler} />
-                <Button title={`${step} / ${totalSteps}`} noIcon />
+                <Button title={`${step} / ${totalSteps + 1}`} noIcon />
             </Stack>
 
-            <Progress progress={(step / totalSteps) * 100} />
+            <Progress progress={(step / totalSteps + 1) * 100} />
 
             <Typography variant="h2" sx={{ marginBottom: 1, textAlign: 'center' }}>
                 {steps[step - 1]?.title}

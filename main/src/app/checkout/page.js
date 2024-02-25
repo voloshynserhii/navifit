@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Backdrop, Box, Fade, Typography, Button, Modal } from '@mui/material'
 import { useAppStore } from '../../store'
@@ -20,6 +20,10 @@ const Checkout = () => {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
+  
+  useEffect(() => {
+    if (!Object.keys(state.userData).length || !state.userData) router.push('/');
+  }, [state.userData])
   
   const paymentHandler = () => {
     dispatch({

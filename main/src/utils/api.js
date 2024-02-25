@@ -10,7 +10,7 @@ axios.interceptors.request.use(conf => ({
 }));
 
 const request = async (promise, noParse) => {
-  await promise.then()
+  return await promise.then()
     .then(res => {
       const { error } = res.data || {};
 

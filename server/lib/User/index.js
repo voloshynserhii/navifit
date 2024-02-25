@@ -1,4 +1,4 @@
 module.exports = {
-    Answer: require('./CreateDraft'),
-    GetDraft: require('./GetDraft'),
-  }
+  CreateDraft: require('./CreateDraft'),
+  GetDraft: require('./GetDraft'),
+}

@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material'
+import { Alert,Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material'
 import api from '../../utils/api'
 import Button from '../../containers/Steps/components/Button'
 import { useAppStore } from '../../store';
@@ -21,31 +21,40 @@ const style = {
 export default function TransitionsModal() {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState()
+
+  useEffect(() => {
+    if (!Object.keys(state.userData).length || !state.userData) router.push('/');
+  }, [state.userData])
 
   const sendEmailHandler = () => {
     const data = {
       email,
       userData: state.userData
     }
-    
-    dispatch({
-      type: 'USER_DATA',
-      payload: { email, ...state.userData },
-    });
 
-    api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(() => {
-      router.push('/subscriptions', { scroll: false });
+    api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(({ user, message }) => {
+      if (!user && message) {
+        setError(message)
+      } else {
+        dispatch({
+          type: 'USER_DATA',
+          payload: user,
+        });
+        router.push('/subscriptions', { scroll: false });
+      }
     }).catch(() => router.push('/subscriptions'))
   }
 
   return (
     <main>
+      {error && <Alert sx={{ zIndex: 1301 }} variant="filled" severity="error">{error}</Alert>}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open
-        onClose={() => router.push('/')}
+        // onClose={() => router.push('/')}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{

@@ -8,7 +8,7 @@ const router = express.Router()
 /**
 * Module User
 */
-router.post('/api/user/answer', User.Answer)
+router.post('/api/user/answer', User.CreateDraft)
 router.get('/api/user/draft', User.GetDraft)
 
 /**

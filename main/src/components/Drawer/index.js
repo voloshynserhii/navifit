@@ -1,8 +1,9 @@
 import { useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation'
-import { Accordion, AccordionSummary, AccordionDetails, Box, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
 import { iconDarkColor, iconLightColor } from '../../utils/consts';
 
@@ -39,6 +40,8 @@ const CustomAccordion = styled((props) => (
 }));
 
 export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
+    const [globalState, dispatch] = useAppStore();
+    const { isAuthenticated } = globalState;
     const router = useRouter();
     const [state, setState] = useState({
         right: false,
@@ -65,25 +68,33 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
         >
             <List>
                 <CustomAccordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1-content"
-                        id="panel1-header"
-                    >
-                        Moje Konto
-                    </AccordionSummary>
-                    <AccordionDetails>
+                    {isAuthenticated ? (
+                        <>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                            >
+                                Moje Konto
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => router.push('/account/plan', { scroll: false })}>
+                                        <ListItemText primary='Mój plan posiłków' />
+                                    </ListItemButton>
+                                </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => router.push('/account/subscription', { scroll: false })}>
+                                        <ListItemText primary='Moja subskrypcja' />
+                                    </ListItemButton>
+                                </ListItem>
+                            </AccordionDetails></>) : (
                         <ListItem disablePadding>
-                            <ListItemButton onClick={() => router.push('/account/plan', { scroll: false })}>
-                                <ListItemText primary='Mój plan posiłków' />
+                            <ListItemButton onClick={() => router.push('/signup', { scroll: false })}>
+                                <Button variant='contained' fullWidth >Log In</Button>
                             </ListItemButton>
                         </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton onClick={() => router.push('/account/subscription', { scroll: false })}>
-                                <ListItemText primary='Moja subskrypcja' />
-                            </ListItemButton>
-                        </ListItem>
-                    </AccordionDetails>
+                    )}
                 </CustomAccordion>
                 {menu.map(({ title, link }) => (
                     <ListItem key={title} disablePadding>

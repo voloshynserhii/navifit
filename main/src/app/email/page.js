@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Alert,Backdrop, Box, Fade, Modal, TextField, Typography } from '@mui/material'
+import { Alert,Backdrop, Box, CircularProgress, Fade, Modal, TextField, Typography } from '@mui/material'
 import api from '../../utils/api'
 import Button from '../../containers/Steps/components/Button'
 import { useAppStore } from '../../store';
@@ -22,7 +22,8 @@ export default function TransitionsModal() {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [email, setEmail] = useState('');
-  const [error, setError] = useState()
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!Object.keys(state.userData).length || !state.userData) router.push('/');
@@ -34,21 +35,30 @@ export default function TransitionsModal() {
       userData: state.userData
     }
 
+    setLoading(true)
+    
     api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(({ user, message }) => {
       if (!user && message) {
         setError(message)
       } else {
+        setLoading(false)
+        
         dispatch({
           type: 'USER_DATA',
           payload: user,
-        });
-        router.push('/subscriptions', { scroll: false });
+        })
+        
+        router.push('/subscriptions', { scroll: false })
       }
-    }).catch(() => router.push('/subscriptions'))
+    }).catch(() => {
+      setLoading(false)
+      router.push('/subscriptions')
+    })
   }
 
   return (
     <main>
+      {loading && <CircularProgress color="inherit"  />}
       {error && <Alert sx={{ zIndex: 1301 }} variant="filled" severity="error">{error}</Alert>}
       <Modal
         aria-labelledby="transition-modal-title"

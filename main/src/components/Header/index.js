@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Container, IconButton } from '@mui/material';
+import { Button, Container, IconButton, Switch } from '@mui/material';
 import HelpIcon from '../Icons/Help';
 import Drawer from '../Drawer';
 import { iconDarkColor, iconLightColor } from '../../utils/consts';
@@ -24,7 +24,11 @@ const Header = () => {
                         <LogoIcon />
                     </Button>
                     <div className={styles.iconsGroup}>
-                        <span onClick={onSwitchDarkMode}>{state.darkMode ? 'dark' : 'light'}</span>
+                        <Switch
+                            checked={state.darkMode}
+                            onChange={onSwitchDarkMode}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
                         <IconButton>
                             <HelpIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
                         </IconButton>

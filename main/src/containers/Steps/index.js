@@ -6,6 +6,7 @@ import Button from './components/Button'
 import OptionCard from './components/OptionCard'
 import InputNumber from './components/InputNumber'
 import Loader from './components/Loader'
+import DatePicker from '../../components/DatePicker'
 import { useAppStore } from '../../store';
 import { steps } from './utils'
 
@@ -49,19 +50,12 @@ const Steps = ({ onGetBack }) => {
     }
 
     const finishLoadingHandler = () => {
-        setLoading(false)
-
         dispatch({
             type: 'USER_DATA',
             payload: answers,
         });
 
         router.push('/email', { scroll: false })
-
-        // api.plans.getOptions(process.env.NEXT_PUBLIC_DB_HOST, { data: answers }).then(({ plans = [] }) => {
-        //     console.log('Push')
-        //     router.push('/email', { scroll: false })
-        // }).catch(() => router.push('/'))
     }
 
     let btnDisabled = false
@@ -124,6 +118,12 @@ const Steps = ({ onGetBack }) => {
                             />
                         </Stack>
                     ))}
+                </Stack>
+            )}
+
+            {steps[step - 1]?.value && steps[step - 1].value === 'desiredDate' && (
+                <Stack>
+                    <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
                 </Stack>
             )}
 

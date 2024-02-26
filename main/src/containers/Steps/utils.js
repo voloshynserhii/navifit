@@ -488,6 +488,10 @@ const steps = [
             },
         ]
     },
+    {
+        title: 'Kiedy?',
+        value: 'desiredDate',
+    },
 ]
 
 export { steps }

@@ -5,11 +5,47 @@ const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const config = require('./config')
 
+//create recipes from file
+// const db = require('./db')
 // const XLSX = require('xlsx')
 // const workbook = XLSX.readFile('assets/plans.xlsx')
 // const sheet_name_list = workbook.SheetNames
 // const output = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
-// console.log(output)
+
+// for (const recipe of output) {
+//   const ingredients = []
+//   const ingredientsNames = recipe['Essential ingredients Name'].split('\n')
+//   const ingredientsWeight = recipe['Essential ingredients Mass'].split('\n')
+  
+//   ingredientsNames.forEach((ingredient, index) => {
+//     ingredients.push({ [ingredient]: ingredientsWeight[index] })
+//   })
+
+//   let essentialIngredientIds = recipe['Ingredients ID merged']?.toString()
+
+//   if (essentialIngredientIds?.search(',') < 0) {
+//     essentialIngredientIds = essentialIngredientIds.split('.')
+//   } else {
+//     essentialIngredientIds = essentialIngredientIds?.split(',')
+//   }
+//   const data = {
+//     name: recipe['Name'],
+//     calories: recipe['Calories (cal)'],
+//     cookingTime: recipe['CookingTime (min)'],
+//     proteins: recipe['Proteins'],
+//     carbs: recipe['Carbs'],
+//     fats: recipe['Fats'],
+//     ingredients,
+//     essentialIngredientIds,
+//     description: recipe['Cooking'],
+//     recipeId: recipe['Recipe ID'],
+//     cookingTimeId: recipe['Cooking Time ID'],
+//     essentialIngredientIds,
+//   }
+
+//   const newRecipe = new db.recipe(data)
+//   newRecipe.save().then(() => console.log('Recipe saved', newRecipe.name)).catch(err => console.log('Error saving', newRecipe.name))
+// }
 
 /**
  * Check config

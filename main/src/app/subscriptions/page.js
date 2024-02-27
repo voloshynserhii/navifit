@@ -21,7 +21,7 @@ const Subscriptions = () => {
       Twoje podsumowanie
       <h3>YOUR BMI: {user.userData?.BMI}</h3>
       <h5>YOUR BMR: {user.userData?.BMR} kCal</h5>
-      <h5>Average daily energy needed: {user.userData?.personalDailyKalNeeded} kCal</h5>
+      <h5>Average daily energy needed: {user.userData?.personalDailyKCalNeeded} kCal</h5>
       water,
       kCal
     </main>

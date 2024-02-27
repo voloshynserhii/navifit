@@ -74,5 +74,6 @@ connectDb(config.db.uri)
 module.exports = {
   db,
   user: require('./models/User.model'),
+  recipe: require('./models/Recipe.model'),
   toObjectId: (id) => new mongoose.Types.ObjectId(id),
 }

@@ -23,7 +23,6 @@ const UserSchema = new Schema(
     isDraftUser: { type: Boolean, default: true },
 
     deleted: { type: Boolean, default: false },
-    extra: { type: Object },
   },
   { timestamps: true }
 )

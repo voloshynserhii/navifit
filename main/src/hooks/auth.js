@@ -11,7 +11,7 @@ export function useIsAuthenticated() {
   let result = state.isAuthenticated;
 
   // TODO: AUTH: replace next line with access token verification
-  result = Boolean(sessionStorageGet('access_token', ''));
+  // result = Boolean(sessionStorageGet('access_token', ''));
 
   return result;
 }

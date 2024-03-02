@@ -27,12 +27,14 @@ const AppReducer = (state, action) => {
         ...state,
         isAuthenticated: true,
       };
-    case 'LOG_OUT':
+    case 'LOG_OUT': {
+      localStorageSet('loggedUser', null);
       return {
         ...state,
         isAuthenticated: false,
         currentUser: undefined, // Also reset previous user data
       };
+    }
     case 'DARK_MODE': {
       const darkMode = action?.darkMode ?? action?.payload;
       localStorageSet('darkMode', darkMode);

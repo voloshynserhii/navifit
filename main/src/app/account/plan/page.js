@@ -1,5 +1,6 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardMedia, CardActionArea, Stack, Tabs, Tab, Typography } from '@mui/material';
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
@@ -12,10 +13,13 @@ function a11yProps(index) {
 }
 
 const MyPlan = () => {
+  const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [value, setValue] = useState(0);
   const [plan, setPlan] = useState([]);
 
+  const { isAuthenticated } = state
+  
   const getPlan = async () => {
     const { month } = await api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, {})
     
@@ -26,6 +30,10 @@ const MyPlan = () => {
     getPlan()
   }, []);
 
+  useEffect(() => {
+    if (!isAuthenticated) router.push('/')
+  }, [isAuthenticated])
+  
   const handleChange = (_, newValue) => {
     setValue(newValue);
   };

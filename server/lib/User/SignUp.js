@@ -37,9 +37,12 @@ module.exports = async (req, res) => {
                     })
                 }
                 
+                user.salt = null
+                user.hashedPassword = null
+                
                 req.user = user
                 
-                return res.json({})
+                return res.json({ user })
             } 
             
             if (type === 'SIGN_UP') {
@@ -48,7 +51,12 @@ module.exports = async (req, res) => {
                 
                 req.user = user
                 
-                return user.save().then(() => res.json({}))
+                return user.save().then(() => {
+                    user.salt = null
+                    user.hashedPassword = null
+                    
+                    res.json({ user })
+                })
             }
         })
         .catch((err) => res.status(400))

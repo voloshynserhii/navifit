@@ -69,7 +69,7 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
             <List>
                 <CustomAccordion>
                     {isAuthenticated ? (
-                        <>
+                        <div>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1-content"
@@ -88,7 +88,14 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                                         <ListItemText primary='Moja subskrypcja' />
                                     </ListItemButton>
                                 </ListItem>
-                            </AccordionDetails></>) : (
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => {
+                                        dispatch({ type: 'LOG_OUT' })
+                                    }}>
+                                        <ListItemText primary='Wyloguj' />
+                                    </ListItemButton>
+                                </ListItem>
+                            </AccordionDetails></div>) : (
                         <ListItem disablePadding>
                             <ListItemButton onClick={() => router.push('/signup', { scroll: false })}>
                                 <Button variant='contained' fullWidth >Log In</Button>

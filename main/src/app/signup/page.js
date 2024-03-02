@@ -6,6 +6,8 @@ import { Alert, Box, Button, FormControl, FormHelperText, IconButton, InputLabel
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import api from '../../utils/api'
+import { localStorageSet } from '../../utils/localStorage';
+
 
 export default function InputAdornments() {
   const router = useRouter()
@@ -25,10 +27,11 @@ export default function InputAdornments() {
   const handleAuthorize = () => {
     const type = currentUser.email ? 'SIGN_UP' : 'LOG_IN'
 
-    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ message }) => {
+    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else {
+        localStorageSet('loggedUser', JSON.stringify(user))
         dispatch({ type })
         router.push('/account/plan')
       }

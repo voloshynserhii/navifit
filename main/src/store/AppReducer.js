@@ -43,6 +43,16 @@ const AppReducer = (state, action) => {
         darkMode,
       };
     }
+    case 'ADMIN_MODE_ON':
+      return {
+        ...state,
+        isAdmin: true,
+      };
+    case 'ADMIN_MODE_OFF':
+      return {
+        ...state,
+        isAdmin: false,
+      };
     default:
       return state;
   }

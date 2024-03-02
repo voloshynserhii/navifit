@@ -6,6 +6,7 @@ import { localStorageGet } from '../utils/localStorage';
 import { IS_SERVER } from '../utils/environment';
 
 const INITIAL_APP_STATE = {
+  isAdmin: false,
   darkMode: false, // Overridden by useMediaQuery('(prefers-color-scheme: dark)') in AppStore
   isAuthenticated: false, // Overridden in AppStore by checking auth token
   userData: {}

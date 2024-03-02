@@ -18,7 +18,7 @@ const style = {
   p: 4,
 }
 
-export default function TransitionsModal() {
+export default function EmailPage() {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [email, setEmail] = useState('');

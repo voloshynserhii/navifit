@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardMedia, CardActionArea, Stack, Tabs, Tab, Typography } from '@mui/material';
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
@@ -16,10 +16,14 @@ const MyPlan = () => {
   const [value, setValue] = useState(0);
   const [plan, setPlan] = useState([]);
 
+  const getPlan = async () => {
+    const { month } = await api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, {})
+    
+    if (month) setPlan(month)
+  }
+
   useEffect(() => {
-    api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, {}).then(({ month }) => {
-      setPlan(month)
-    })
+    getPlan()
   }, []);
 
   const handleChange = (_, newValue) => {

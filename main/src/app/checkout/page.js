@@ -31,7 +31,7 @@ const Checkout = () => {
       payload: state.userData,
     });
     
-    router.push('/account/plan', { scroll: false });
+    router.push('/signup', { scroll: false });
   }
   
   return (

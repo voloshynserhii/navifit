@@ -32,22 +32,18 @@ const options = { collectionName: 'user' }
 /**
  * Virtuals
  */
-// UserSchema.virtual('password').set(function(password) {
-//   this.previousHashedPasswords = this.previousHashedPasswords ?? []
-//   this.previousHashedPasswords.push({
-//     hashedPassword: this.hashedPassword,
-//     salt: this.salt,
-//   })
-//   this.previousHashedPasswords = this.previousHashedPasswords.slice(-4)
+UserSchema.virtual('password').set(function(password) {
+  this.previousHashedPasswords = this.previousHashedPasswords ?? []
+  this.previousHashedPasswords.push({
+    hashedPassword: this.hashedPassword,
+    salt: this.salt,
+  })
+  this.previousHashedPasswords = this.previousHashedPasswords.slice(-4)
 
-//   // this._password = password
-//   this.salt = this.makeSalt()
-//   this.hashedPassword = this.encryptPassword(password)
-//   this.lastPasswordChange = new Date()
-// })
-// .get(function () {
-//   return this._password
-// })
+  this.salt = this.makeSalt()
+  this.hashedPassword = this.encryptPassword(password)
+  this.lastPasswordChange = new Date()
+})
 
 /**
  * Methods
@@ -60,9 +56,9 @@ UserSchema.methods = {
    * @return {Boolean}
    * @api public
    */
-  // authenticate: function(plainText) {
-  //   return this.encryptPassword(plainText) === this.hashedPassword
-  // },
+  authenticate: function(plainText) {
+    return this.encryptPassword(plainText) === this.hashedPassword
+  },
 
   /**
    * Make salt
@@ -70,9 +66,9 @@ UserSchema.methods = {
    * @return {String}
    * @api public
    */
-  // makeSalt: function() {
-  //   return crypto.randomBytes(16).toString('base64')
-  // },
+  makeSalt: function() {
+    return crypto.randomBytes(16).toString('base64')
+  },
 
   /**
    * Encrypt password
@@ -82,17 +78,17 @@ UserSchema.methods = {
    * @return {String}
    * @api public
    */
-  // encryptPassword: function(password, salt = null) {
-  //   if (!password || !this.salt) {
-  //     return ''
-  //   }
+  encryptPassword: function(password, salt = null) {
+    if (!password || !this.salt) {
+      return ''
+    }
 
-  //   const saltBase64 = Buffer.from(salt ?? this.salt, 'base64')
+    const saltBase64 = Buffer.from(salt ?? this.salt, 'base64')
 
-  //   return crypto
-  //     .pbkdf2Sync(password, saltBase64, 10000, 64, 'sha1')
-  //     .toString('base64')
-  // },
+    return crypto
+      .pbkdf2Sync(password, saltBase64, 10000, 64, 'sha1')
+      .toString('base64')
+  },
 
   /**
    * isPasswordPreviouslyUsed - check if the password was previously used
@@ -101,13 +97,13 @@ UserSchema.methods = {
    * @return {Boolean}
    * @api public
    */
-  // isPasswordPreviouslyUsed: function(password) {
-  //   if (!password) {
-  //     return true
-  //   }
+  isPasswordPreviouslyUsed: function(password) {
+    if (!password) {
+      return true
+    }
 
-  //   return this.previousHashedPasswords.some(({ hashedPassword, salt }) => this.encryptPassword(password, salt) === hashedPassword)
-  // },
+    return this.previousHashedPasswords.some(({ hashedPassword, salt }) => this.encryptPassword(password, salt) === hashedPassword)
+  },
 }
 
 module.exports = mongoose.model('User', UserSchema)

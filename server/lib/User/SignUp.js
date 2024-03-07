@@ -15,11 +15,11 @@ module.exports = async (req, res) => {
         })
     }
 
-    if (!Functions.isNull(isAdmin) || !Functions.isBoolean(isAdmin)) {
-        return res.json({
-            message: 'Something went wrong!'
-        })
-    }
+    // if (!Functions.isNull(isAdmin) || !Functions.isBoolean(isAdmin)) {
+    //     return res.json({
+    //         message: 'Something went wrong!'
+    //     })
+    // }
     // const error = Functions.checkPassword(password)
 
     // if (error) {

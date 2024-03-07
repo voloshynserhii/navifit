@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardMedia, CardActionArea, Stack, Tabs, Tab, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, CardActionArea, Divider, Stack, Tabs, Tab, Typography } from '@mui/material';
+import Details from './components/Details'
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
 
@@ -17,12 +18,13 @@ const MyPlan = () => {
   const [state, dispatch] = useAppStore();
   const [value, setValue] = useState(0);
   const [plan, setPlan] = useState([]);
+  const [selectedDish, setSelectedDish] = useState();
 
   const { isAuthenticated } = state
-  
+
   const getPlan = async () => {
     const { month } = await api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, {})
-    
+
     if (month) setPlan(month)
   }
 
@@ -33,15 +35,17 @@ const MyPlan = () => {
   useEffect(() => {
     if (!isAuthenticated) router.push('/')
   }, [isAuthenticated])
-  
+
   const handleChange = (_, newValue) => {
     setValue(newValue);
   };
 
   const week = 'week' + `${value + 1}`
+  const mealTypes = ['breakfast', 'branch', 'lunch', 'dinner']
 
   return (
     <main>
+      <Details selectedDish={selectedDish} />
       <Stack alignItems="center">
         <Typography variant="h3">My Plan</Typography>
         <Tabs
@@ -62,80 +66,32 @@ const MyPlan = () => {
             <Typography variant="h3" component="div">
               Day {i + 1}
             </Typography>
-            <Stack direction='row' gap={2} sx={{ width: '80vw' }}>
-              <Card sx={{ width: '25%' }}>
-                <CardActionArea>
-                  {/* <CardMedia
-                  component="img"
-                  height="140"
-                  image="/static/images/cards/contemplative-reptile.jpg"
-                  alt="green iguana"
-                /> */}
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {day.breakfast.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {day.breakfast.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              <Card sx={{ width: '25%' }}>
-                <CardActionArea>
-                  {/* <CardMedia
-                  component="img"
-                  height="140"
-                  image="/static/images/cards/contemplative-reptile.jpg"
-                  alt="green iguana"
-                /> */}
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {day.branch.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {day.branch.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              <Card sx={{ width: '25%' }}>
-                <CardActionArea>
-                  {/* <CardMedia
-                  component="img"
-                  height="140"
-                  image="/static/images/cards/contemplative-reptile.jpg"
-                  alt="green iguana"
-                /> */}
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {day.lunch.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {day.lunch.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              <Card sx={{ width: '25%' }}>
-                <CardActionArea>
-                  {/* <CardMedia
-                  component="img"
-                  height="140"
-                  image="/static/images/cards/contemplative-reptile.jpg"
-                  alt="green iguana"
-                /> */}
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {day.dinner.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {day.dinner.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+            <Stack direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ width: '80vw' }}>
+              {mealTypes.map(mealType => (
+                <Box key={mealType + i} sx={{ width: { xs: '100%', md: '25%' }, height: '100%' }} >
+                  <Card sx={{ width: '100%', height: '100%' }} onClick={() => setSelectedDish(day[mealType])}>
+                    <CardActionArea sx={{ height: '100%' }}>
+                      <CardMedia
+                        component="img"
+                        // height="140"
+                        image="https://picsum.photos/300/300"
+                        alt=""
+                      />
+                      <CardContent sx={{ position: 'absolute', bottom: 0, width: '100%' }} >
+                        <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'center', color: 'white' }}>
+                          {day[mealType].name}
+                        </Typography>
+
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                  <Typography sx={{ textAlign: 'center', marginTop: 3 }} variant="h4" color="text.secondary">
+                    {mealType}
+                  </Typography>
+                </Box>
+              ))}
             </Stack>
+            <Divider />
           </Stack>
         ))}
       </Stack >

@@ -7,7 +7,7 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async (req, res) => {
-    const { email, password, type = 'LOG_IN' } = req.body
+    const { email, password, type = 'LOG_IN', isAdmin = false } = req.body
 
     if (!Functions.isString(email) || !Functions.isEmail(email)) {
         return res.json({
@@ -15,6 +15,11 @@ module.exports = async (req, res) => {
         })
     }
 
+    if (!Functions.isNull(isAdmin) || !Functions.isBoolean(isAdmin)) {
+        return res.json({
+            message: 'Something went wrong!'
+        })
+    }
     // const error = Functions.checkPassword(password)
 
     // if (error) {
@@ -22,12 +27,16 @@ module.exports = async (req, res) => {
     // }
 
     db.user
-        .findOne({ email })
+        .findOne({ email, isAdmin })
         .then(async (user) => {
             if (!user) {
                 return res.json({
                     message: 'User not found!'
                 })
+            }
+            
+            if (isAdmin) {
+                return res.json({ user })
             }
             
             if (type === 'LOG_IN') {

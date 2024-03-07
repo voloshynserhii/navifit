@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import { useAppStore } from '../../store'
-
 import AuthForm from '../../components/AuthForm'
 import api from '../../utils/api'
 import { localStorageSet } from '../../utils/localStorage';

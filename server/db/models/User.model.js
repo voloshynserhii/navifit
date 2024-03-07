@@ -21,6 +21,7 @@ const UserSchema = new Schema(
     },
     lastLogin: Object,
     isDraftUser: { type: Boolean, default: true },
+    isAdmin: { type: Boolean, default: false },
 
     deleted: { type: Boolean, default: false },
   },

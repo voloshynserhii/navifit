@@ -10,9 +10,9 @@ const { countUserData } = require('./helpers')
 module.exports = async (req, res) => {
   const { email, userData = {} } = req.body
 
-  if (Functions.isNull(email) || !Functions.isString(email)) {
+  if (Functions.isNull(email) || !Functions.isEmail(email)) {
     return res.status(400).send({
-      message: 'Email!'
+      message: 'Enter valid email!'
    });
   }
   

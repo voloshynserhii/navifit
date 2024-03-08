@@ -15,19 +15,17 @@ module.exports = async (req, res) => {
         })
     }
 
-    // if (!Functions.isNull(isAdmin) || !Functions.isBoolean(isAdmin)) {
-    //     return res.json({
-    //         message: 'Something went wrong!'
-    //     })
-    // }
     // const error = Functions.checkPassword(password)
 
     // if (error) {
     //     return res.status(100).send({ message: `password: ${error}` })
     // }
 
+    const request = { email }
+    if (isAdmin) request.isAdmin = isAdmin
+    
     db.user
-        .findOne({ email, isAdmin })
+        .findOne(request)
         .then(async (user) => {
             if (!user) {
                 return res.json({

@@ -1,45 +1,103 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { TableVirtuoso } from 'react-virtuoso';
 
-export default function BasicTable({ data = [] }) {
+const columns = [
+  {
+    width: 200,
+    label: 'Name',
+    dataKey: 'name',
+  },
+  {
+    width: 120,
+    label: 'Calories\u00A0(100g)',
+    dataKey: 'calories',
+    numeric: true,
+  },
+  {
+    width: 120,
+    label: 'Fat\u00A0(g)',
+    dataKey: 'fats',
+    numeric: true,
+  },
+  {
+    width: 120,
+    label: 'Carbs\u00A0(g)',
+    dataKey: 'carbs',
+    numeric: true,
+  },
+  {
+    width: 120,
+    label: 'Protein\u00A0(g)',
+    dataKey: 'proteins',
+    numeric: true,
+  },
+  {
+    width: 120,
+    label: 'Time\u00A0(min)',
+    dataKey: 'cookingTime',
+    numeric: true,
+  },
+];
 
+const VirtuosoTableComponents = {
+  Scroller: React.forwardRef((props, ref) => (
+    <TableContainer component={Paper} {...props} ref={ref} />
+  )),
+  Table: (props) => (
+    <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
+  ),
+  TableHead,
+  TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
+  TableBody: React.forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
+};
+
+function fixedHeaderContent() {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-            <TableCell align="right">Time</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fats}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.proteins}</TableCell>
-              <TableCell align="right">{row.cookingTime}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <TableRow>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          variant="head"
+          align={column.numeric || false ? 'right' : 'left'}
+          style={{ width: column.width }}
+          sx={{
+            backgroundColor: 'background.paper',
+          }}
+        >
+          {column.label}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+}
+
+function rowContent(_index, row) {
+  return (
+    <React.Fragment>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          align={column.numeric || false ? 'right' : 'left'}
+        >
+          {row[column.dataKey]}
+        </TableCell>
+      ))}
+    </React.Fragment>
+  );
+}
+
+export default function ReactVirtualizedTable({ data }) {
+  if (!data.length) return <CircularProgress />
+  
+  return (
+    <Paper style={{ height: '70vh', width: '100%' }}>
+      <TableVirtuoso
+        data={data}
+        components={VirtuosoTableComponents}
+        fixedHeaderContent={fixedHeaderContent}
+        itemContent={rowContent}
+      />
+    </Paper>
   );
 }

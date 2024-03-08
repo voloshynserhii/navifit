@@ -5,6 +5,7 @@ import { Button, Stack, Tabs, Tab } from '@mui/material'
 import AuthForm from '../../components/AuthForm'
 import RecipesTable from './components/Recipes'
 import UsersTable from './components/Users'
+import PlansTable from './components/Plans'
 import { useAppStore } from '../../store'
 import api from '../../utils/api'
 
@@ -20,7 +21,7 @@ export default function Admin() {
         const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
         setData(newData)
     }
-    
+
     useEffect(() => {
         dispatch({ type: 'ADMIN_MODE_ON' })
         getUsers()
@@ -52,7 +53,7 @@ export default function Admin() {
             const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
             setData(newData)
         }
-        
+
         if (newValue === 1) {
             const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
             setData(newData)
@@ -70,7 +71,7 @@ export default function Admin() {
 
     return (
         <main>
-            <Stack sx={{ width: '100%', gap: 2, alignItems: 'center', padding: 10 }}>
+            <Stack sx={{ width: '100%', gap: 2, alignItems: 'center', paddingLeft: 5, paddingRight: 5 }}>
                 <Stack direction='row' sx={{ width: '100%', justifyContent: 'end', gap: 5 }}>
                     <Button variant='outlined' onClick={() => { }}>Create New</Button>
                     <Button variant='contained' onClick={() => setIsLoggedIn(false)}>Log Out</Button>
@@ -88,7 +89,8 @@ export default function Admin() {
                     <Tab label="Promocodes" />
                 </Tabs>
                 {value === 0 && <UsersTable data={data} />}
-                {value === 1 && <RecipesTable data={data} />}
+                {value === 1 && <>{data.length} recipes <RecipesTable data={data} /></>}
+                {value === 2 && <PlansTable data={data} />}
             </Stack>
         </main>
     )

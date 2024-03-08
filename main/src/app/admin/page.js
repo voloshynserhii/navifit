@@ -1,9 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button, Tabs, Tab } from '@mui/material'
+import { Button, Stack, Tabs, Tab } from '@mui/material'
 import AuthForm from '../../components/AuthForm'
-import Table from './components/Table'
+import RecipesTable from './components/Recipes'
+import UsersTable from './components/Users'
 import { useAppStore } from '../../store'
 import api from '../../utils/api'
 
@@ -12,9 +13,17 @@ export default function Admin() {
     const [state, dispatch] = useAppStore()
     const [error, setError] = useState()
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [value, setValue] = useState(0);
+    const [data, setData] = useState([])
 
+    const getUsers = async () => {
+        const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+        setData(newData)
+    }
+    
     useEffect(() => {
         dispatch({ type: 'ADMIN_MODE_ON' })
+        getUsers()
     }, [])
 
     const adminOffHandler = () => {
@@ -35,10 +44,19 @@ export default function Admin() {
         // }).catch((err) => console.log(err))
     }
 
-    const [value, setValue] = useState(0);
-
-    const handleChange = (event, newValue) => {
+    const handleChange = async (event, newValue) => {
         setValue(newValue);
+        setData([]);
+
+        if (newValue === 0) {
+            const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            setData(newData)
+        }
+        
+        if (newValue === 1) {
+            const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            setData(newData)
+        }
     };
 
     if (!isLoggedIn) return (
@@ -52,19 +70,26 @@ export default function Admin() {
 
     return (
         <main>
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-            >
-                <Tab label="Users" />
-                <Tab label="Dishes" />
-                <Tab label="Plans" />
-                <Tab label="Promocodes" />
-            </Tabs>
-            {value === 0 && <Table />}
+            <Stack sx={{ width: '100%', gap: 2, alignItems: 'center', padding: 10 }}>
+                <Stack direction='row' sx={{ width: '100%', justifyContent: 'end', gap: 5 }}>
+                    <Button variant='outlined' onClick={() => { }}>Create New</Button>
+                    <Button variant='contained' onClick={() => setIsLoggedIn(false)}>Log Out</Button>
+                </Stack>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
+                >
+                    <Tab label="Users" />
+                    <Tab label="Recipes" />
+                    <Tab label="Plans" />
+                    <Tab label="Promocodes" />
+                </Tabs>
+                {value === 0 && <UsersTable data={data} />}
+                {value === 1 && <RecipesTable data={data} />}
+            </Stack>
         </main>
     )
 }

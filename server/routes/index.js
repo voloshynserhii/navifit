@@ -2,6 +2,7 @@ const express = require('express')
 
 const User = require('../lib/User')
 const Plan = require('../lib/Plan')
+const Admin = require('../lib/Admin')
 
 const router = express.Router()
 
@@ -16,6 +17,12 @@ router.get('/api/user/draft', User.GetDraft)
 * Module Plans
 */
 router.post('/api/plans', Plan.Get)
+
+/**
+* Module Admin
+*/
+router.get('/admin/recipes', Admin.GetRecipes)
+router.get('/admin/users', Admin.GetUsers)
 
 /**
 * If not one router not found, send 404

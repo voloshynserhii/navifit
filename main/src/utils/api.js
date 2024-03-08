@@ -62,4 +62,8 @@ export default {
   plan: {
     getOptions: (url, body) => requests.post({ url: `${url}/api/plans`, body }),
   },
+  admin: {
+    getRecipes: (url, params) => requests.get({ url: `${url}/admin/recipes`, params }),
+    getUsers: (url, params) => requests.get({ url: `${url}/admin/users`, params }),
+  },
 };

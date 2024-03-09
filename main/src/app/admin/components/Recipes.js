@@ -41,9 +41,14 @@ const columns = [
 ];
 
 const VirtuosoTableComponents = {
-  Scroller: forwardRef((props, ref) => (
-    <TableContainer component={Paper} {...props} ref={ref} />
-  )),
+  Scroller: forwardRef(function Scroll(props, ref) {
+    return (
+      <TableContainer component={Paper} {...props} ref={ref} />
+    )
+  }),
+  // Scroller: forwardRef((props, ref) => (
+  //   <TableContainer component={Paper} {...props} ref={ref} />
+  // )),
   Table: (props) => (
     <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
   ),

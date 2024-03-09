@@ -54,7 +54,7 @@ const VirtuosoTableComponents = {
   ),
   TableHead,
   TableRow: (props) => <TableRow {...props} />,
-  TableBody: forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
+  TableBody: forwardRef(function Body(props, ref) {return <TableBody {...props} ref={ref} />}),
 };
 
 function fixedHeaderContent() {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { forwardRef, Fragment } from 'react';
 import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { TableVirtuoso } from 'react-virtuoso';
 
@@ -41,15 +41,15 @@ const columns = [
 ];
 
 const VirtuosoTableComponents = {
-  Scroller: React.forwardRef((props, ref) => (
+  Scroller: forwardRef((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
   )),
   Table: (props) => (
     <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
   ),
   TableHead,
-  TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
-  TableBody: React.forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
+  TableRow: (props) => <TableRow {...props} />,
+  TableBody: forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
 };
 
 function fixedHeaderContent() {
@@ -74,7 +74,7 @@ function fixedHeaderContent() {
 
 function rowContent(_index, row) {
   return (
-    <React.Fragment>
+    <Fragment>
       {columns.map((column) => (
         <TableCell
           key={column.dataKey}
@@ -83,7 +83,7 @@ function rowContent(_index, row) {
           {row[column.dataKey]}
         </TableCell>
       ))}
-    </React.Fragment>
+    </Fragment>
   );
 }
 

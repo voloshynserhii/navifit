@@ -11,14 +11,14 @@ module.exports = async (req, res) => {
   const { email, userData = {} } = req.body
 
   if (Functions.isNull(email) || !Functions.isEmail(email)) {
-    return res.status(400).send({
+    return res.send({
       message: 'Enter valid email!'
    });
   }
   
   if (Functions.isNull(userData) || !Functions.isObject(userData)) {
-    return res.status(400).send({
-      message: 'User Data!'
+    return res.send({
+      message: 'User Data is empty!'
    });
   }
   

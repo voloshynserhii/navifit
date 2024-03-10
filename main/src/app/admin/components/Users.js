@@ -1,6 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 import { IconButton, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function UsersTable({ data = [] }) {
@@ -39,6 +40,11 @@ export default function UsersTable({ data = [] }) {
               <TableCell align="right">{row.userData.dimensions.weight - row.userData.desiredWeight}</TableCell>
               <TableCell align="right">{row.userData.desiredDate}</TableCell>
               <TableCell align="right">
+                <Tooltip title="Edit">
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title="Delete">
                   <IconButton>
                     <DeleteIcon />

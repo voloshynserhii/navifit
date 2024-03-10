@@ -56,7 +56,7 @@ if (!config.server.port || !config.server.env) {
 }
 
 const routes = require('./routes')
-// const Session = require('./util/Session')
+const Session = require('./util/Session')
 /**
  * Init Express
  */
@@ -195,7 +195,7 @@ if (config.server.env === 'production') {
 /**
  * Init session
  */
-// app.use(Session.init())
+app.use(Session.init())
 
 /**
  * Routes

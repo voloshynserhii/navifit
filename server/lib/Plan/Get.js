@@ -8,7 +8,7 @@ const db = require('../../db')
  */
 module.exports = async(req, res) => {
     const { data } = req.body
-    
+
     const breakfasts = await db.recipe.find({ calories: { $gt: 300, $lt: 500 } }).limit(28).lean().exec()
     const branches = await db.recipe.find({ calories: { $gt: 100, $lt: 200 } }).limit(28).lean().exec()
     const lunches = await db.recipe.find({ calories: { $gt: 300, $lt: 500 }, _id: { $nin: breakfasts.map(br => br._id) } }).limit(28).lean().exec()

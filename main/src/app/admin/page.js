@@ -8,6 +8,7 @@ import UsersTable from './components/Users'
 import PlansTable from './components/Plans'
 import { useAppStore } from '../../store'
 import api from '../../utils/api'
+import { localStorageGet, localStorageSet } from '../../utils/localStorage';
 
 export default function Admin() {
     const router = useRouter()
@@ -24,7 +25,13 @@ export default function Admin() {
 
     useEffect(() => {
         dispatch({ type: 'ADMIN_MODE_ON' })
-        getUsers()
+
+        const admin = localStorageGet('adminUser')
+
+        if (admin) {
+            setIsLoggedIn(true)
+            getUsers()
+        }
     }, [])
 
     const adminOffHandler = () => {
@@ -33,16 +40,20 @@ export default function Admin() {
     }
 
     const handleAuthorize = ({ email, password }) => {
-        setIsLoggedIn(true)
-        // api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, isAdmin: true }).then(({ user, message }) => {
-        //     if (message) {
-        //         setError(message)
-        //     } else {
-        //         localStorageSet('adminUser', JSON.stringify(user))
-        //         // dispatch({ type })
-        //         // router.push('/account/plan')
-        //     }
-        // }).catch((err) => console.log(err))
+        api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, isAdmin: true }).then(({ user, message }) => {
+            if (message) {
+                setError(message)
+            } else {
+                localStorageSet('adminUser', JSON.stringify(user))
+                setIsLoggedIn(true)
+                getUsers()
+            }
+        }).catch((err) => console.log(err))
+    }
+    
+    const handleLogOut = () => {
+        setIsLoggedIn(false)
+        localStorageSet('adminUser', null)
     }
 
     const handleChange = async (event, newValue) => {
@@ -59,13 +70,13 @@ export default function Admin() {
             setData(newData)
         }
     };
-
+console.log(data)
     if (!isLoggedIn) return (
         <main>
-            <div style={{ height: 'var(--header-height)' }} />
-            <AuthForm error={error} onSubmit={handleAuthorize} />
-            <Button>Create Admin User</Button>
-            <Button onClick={adminOffHandler}>Admin Mode Off</Button>
+            <Stack sx={{ gap: 5, padding: 20 }}>
+                <AuthForm error={error} onSubmit={handleAuthorize} />
+                <Button onClick={adminOffHandler}>Admin Mode Off</Button>
+            </Stack>
         </main>
     );
 
@@ -74,7 +85,7 @@ export default function Admin() {
             <Stack sx={{ width: '100%', gap: 2, alignItems: 'center', paddingLeft: 5, paddingRight: 5 }}>
                 <Stack direction='row' sx={{ width: '100%', justifyContent: 'end', gap: 5 }}>
                     <Button variant='outlined' onClick={() => { }}>Create New</Button>
-                    <Button variant='contained' onClick={() => setIsLoggedIn(false)}>Log Out</Button>
+                    <Button variant='contained' onClick={handleLogOut}>Log Out</Button>
                 </Stack>
                 <Tabs
                     value={value}

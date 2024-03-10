@@ -1,5 +1,7 @@
 import { forwardRef, Fragment } from 'react';
-import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { TableVirtuoso } from 'react-virtuoso';
 
 const columns = [
@@ -38,6 +40,11 @@ const columns = [
     dataKey: 'cookingTime',
     numeric: true,
   },
+  // {
+  //   width: 120,
+  //   label: 'Actions',
+  //   numeric: true,
+  // },
 ];
 
 const VirtuosoTableComponents = {
@@ -46,15 +53,12 @@ const VirtuosoTableComponents = {
       <TableContainer component={Paper} {...props} ref={ref} />
     )
   }),
-  // Scroller: forwardRef((props, ref) => (
-  //   <TableContainer component={Paper} {...props} ref={ref} />
-  // )),
   Table: (props) => (
     <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
   ),
   TableHead,
   TableRow: (props) => <TableRow {...props} />,
-  TableBody: forwardRef(function Body(props, ref) {return <TableBody {...props} ref={ref} />}),
+  TableBody: forwardRef(function Body(props, ref) { return <TableBody {...props} ref={ref} /> }),
 };
 
 function fixedHeaderContent() {
@@ -73,6 +77,7 @@ function fixedHeaderContent() {
           {column.label}
         </TableCell>
       ))}
+      <TableCell align='right' style={{ width: 100 }}>Actions</TableCell>
     </TableRow>
   );
 }
@@ -88,13 +93,25 @@ function rowContent(_index, row) {
           {row[column.dataKey]}
         </TableCell>
       ))}
+      <TableCell align='right'>
+        <Tooltip title="Edit">
+          <IconButton>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
     </Fragment>
   );
 }
 
 export default function ReactVirtualizedTable({ data }) {
   if (!data.length) return <CircularProgress />
-  
+
   return (
     <Paper style={{ height: '70vh', width: '100%' }}>
       <TableVirtuoso

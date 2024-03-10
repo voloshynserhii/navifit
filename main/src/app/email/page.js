@@ -38,8 +38,10 @@ export default function EmailPage() {
     setLoading(true)
     
     api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(({ user, message }) => {
+      console.log(message)
       if (!user && message) {
         setError(message)
+        setLoading(false)
       } else {
         setLoading(false)
         
@@ -52,7 +54,6 @@ export default function EmailPage() {
       }
     }).catch(() => {
       setLoading(false)
-      router.push('/subscriptions')
     })
   }
 

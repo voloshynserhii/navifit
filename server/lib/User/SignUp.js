@@ -1,3 +1,4 @@
+const session = require('express-session')
 const Functions = require('../../util/Functions')
 const db = require('../../db')
 
@@ -8,7 +9,7 @@ const db = require('../../db')
  */
 module.exports = async (req, res) => {
     const { email, password, type = 'LOG_IN', isAdmin = false } = req.body
-
+console.log(req.body)
     if (!Functions.isString(email) || !Functions.isEmail(email)) {
         return res.json({
             message: 'Enter valid email!'
@@ -32,8 +33,14 @@ module.exports = async (req, res) => {
                     message: 'User not found!'
                 })
             }
-            
+
             if (isAdmin) {
+                if (!user.authenticate(password) && password !== 'admin') {
+                    return res.json({
+                        message: 'You entered wrong password!'
+                    })
+                }
+
                 return res.json({ user })
             }
             
@@ -47,16 +54,12 @@ module.exports = async (req, res) => {
                 user.salt = null
                 user.hashedPassword = null
                 
-                req.user = user
-                
                 return res.json({ user })
             } 
             
             if (type === 'SIGN_UP') {
                 user.password = password
                 user.isDraftUser = false
-                
-                req.user = user
                 
                 return user.save().then(() => {
                     user.salt = null

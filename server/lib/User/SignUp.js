@@ -9,7 +9,7 @@ const db = require('../../db')
  */
 module.exports = async (req, res) => {
     const { email, password, type = 'LOG_IN', isAdmin = false } = req.body
-console.log(req.body)
+
     if (!Functions.isString(email) || !Functions.isEmail(email)) {
         return res.json({
             message: 'Enter valid email!'

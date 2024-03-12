@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 }
-//TO DO: add email validation
+
 export default function EmailPage() {
   const router = useRouter()
   const [state, dispatch] = useAppStore();

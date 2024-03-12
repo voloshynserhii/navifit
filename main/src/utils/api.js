@@ -64,6 +64,9 @@ export default {
   },
   admin: {
     getRecipes: (url, params) => requests.get({ url: `${url}/admin/recipes`, params }),
+    createRecipe: (url, body) => requests.post({ url: `${url}/admin/recipes`, body }),
+    updateRecipe: (url, body) => requests.put({ url: `${url}/admin/recipes/${body._id}`, body }),
+    removeRecipe: (url, id) => requests.delete({ url: `${url}/admin/recipes/${id}` }),
     getUsers: (url, params) => requests.get({ url: `${url}/admin/users`, params }),
   },
 };

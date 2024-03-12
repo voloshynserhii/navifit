@@ -1,8 +1,10 @@
-import { forwardRef, Fragment } from 'react';
-import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import { useState, useEffect, forwardRef, Fragment } from 'react';
+import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { TableVirtuoso } from 'react-virtuoso';
+import Form from './Forms/Recipe'
+import api from '../../../utils/api'
 
 const columns = [
   {
@@ -18,19 +20,19 @@ const columns = [
   },
   {
     width: 120,
-    label: 'Fat\u00A0(g)',
+    label: 'Fats',
     dataKey: 'fats',
     numeric: true,
   },
   {
     width: 120,
-    label: 'Carbs\u00A0(g)',
+    label: 'Carbs',
     dataKey: 'carbs',
     numeric: true,
   },
   {
     width: 120,
-    label: 'Protein\u00A0(g)',
+    label: 'Proteins',
     dataKey: 'proteins',
     numeric: true,
   },
@@ -40,11 +42,6 @@ const columns = [
     dataKey: 'cookingTime',
     numeric: true,
   },
-  // {
-  //   width: 120,
-  //   label: 'Actions',
-  //   numeric: true,
-  // },
 ];
 
 const VirtuosoTableComponents = {
@@ -82,7 +79,7 @@ function fixedHeaderContent() {
   );
 }
 
-function rowContent(_index, row) {
+function rowContent(_index, row, onEdit, onDelete) {
   return (
     <Fragment>
       {columns.map((column) => (
@@ -90,17 +87,17 @@ function rowContent(_index, row) {
           key={column.dataKey}
           align={column.numeric || false ? 'right' : 'left'}
         >
-          {row[column.dataKey]}
+          {row[column?.dataKey]}
         </TableCell>
       ))}
       <TableCell align='right'>
         <Tooltip title="Edit">
-          <IconButton>
+          <IconButton onClick={() => onEdit(row)}>
             <EditIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={() => onDelete(row._id)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -110,15 +107,48 @@ function rowContent(_index, row) {
 }
 
 export default function ReactVirtualizedTable({ data }) {
-  if (!data.length) return <CircularProgress />
+  const [list, setList] = useState([])
+  const [editRow, setEditRow] = useState()
+  
+  useEffect(() => {
+    if (!list.length && data.length) setList(data)
+  }, [list, data])
 
+  const onCancel = () => setEditRow(undefined)
+  
+  const onUpdate = item => {    
+    api.admin.updateRecipe(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ recipe }) => {
+      const newList = [...list]
+      const index = list.findIndex(item => item._id === recipe._id)
+      
+      newList[index] = recipe
+      
+      setList(newList)
+      onCancel()
+    }).catch(err => console.log(err))
+  }
+  
+  const onRemoveRecipe = id => {
+    api.admin.removeRecipe(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+      const newList = list.filter(recipe => recipe._id !== id)
+      
+      setList(newList)
+      onCancel()
+    }).catch(err => console.log(err))
+  }
+  
+  if (!data.length) return <CircularProgress />
+  
+  if (editRow) return <Form item={editRow} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
+  
   return (
-    <Paper style={{ height: '70vh', width: '100%' }}>
+    <Paper style={{ height: '70vh', width: '100%', position: 'relative' }}>
+      <Typography sx={{ position: 'absolute', top: '-50px' }}>Total: {list.length} recipes</Typography>
       <TableVirtuoso
-        data={data}
+        data={list}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
+        itemContent={(i, r) => rowContent(i, r, (row) => setEditRow(row), onRemoveRecipe)}
       />
     </Paper>
   );

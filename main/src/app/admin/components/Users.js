@@ -1,10 +1,12 @@
-import * as React from 'react';
+import { useState } from 'react';
 import moment from 'moment';
 import { IconButton, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function UsersTable({ data = [] }) {
+  const [removeUser, setRemoveUser] = useState()
+  
   if (!data.length) return <CircularProgress />
 
   return (
@@ -46,7 +48,7 @@ export default function UsersTable({ data = [] }) {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton>
+                  <IconButton onClick={() => setRemoveUser(row)}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>

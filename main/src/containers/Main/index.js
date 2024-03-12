@@ -45,25 +45,25 @@ export default function Main({ onChooseOption }) {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <DemoPaper>
-            <Image
+            {/* <Image
             style={{ position: 'absolute', bottom: 0 }}
               src="/tak.png"
               width={220}
               height={220}
               alt="Tak"
-            />
+            /> */}
             <Button title='Tak' onClick={() => onChooseOption(1)} />
           </DemoPaper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <DemoPaper>
-            <Image
+            {/* <Image
             style={{ position: 'absolute', bottom: 0 }}
               src="/nie.png"
               width={340}
               height={240}
               alt="Nie"
-            />
+            /> */}
             <Button title='Nie' onClick={() => onChooseOption(2)} />
           </DemoPaper>
         </Grid>

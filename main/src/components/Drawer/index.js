@@ -5,7 +5,6 @@ import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
-import { iconDarkColor, iconLightColor } from '../../utils/consts';
 
 const menu = [
     {
@@ -119,7 +118,7 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
             {['right'].map((anchor) => (
                 <Fragment key={anchor}>
                     <IconButton onClick={toggleDrawer(anchor, true)}>
-                        <MenuIcon fillColor={isDarkTheme ? iconDarkColor : iconLightColor} />
+                        <MenuIcon />
                     </IconButton>
                     <SwipeableDrawer
                         anchor={anchor}

@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider>
             <Header />
             <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
-            <Footer />
+            {/* <Footer /> */}
           </ThemeProvider>
         </AppStoreProvider>
       </body>

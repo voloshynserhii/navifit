@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Main from '../containers/Main'
 import Steps from '../containers/Steps'
-import styles from './page.module.css'
 import { useAppStore } from '../store'
 import { localStorageGet } from '../utils/localStorage';
 
@@ -29,7 +28,7 @@ export default function Home() {
   }, [])
   
   return (
-    <main className={styles.main}>
+    <main>
       {!optionChosen ? (
         <Main onChooseOption={(opt) => setOptionChosen(opt)} />
       ) : (

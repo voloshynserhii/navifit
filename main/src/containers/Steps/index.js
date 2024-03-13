@@ -13,10 +13,10 @@ import { steps } from './utils'
 const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20]
 
-const Steps = ({ onGetBack }) => {
+const Steps = ({ option = {}, onGetBack }) => {
     const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
-    const [answers, setAnswers] = useState({})
+    const [answers, setAnswers] = useState(option)
     const [, dispatch] = useAppStore();
 
     const router = useRouter()

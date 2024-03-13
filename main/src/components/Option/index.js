@@ -1,18 +1,19 @@
 import { Stack, Paper, Typography } from '@mui/material'
-import Image from 'next/image'
 import { styled } from '@mui/material/styles';
-import Checkbox from '../../Main/components/Checkbox'
 
 const OptionContainer = styled(Paper)(({ theme, selected }) => ({
     position: 'relative',
-    padding: `${theme.spacing(3)} ${theme.spacing(5)}`,
-    margin: `${theme.spacing(1.5)} 0`,
-    backgroundColor: !selected ? 'rgba(var(--mainGrey-rgb))' : 'rgba(var(--greyText-rgb))',
-    borderRadius: theme.spacing(3),
-    border: '1px solid rgba(var(--cardBorder-rgb))',
+    padding: `${theme.spacing(3)} ${theme.spacing(3)}`,
+    margin: `${theme.spacing(1)} 0`,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: selected ? theme.palette.primary.main : theme.palette.primary.lightGrey,
     cursor: 'pointer',
+    boxShadow: 'none',
     '&:hover': {
-        // border: '1px solid rgba(var(--mainGreen-rgb))',
+        borderColor: theme.palette.primary.main,
     },
 }));
 
@@ -22,7 +23,7 @@ export default function Option({ option, prevData, onSelect, onCheck }) {
     return (
         <OptionContainer selected={!option.checkbox && prevData && option.value === prevData} onClick={!option.checkbox ? () => onSelect(option.value) : () => onCheck(!checked)}>
             <Stack direction='row' alignItems='center' justifyContent='space-between'>
-                <Stack gap={1}>
+                <Stack>
                     <Stack direction='row' alignItems='center'>
                         {option.checkbox && <Checkbox checked={checked} isDarkTheme={false} onGetChecked={(selected) => onCheck(selected)} />}
                         <Typography variant='h3'>{option.title}</Typography>

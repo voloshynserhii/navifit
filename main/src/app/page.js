@@ -26,7 +26,7 @@ export default function Home() {
       router.push('/account/plan')
     }
   }, [])
-  
+
   return (
     <main>
       {!optionChosen ? (

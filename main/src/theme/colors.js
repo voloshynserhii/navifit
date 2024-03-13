@@ -2,13 +2,13 @@ const COLOR_PRIMARY = {
   main: 'rgba(51, 0, 255, 1)',
   grey: 'rgba(238, 238, 238, 1)',
   contrastText: 'rgba(28, 34, 39, 1)',
-  // light: '#64B5F6',
+  lightGrey: 'rgba(189, 189, 189, 1)',
   black2: 'rgba(28, 34, 39, 1)',
 };
 
 const COLOR_SECONDARY = {
   main: '#EF9A9A',
-  contrastText: '#000000',
+  contrastText: 'rgba(25, 118, 210, 1)',
   // light: '#EF9A9A',
   // dark: '#EF9A9A',
 };

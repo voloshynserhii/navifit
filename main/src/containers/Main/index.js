@@ -1,18 +1,24 @@
 'use client'
-import { Stack, Grid, Typography } from '@mui/material'
-import { useUserStore } from '@src/store/useUserStore'
+import { Stack, Grid } from '@mui/material'
 import StepContainer from '../../components/StepContainer'
+import Option from '../../components/Option'
 import { steps } from '../Steps/utils'
 
 const totalSteps = steps.length
+const mainStep = steps[0]
 
 export default function Main({ onChooseOption }) {
-  const { theme } = useUserStore();
-console.log(theme)
   return (
-    <StepContainer question='Jaki jest Twój cel?' totalSteps={totalSteps}>
+    <StepContainer question={mainStep.title} totalSteps={totalSteps}>
       <Grid item xs={12} md={6} sx={{ padding: '2rem 60px' }}>
-        <Typography onClick={onChooseOption}>Dalej</Typography>
+        <Stack
+          justifyContent='center'
+          sx={{ height: '70vh' }}
+        >
+          {mainStep.options.map(option => (
+            <Option key={option.title} option={option} onSelect={(val) => onChooseOption({ [mainStep.value]: val })} />
+          ))}
+        </Stack>
       </Grid>
     </StepContainer>
   )

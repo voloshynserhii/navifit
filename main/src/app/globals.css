@@ -67,29 +67,6 @@ main {
   min-height: calc(100vh - var(--header-height));
 }
 
-/* .MuiPaper-root {
-  background: rgb(var(--backgroundDrawer-rgb));
-} */
-h2 {
-  font-size: 1.9rem !important;
-  font-weight: 600 !important;
-}
-h3 {
-  font-size: 1.6rem !important;
-  font-weight: 600 !important;
-}
-h4 {
-  font-size: 1.5rem !important;
-  font-weight: 100 !important;
-}
-h5 {
-  font-size: 1.2rem !important;
-  font-weight: 300;
-}
-h6 {
-  font-size: 0.8rem !important;
-}
-
 .coloredTitle {
   color: rgb(var(--mainGreen-rgb)) !important;
 }

@@ -1,5 +1,26 @@
 const steps = [
-    {},
+    {
+        title: 'Jaki jest Twój cel?',
+        value: 'goal',
+        options: [
+            {
+                title: 'Zrzucenie wagi',
+                value: 'looseWeight'
+            },
+            {
+                title: 'Zbudować masę mięśniową',
+                value: 'gainMuscles'
+            },
+            {
+                title: 'Wzmocnij mięśnie',
+                value: 'musclePower'
+            },
+            {
+                title: 'Posiadanie idealnego plażowego ciała',
+                value: 'idealBody'
+            },
+        ]
+    },
     {
         title: 'Wybierz płeć',
         value: 'sex',

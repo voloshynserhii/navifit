@@ -25,6 +25,13 @@ export const LIGHT_THEME = {
       lineHeight: '24px',
       fontFamily: 'unset',
       fontWeight: 500
+    },
+    h3: {
+      fontSize: 18,
+      fontFamily: 'unset',
+      fontWeight: 400,
+      lineHeight: '27px',
+      color: PALETTE_COLORS.primary.contrastText
     }
   }
 };

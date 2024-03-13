@@ -28,7 +28,7 @@ const StyledStep = styled(Typography)(({ theme }) => ({
 export default function CustomizedProgressBars({ step = 1, totalSteps }) {
     return (
         <Box sx={{ flexGrow: 1, width: '50%', marginTop: 6 }}>
-            {step > 0 && <StyledIconButton>
+            {step > 1 && <StyledIconButton>
                 <ArrowBackIosRoundedIcon />
             </StyledIconButton>}
             <Stack direction='row' justifyContent='end'>

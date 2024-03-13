@@ -1,8 +1,9 @@
 const COLOR_PRIMARY = {
-  main: '#64B5F6',
-  contrastText: '#000000',
+  main: 'rgba(51, 0, 255, 1)',
+  grey: 'rgba(238, 238, 238, 1)',
+  contrastText: 'rgba(28, 34, 39, 1)',
   // light: '#64B5F6',
-  // dark: '#64B5F6',
+  black2: 'rgba(28, 34, 39, 1)',
 };
 
 const COLOR_SECONDARY = {

@@ -1,9 +1,6 @@
 :root {
   --header-height: 72px;
   --footer-height: 105px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
   --background-rgb: 255, 255, 255;
   /* black2 */
@@ -39,7 +36,6 @@
 }
 
 * {
-  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   box-sizing: border-box;
   padding: 0;
@@ -66,14 +62,14 @@ main {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 60px 0 100px 0;
+  padding: 1rem 0 3rem 0;
   width: 100%;
   min-height: calc(100vh - var(--header-height));
 }
 
-.MuiPaper-root {
+/* .MuiPaper-root {
   background: rgb(var(--backgroundDrawer-rgb));
-}
+} */
 h2 {
   font-size: 1.9rem !important;
   font-weight: 600 !important;

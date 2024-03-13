@@ -12,6 +12,21 @@ export const LIGHT_THEME = {
     // },
     ...PALETTE_COLORS,
   },
+  typography: {
+    h1: {
+      fontSize: 40,
+      fontFamily: 'unset',
+      fontWeight: 600,
+      lineHeight: '60px',
+      color: PALETTE_COLORS.primary.contrastText
+    },
+    span: {
+      fontSize: 16,
+      lineHeight: '24px',
+      fontFamily: 'unset',
+      fontWeight: 500
+    }
+  }
 };
 
 export default LIGHT_THEME;

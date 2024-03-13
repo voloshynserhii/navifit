@@ -1,4 +1,4 @@
-import { Montserrat } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { AppStoreProvider } from '../store';
 import defaultTheme, { ThemeProvider } from '../theme';
@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import './globals.css'
 
-const montserrat = Montserrat({
+const poppins = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
@@ -25,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={poppins.className}>
         <AppStoreProvider>
           <ThemeProvider>
             <Header />

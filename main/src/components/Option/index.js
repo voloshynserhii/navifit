@@ -25,7 +25,7 @@ export default function Option({ option, prevData, onSelect, onCheck }) {
             <Stack direction='row' alignItems='center' justifyContent='space-between'>
                 <Stack>
                     <Stack direction='row' alignItems='center'>
-                        {option.checkbox && <Checkbox checked={checked} isDarkTheme={false} onGetChecked={(selected) => onCheck(selected)} />}
+                        {/* {option.checkbox && <Checkbox checked={checked} isDarkTheme={false} onGetChecked={(selected) => onCheck(selected)} />} */}
                         <Typography variant='h3'>{option.title}</Typography>
                     </Stack>
 

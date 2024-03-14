@@ -1,38 +1,47 @@
 import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
-import ArrowIcon from '@src/components/Icons/Arrow'
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 
-const LargeButton = styled(Button)(({ theme }) => ({
-  color: 'black',
-  backgroundColor: 'rgba(var(--mainGreen-rgb))',
-  fontWeight: '700',
-  fontSize: '18px',
-  borderRadius: 24,
+const StyledButton = styled(Button)(({ theme }) => ({
+  color: 'white',
+  backgroundColor: theme.palette.primary.main,
+  fontWeight: '500',
+  fontSize: 20,
+  lineHeight: '30px',
+  borderRadius: 32,
   textTransform: 'capitalize',
-  padding: '10px 90px',
+  padding: '14px 20px 14px 40px',
+  width: 180,
+  height: 52,
+  [theme.breakpoints.down("sm")]: {
+    width: '90vw',
+    padding: '14px 15% 14px 0',
+  },
   '&:hover': {
-    backgroundColor: 'rgba(var(--mainGreen-rgb))',
-    opacity: '0.4',
+    opacity: '0.9',
   },
 }));
 
-const SmallButton = styled(Button)(({ theme }) => ({
-  color: 'rgba(var(--foreground-rgb))',
-  borderColor: 'rgba(var(--foreground-rgb))',
-  fontWeight: '200',
-  fontSize: '20px',
-  borderRadius: theme.spacing(2),
-  textTransform: 'capitalize',
-  padding: '5px 20px',
-  '&:hover': {
-    borderColor: 'rgba(var(--foreground-rgb))',
+const StyledArrowIcon = styled(ArrowForwardIosRoundedIcon)(({ theme }) => ({
+  marginLeft: 3,
+  [theme.breakpoints.down("sm")]: {
+    position: "absolute",
+    right: 30,
+    bottom: 16
   },
 }));
 
 const MainButton = ({ type = 'secondary', title = '', noIcon, onClick, ...props }) => {
-  if (type === 'primary') {
-    return (<LargeButton {...props} variant="contained" endIcon={!noIcon && <ArrowIcon type='short' />} onClick={onClick}>{title}</LargeButton>)
-  }
-  return <SmallButton {...props} variant="outlined" startIcon={!noIcon && <ArrowIcon type='short' direction='back' fillColor='rgba(var(--foreground-rgb))' />} onClick={onClick}>{title}</SmallButton>
+  return (
+    <StyledButton
+      variant="contained"
+      endIcon={!noIcon && <StyledArrowIcon />}
+      onClick={onClick}
+      {...props}
+    >
+      {title}
+    </StyledButton>
+  )
 }
+
 export default MainButton

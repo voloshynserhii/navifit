@@ -12,6 +12,28 @@ export const DARK_THEME = {
     // },
     ...PALETTE_COLORS,
   },
+  typography: {
+    h1: {
+      fontSize: 40,
+      fontFamily: 'unset',
+      fontWeight: 600,
+      lineHeight: '60px',
+      color: PALETTE_COLORS.primary.contrastText
+    },
+    span: {
+      fontSize: 16,
+      lineHeight: '24px',
+      fontFamily: 'unset',
+      fontWeight: 500
+    },
+    h3: {
+      fontSize: 18,
+      fontFamily: 'unset',
+      fontWeight: 400,
+      lineHeight: '27px',
+      color: PALETTE_COLORS.primary.contrastText
+    }
+  }
 };
 
 export default DARK_THEME;

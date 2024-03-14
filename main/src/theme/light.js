@@ -1,5 +1,5 @@
 import { PALETTE_COLORS } from './colors';
-import { createBreakpoints } from '@mui/system';
+
 /**
  * MUI theme options for "Light Mode"
  */

@@ -1,10 +1,11 @@
 import { useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation'
-import { Accordion, AccordionSummary, AccordionDetails, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer, Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
+import { useEventSwitchDarkMode } from '../../hooks';
 
 const menu = [
     {
@@ -45,6 +46,8 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
     const [state, setState] = useState({
         right: false,
     });
+
+    const onSwitchDarkMode = useEventSwitchDarkMode();
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (
@@ -110,6 +113,11 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                     </ListItem>
                 ))}
             </List>
+            <Switch
+                checked={globalState.darkMode}
+                onChange={onSwitchDarkMode}
+                inputProps={{ 'aria-label': 'controlled' }}
+            />
         </Box>
     );
 

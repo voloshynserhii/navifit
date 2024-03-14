@@ -1,39 +1,30 @@
 import { Container, Grid, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Progress from '../Progress'
+import UserPermission from '../UserPermission'
 import styles from './index.module.css'
 
-const DemoPaper1 = styled(Paper)(({ theme }) => console.log(theme));
 const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
-    minHeight: '60vh',
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
 }));
 
-const StyledSpan = styled(Typography)(({ theme }) => ({
-    color: theme.palette.secondary.contrastText,
-    cursor: 'pointer',
-}))
-
-export default function StepContainer({ question = '', description = '', totalSteps, children }) {
+export default function StepContainer({ step = 1, question = '', description = '', totalSteps, children, onStepBack }) {
     return (
         <Container>
-            <DemoPaper1 />
-            <DemoPaper className={styles.container}>
+            <DemoPaper className={styles.container} sx={{ minHeight: { md: '60vh' } }}>
                 <Grid container >
-                    <Grid item xs={12} md={6} sx={{ padding: '2rem 60px' }}>
-                        <Progress step={1} totalSteps={totalSteps} />
+                    <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 2rem', md: '2rem 60px' } }}>
+                        <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack}/>
 
-                        <Stack sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: 0, md: '50%' }, transform: { md: 'translateY(-50%)' } }}>
+                        <Stack sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: 0, md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
                             <Typography component="h1" variant='h1'>{question}</Typography>
                             <p style={{ width: '80%' }}>{description}</p>
                         </Stack>
 
-                        <Stack sx={{ width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>
-                            <Typography>
-                                Wybierając cel i kontynuując, wyrażasz zgodę na nasze
-                                <StyledSpan component='span' variant='span'> Warunki korzystania</StyledSpan> z usługi | <StyledSpan component='span' variant='span'>Polityka prywatności</StyledSpan></Typography>
+                        <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>
+                            <UserPermission />
                         </Stack>
                     </Grid>
                     {children}

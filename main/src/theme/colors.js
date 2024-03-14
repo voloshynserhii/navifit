@@ -9,7 +9,7 @@ const COLOR_PRIMARY = {
 const COLOR_SECONDARY = {
   main: '#EF9A9A',
   contrastText: 'rgba(25, 118, 210, 1)',
-  // light: '#EF9A9A',
+  light: 'rgba(245, 245, 247, 1)',
   // dark: '#EF9A9A',
 };
 

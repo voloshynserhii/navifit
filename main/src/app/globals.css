@@ -81,3 +81,9 @@ a {
     color-scheme: dark;
   }
 }
+@media screen and (max-width: 899px) {
+  h1 {
+    font-size: 30px !important;
+  }
+  
+}

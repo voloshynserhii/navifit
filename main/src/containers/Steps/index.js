@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { Container, Stack, Typography } from '@mui/material'
+import { Grid, Stack, Typography, useTheme } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import Progress from './components/Progress'
 import Button from './components/Button'
-import OptionCard from './components/OptionCard'
 import InputNumber from './components/InputNumber'
 import Loader from './components/Loader'
 import DatePicker from '../../components/DatePicker'
+import StepContainer from '../../components/StepContainer'
+import Option from '../../components/Option'
+import UserPermission from '../../components/UserPermission'
+
 import { useAppStore } from '../../store';
 import { steps } from './utils'
 
@@ -14,6 +16,8 @@ const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20]
 
 const Steps = ({ option = {}, onGetBack }) => {
+    const theme = useTheme();
+
     const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
@@ -67,71 +71,59 @@ const Steps = ({ option = {}, onGetBack }) => {
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
     return (
-        <Container maxWidth='sm'>
-
-            <Stack direction='row' justifyContent='space-between' alignItems='center'>
-                <Button title='Powrot' onClick={stepBackHandler} />
-                <Button title={`${step} / ${totalSteps + 1}`} noIcon />
-            </Stack>
-
-            <Progress progress={(step / totalSteps + 1) * 100} />
-
-            <Typography variant="h2" sx={{ marginBottom: 1, textAlign: 'center' }}>
-                {steps[step - 1]?.title}
-            </Typography>
-
-            {steps[step - 1]?.subTitle && (
-                <Typography variant="h5" sx={{ marginBottom: 1, textAlign: 'center' }}>
-                    {steps[step - 1]?.subTitle}
-                </Typography>
-            )}
-
-            {steps[step - 1].options?.map(option => {
-                return (
-                    <OptionCard key={option.title} option={option} prevData={answers[steps[step - 1].value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
-                )
-            })}
-
-            {steps[step - 1]?.value && steps[step - 1].value === 'desiredWeight' && (
-                <InputNumber
-                    placeholder="(kg)"
-                    min={steps[step - 1]?.min}
-                    max={steps[step - 1]?.max}
-                    onChange={val =>
-                        setAnswers(prev => ({
-                            ...prev,
-                            [steps[step - 1].value]: val
-                        }))
-                    } />
-            )}
-
-            {steps[step - 1]?.value && steps[step - 1].value === 'dimensions' && (
-                <Stack>
-                    {steps[step - 1]?.inputTypes?.map(option => (
-                        <Stack key={option.value} alignItems='center' >
-                            <Typography sx={{ marginTop: 2 }} >{option.title}</Typography>
-                            <InputNumber
-                                min={option?.min}
-                                max={option?.max}
-                                placeholder={option.title}
-                                onChange={val => selectOptionHandler(val, option.value)}
-                            />
-                        </Stack>
+        <StepContainer step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
+            <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>
+                <Stack
+                    justifyContent='center'
+                    sx={{ height: { md: '70vh' } }}
+                >
+                    {steps[step - 1].options?.map(option => (
+                        <Option key={option.title} option={option} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                     ))}
+                    {steps[step - 1]?.value && steps[step - 1].value === 'desiredWeight' && (
+                        <InputNumber
+                            placeholder="(kg)"
+                            min={steps[step - 1]?.min}
+                            max={steps[step - 1]?.max}
+                            onChange={val =>
+                                setAnswers(prev => ({
+                                    ...prev,
+                                    [steps[step - 1].value]: val
+                                }))
+                            } />
+                    )}
+
+                    {steps[step - 1]?.value && steps[step - 1].value === 'dimensions' && (
+                        <Stack>
+                            {steps[step - 1]?.inputTypes?.map(option => (
+                                <Stack key={option.value} alignItems='center' >
+                                    <Typography sx={{ marginTop: 2 }} >{option.title}</Typography>
+                                    <InputNumber
+                                        min={option?.min}
+                                        max={option?.max}
+                                        placeholder={option.title}
+                                        onChange={val => selectOptionHandler(val, option.value)}
+                                    />
+                                </Stack>
+                            ))}
+                        </Stack>
+                    )}
+
+                    {steps[step - 1]?.value && steps[step - 1].value === 'desiredDate' && (
+                        <Stack>
+                            <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
+                        </Stack>
+                    )}
+
+                    {optionsWithNextBtn.includes(step) && step <= totalSteps && <Stack alignItems='center' justifyContent='center' sx={{ marginTop: 8 }}>
+                        <Button type='primary' title='Dalej' disabled={btnDisabled} onClick={stepAheadHandler} />
+                    </Stack>}
+                    <Stack sx={{ display: { xs: 'block', md: 'none' }, width: '100%', marginTop: '1.5rem', padding: '0 5px', textAlign: 'center' }}>
+                        <UserPermission />
+                    </Stack>
                 </Stack>
-            )}
-
-            {steps[step - 1]?.value && steps[step - 1].value === 'desiredDate' && (
-                <Stack>
-                    <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
-                </Stack>
-            )}
-
-            {optionsWithNextBtn.includes(step) && step <= totalSteps && <Stack alignItems='center' justifyContent='center' sx={{ marginTop: 8 }}>
-                <Button type='primary' title='Dalej' disabled={btnDisabled} onClick={stepAheadHandler} />
-            </Stack>}
-
-        </Container>
+            </Grid>
+        </StepContainer>
     )
 }
 

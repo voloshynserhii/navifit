@@ -27,12 +27,10 @@ const steps = [
         options: [
             {
                 title: 'Mężczyzna',
-                src: '/man-icon.png',
                 value: 'male'
             },
             {
                 title: 'Kobieta',
-                src: '/woman-icon.png',
                 value: 'female'
             },
         ]
@@ -43,22 +41,20 @@ const steps = [
         value: 'bodyType',
         options: [
             {
-                title: 'Ektomorficzny',
-                subTitle: 'Szczupły i długi, szybki metabolizm',
-                src: '/ektomorph.png',
+                title: 'Smukły',
                 value: '1'
             },
             {
-                title: 'Mezomorficzny',
-                subTitle: 'Umięśniony i dobrze zbudowany, średni metabolizm',
-                src: '/mezomorph.png',
+                title: 'Średnia budowa',
                 value: '2'
             },
             {
-                title: 'Endomorficzny',
-                subTitle: 'Okrągła, szeroka sylwetka, powolny metabolizm',
-                src: '/endomorph.png',
+                title: 'Stockowy',
                 value: '3'
+            },
+            {
+                title: 'Znaczna nadwaga ',
+                value: '4'
             },
         ]
     },
@@ -69,22 +65,18 @@ const steps = [
         options: [
             {
                 title: 'Przeważnie w domu',
-                src: '/house.png',
                 value: '1'
             },
             {
                 title: 'W biurze',
-                src: '/office.png',
                 value: '2'
             },
             {
                 title: 'Chodzę na długie spacery',
-                src: '/walk.png',
                 value: '3'
             },
             {
                 title: 'Praca fizyczna',
-                src: '/work.png',
                 value: '4'
             },
         ]
@@ -100,12 +92,10 @@ const steps = [
         options: [
             {
                 title: 'Tak',
-                src: '/yes.png',
                 value: '1'
             },
             {
                 title: 'Nie',
-                src: '/no.png',
                 value: '2'
             },
         ]
@@ -138,27 +128,22 @@ const steps = [
         long: true,
         options: [
             {
-                checkbox: true,
                 title: 'Jem późno w nocy',
                 value: '1'
             },
             {
-                checkbox: true,
                 title: 'Nie śpię wystarczająco',
                 value: '2'
             },
             {
-                checkbox: true,
                 title: 'Nie mogę zrezygnować z jedzenia słodyczy',
                 value: '3'
             },
             {
-                checkbox: true,
                 title: 'Uwielbiam napoje gazowane',
                 value: '4'
             },
             {
-                checkbox: true,
                 title: 'Spożywam dużo soli',
                 value: '5'
             },
@@ -281,22 +266,18 @@ const steps = [
         long: true,
         options: [
             {
-                checkbox: true,
                 title: 'Nie toleruję laktozy',
                 value: '1',
             },
             {
-                checkbox: true,
                 title: 'Nie jem glutenu',
                 value: '2',
             },
             {
-                checkbox: true,
                 title: 'Jestem wegetarianinem',
                 value: '3',
             },
             {
-                checkbox: true,
                 title: 'Jestem weganinem',
                 value: '4',
             },
@@ -308,42 +289,34 @@ const steps = [
         long: true,
         options: [
             {
-                checkbox: true,
                 title: 'Brokuły',
                 value: '1',
             },
             {
-                checkbox: true,
                 title: 'Kalafior',
                 value: '2',
             },
             {
-                checkbox: true,
                 title: 'Szparag',
                 value: '3',
             },
             {
-                checkbox: true,
                 title: 'Papryka',
                 value: '4',
             },
             {
-                checkbox: true,
                 title: 'Bakłażan',
                 value: '5',
             },
             {
-                checkbox: true,
                 title: 'Kapusta',
                 value: '6',
             },
             {
-                checkbox: true,
                 title: 'Szpinak',
                 value: '7',
             },
             {
-                checkbox: true,
                 title: 'Cebula',
                 value: '8',
             },
@@ -355,47 +328,38 @@ const steps = [
         long: true,
         options: [
             {
-                checkbox: true,
                 title: 'Ryż',
                 value: '1',
             },
             {
-                checkbox: true,
                 title: 'Komosa ryżowa',
                 value: '2',
             },
             {
-                checkbox: true,
                 title: 'Kuskus',
                 value: '3',
             },
             {
-                checkbox: true,
                 title: 'Gryka',
                 value: '4',
             },
             {
-                checkbox: true,
                 title: 'Amarant',
                 value: '5',
             },
             {
-                checkbox: true,
                 title: 'Mąka kukurydziana',
                 value: '6',
             },
             {
-                checkbox: true,
                 title: 'Kasza jaglana',
                 value: '7',
             },
             {
-                checkbox: true,
                 title: 'Bulgur',
                 value: '8',
             },
             {
-                checkbox: true,
                 title: 'Kasza manna',
                 value: '9',
             },
@@ -407,42 +371,34 @@ const steps = [
         long: true,
         options: [
             {
-                checkbox: true,
                 title: 'Awokado',
                 value: '1'
             },
             {
-                checkbox: true,
                 title: 'Fasolka',
                 value: '2'
             },
             {
-                checkbox: true,
                 title: 'Grzyby',
                 value: '3'
             },
             {
-                checkbox: true,
                 title: 'Mleko',
                 value: '4'
             },
             {
-                checkbox: true,
                 title: 'Hummus',
                 value: '5'
             },
             {
-                checkbox: true,
                 title: 'Mleko roślinne',
                 value: '6'
             },
             {
-                checkbox: true,
                 title: 'Jajka',
                 value: '7'
             },
             {
-                checkbox: true,
                 title: 'Twarożek',
                 value: '8'
             },
@@ -454,32 +410,26 @@ const steps = [
         long: true,
         options: [
             {
-                checkbox: true,
                 title: 'Indyk',
                 value: '1'
             },
             {
-                checkbox: true,
                 title: 'Ryba',
                 value: '2'
             },
             {
-                checkbox: true,
                 title: 'Owoce morza',
                 value: '3'
             },
             {
-                checkbox: true,
                 title: 'Kurczak',
                 value: '4'
             },
             {
-                checkbox: true,
                 title: 'Wieprzowina',
                 value: '5'
             },
             {
-                checkbox: true,
                 title: 'Wołowina',
                 value: '6'
             },
@@ -488,36 +438,39 @@ const steps = [
     {
         title: 'Jaka jest Twoja pożądana waga?',
         value: 'desiredWeight',
+        unit: 'kg',
+        typeNumber: true,
         min: 30,
-        max: 200
+        max: 250
     },
     {
-        title: 'Sprawdźmy wymiary twojego ciała',
-        value: 'dimensions',
-        inputTypes: [
-            {
-                title: 'Wiek',
-                value: 'age',
-                min: 10,
-                max: 100
-            },
-            {
-                title: 'Wysokość',
-                value: 'height',
-                min: 100,
-                max: 230
-            },
-            {
-                title: 'Aktualna waga',
-                value: 'weight',
-                min: 30,
-                max: 300
-            },
-        ]
+        title: 'Jaka jest Twoja aktualna waga?',
+        value: 'weight',
+        unit: 'kg',
+        typeNumber: true,
+        min: 30,
+        max: 250
+    },
+    {
+        title: 'Jaka jest Twoja wysokość?',
+        value: 'height',
+        unit: 'cm',
+        typeNumber: true,
+        min: 100,
+        max: 250
+    },
+    {
+        title: 'Ile masz lat?',
+        value: 'age',
+        unit: 'lat',
+        typeNumber: true,
+        min: 15,
+        max: 100
     },
     {
         title: 'Kiedy?',
         value: 'desiredDate',
+        typeDate: true
     },
 ]
 

@@ -1,19 +1,20 @@
 import { useState } from 'react'
-import { Grid, Stack, Typography, useTheme } from '@mui/material'
+import { Grid, Stack, useTheme } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import Button from './components/Button'
-import InputNumber from './components/InputNumber'
+// import InputNumber from './components/InputNumber'
 import Loader from './components/Loader'
 import DatePicker from '../../components/DatePicker'
 import StepContainer from '../../components/StepContainer'
 import Option from '../../components/Option'
+import InputNumber from '../../components/InputNumber'
 import UserPermission from '../../components/UserPermission'
 
 import { useAppStore } from '../../store';
 import { steps } from './utils'
 
 const totalSteps = steps.length
-const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20]
+const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 
 const Steps = ({ option = {}, onGetBack }) => {
     const theme = useTheme();
@@ -21,6 +22,8 @@ const Steps = ({ option = {}, onGetBack }) => {
     const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
+    const [inputError, setInputError] = useState(false)
+    
     const [, dispatch] = useAppStore();
 
     const router = useRouter()
@@ -89,9 +92,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     
     if (currentStep.long && !answers[currentStep.value]) btnDisabled = true
     
-    if (currentStep.value === 'desiredWeight' && !answers[currentStep.value]) btnDisabled = true
-
-    if (currentStep.value === 'dimensions' && (!answers[currentStep.value] || Object.values(answers[currentStep.value]).length !== 3)) btnDisabled = true
+    if (currentStep.typeNumber && !answers[currentStep.value]) btnDisabled = true
 
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
@@ -117,36 +118,25 @@ const Steps = ({ option = {}, onGetBack }) => {
                             </>
                         )}
 
-                        {currentStep?.value && currentStep.value === 'desiredWeight' && (
+                        {currentStep?.value && currentStep.typeNumber && (
                             <InputNumber
+                                value={answers[currentStep.value]}
+                                currentStep={currentStep.value}
                                 placeholder="(kg)"
                                 min={currentStep?.min}
                                 max={currentStep?.max}
+                                unit={currentStep?.unit}
                                 onChange={val =>
                                     setAnswers(prev => ({
                                         ...prev,
                                         [currentStep.value]: val
                                     }))
-                                } />
+                                } 
+                                onError={(val) => setInputError(val)}
+                            />
                         )}
 
-                        {currentStep?.value && currentStep.value === 'dimensions' && (
-                            <Stack>
-                                {currentStep?.inputTypes?.map(option => (
-                                    <Stack key={option.value} alignItems='center' >
-                                        <Typography sx={{ marginTop: 2 }} >{option.title}</Typography>
-                                        <InputNumber
-                                            min={option?.min}
-                                            max={option?.max}
-                                            placeholder={option.title}
-                                            onChange={val => selectOptionHandler(val, option.value)}
-                                        />
-                                    </Stack>
-                                ))}
-                            </Stack>
-                        )}
-
-                        {currentStep?.value && currentStep.value === 'desiredDate' && (
+                        {currentStep?.value && currentStep.typeDate && (
                             <Stack>
                                 <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
                             </Stack>
@@ -164,7 +154,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                     justifyContent='center'
                     sx={{ position: 'absolute', bottom: { xs: 0, md: 32 }, right: { xs: 16, md: 60 } }}
                 >
-                    <Button type='primary' title='Dalej' disabled={btnDisabled} onClick={stepAheadHandler} />
+                    <Button type='primary' title='Dalej' disabled={btnDisabled || inputError} onClick={stepAheadHandler} />
                 </Stack>
             )}
         </Stack>

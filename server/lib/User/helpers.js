@@ -1,8 +1,8 @@
 const dayjs = require('dayjs')
 
 const countUserData = (userData) => {
-    const { sex, dimensions, training, desiredWeight, desiredDate } = userData
-    const { weight, height, age } = dimensions
+    const { sex, weight, height, age, training, desiredWeight, desiredDate } = userData
+
     const totalKalToBurn = (weight - desiredWeight) * 7700
     
     const today = dayjs()

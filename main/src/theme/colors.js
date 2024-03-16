@@ -4,13 +4,13 @@ const COLOR_PRIMARY = {
   contrastText: 'rgba(28, 34, 39, 1)',
   lightGrey: 'rgba(189, 189, 189, 1)',
   black2: 'rgba(28, 34, 39, 1)',
+  error: 'rgba(255, 23, 68, 1)',
 };
 
 const COLOR_SECONDARY = {
   main: '#EF9A9A',
   contrastText: 'rgba(25, 118, 210, 1)',
   light: 'rgba(245, 245, 247, 1)',
-  // dark: '#EF9A9A',
 };
 
 /**

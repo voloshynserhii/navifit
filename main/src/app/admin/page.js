@@ -59,8 +59,9 @@ export default function Admin() {
     }
 
     const handleChange = async (event, newValue) => {
-        setValue(newValue);
-        setData([]);
+        setCreateMode(false)
+        setValue(newValue)
+        setData([])
 
         if (newValue === 0) {
             const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
@@ -114,6 +115,7 @@ export default function Admin() {
                     <Tab label="Users" />
                     <Tab label="Recipes" />
                     <Tab label="Plans" />
+                    <Tab label="Subscriptions" />
                     <Tab label="Promocodes" />
                 </Tabs>
                 {value === 0 && <UsersTable data={data} />}

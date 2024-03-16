@@ -29,6 +29,7 @@ export default function Home() {
 
   return (
     <main>
+      <div className='bg'/>
       {!optionChosen ? (
         <Main onChooseOption={(opt) => setOptionChosen(opt)} />
       ) : (

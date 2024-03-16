@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Backdrop, Box, Divider, Modal, Typography } from '@mui/material';
+import { Backdrop, Box, Button, Divider, Modal, Stack, Typography } from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -36,9 +36,12 @@ export default function SpringModal({ selectedDish }) {
             slots={{ backdrop: Backdrop }}
         >
             <Box sx={style}>
-                <Typography id="spring-modal-title" variant="h6" component="h2">
-                    {name}
-                </Typography>
+                <Stack direction='row' justifyContent='space-between'>
+                    <Typography id="spring-modal-title" variant="h6" component="h2">
+                        {name}
+                    </Typography>
+                    <Button>Edituj</Button>
+                </Stack>
                 <Typography component="h3" sx={{ mt: 2 }}>
                     Products
                 </Typography>
@@ -51,7 +54,7 @@ export default function SpringModal({ selectedDish }) {
                         </Typography>
                     )
                 })}
-                <Divider  sx={{ marginTop: 5, marginBottom: 5 }} />
+                <Divider sx={{ marginTop: 5, marginBottom: 5 }} />
                 {formattedDescription.map(descr => (
                     <Typography key={descr}>
                         {descr}

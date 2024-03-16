@@ -135,6 +135,7 @@ const steps = [
     {
         title: 'Wybierz wszystko, co dotyczy Ciebie:',
         value: 'behavior',
+        long: true,
         options: [
             {
                 checkbox: true,
@@ -277,6 +278,7 @@ const steps = [
     {
         title: 'Czy masz jakieś ograniczenia dietetyczne lub alergie?',
         value: 'alergy',
+        long: true,
         options: [
             {
                 checkbox: true,
@@ -303,6 +305,7 @@ const steps = [
     {
         title: 'Zaznacz warzywa, które chcesz uwzględnić w diecie:',
         value: 'vegetables',
+        long: true,
         options: [
             {
                 checkbox: true,
@@ -349,6 +352,7 @@ const steps = [
     {
         title: 'Zaznacz zboża, które chcesz uwzględnić w diecie:',
         value: 'grains',
+        long: true,
         options: [
             {
                 checkbox: true,
@@ -400,6 +404,7 @@ const steps = [
     {
         title: 'Zaznacz produkty, które chcesz uwzględnić w diecie:',
         value: 'desired',
+        long: true,
         options: [
             {
                 checkbox: true,
@@ -446,6 +451,7 @@ const steps = [
     {
         title: 'Zaznacz mięso i ryby, które chcesz uwzględnić w diecie:',
         value: 'meat',
+        long: true,
         options: [
             {
                 checkbox: true,

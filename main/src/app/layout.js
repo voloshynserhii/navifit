@@ -3,7 +3,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { AppStoreProvider } from '../store';
 import defaultTheme, { ThemeProvider } from '../theme';
 import Header from '../components/Header'
-import Footer from '../components/Footer'
+// import Footer from '../components/Footer'
 import './globals.css'
 
 const poppins = Poppins({

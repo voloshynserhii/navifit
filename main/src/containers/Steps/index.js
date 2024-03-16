@@ -25,6 +25,8 @@ const Steps = ({ option = {}, onGetBack }) => {
 
     const router = useRouter()
 
+    const currentStep = steps[step - 1]
+
     const stepBackHandler = () => {
         if (step === 2) return onGetBack();
         setStep(state => state - 1);
@@ -42,14 +44,35 @@ const Steps = ({ option = {}, onGetBack }) => {
         if (!key) {
             setAnswers(prev => ({
                 ...prev,
-                [steps[step - 1].value]: val
+                [currentStep.value]: val
             }))
             stepAheadHandler();
         } else {
-            setAnswers(prev => ({
-                ...prev,
-                [steps[step - 1].value]: { ...answers[steps[step - 1].value], [key]: val }
-            }))
+            const currentAnswer = answers[currentStep.value]
+
+            if (key === 'none' && val) {
+                setAnswers(prev => ({
+                    ...prev,
+                    [currentStep.value]: { [key]: val }
+                }))
+            } else {
+                if (currentAnswer) delete currentAnswer['none']
+                
+                if (currentAnswer && Object.keys(currentAnswer).includes(key)) {
+                    delete currentAnswer[key]
+
+                    setAnswers(prev => ({
+                        ...prev,
+                        [currentStep.value]: currentAnswer
+                    }))
+                } else {
+                    setAnswers(prev => ({
+                        ...prev,
+                        [currentStep.value]: { ...answers[currentStep.value], [key]: val }
+                    }))
+                }
+            }
+
         }
     }
 
@@ -63,10 +86,12 @@ const Steps = ({ option = {}, onGetBack }) => {
     }
 
     let btnDisabled = false
+    
+    if (currentStep.long && !answers[currentStep.value]) btnDisabled = true
+    
+    if (currentStep.value === 'desiredWeight' && !answers[currentStep.value]) btnDisabled = true
 
-    if (steps[step - 1].value === 'desiredWeight' && !answers[steps[step - 1].value]) btnDisabled = true
-
-    if (steps[step - 1].value === 'dimensions' && (!answers[steps[step - 1].value] || Object.values(answers[steps[step - 1].value]).length !== 3)) btnDisabled = true
+    if (currentStep.value === 'dimensions' && (!answers[currentStep.value] || Object.values(answers[currentStep.value]).length !== 3)) btnDisabled = true
 
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
@@ -78,25 +103,36 @@ const Steps = ({ option = {}, onGetBack }) => {
                         justifyContent='center'
                         sx={{ height: { md: '70vh' } }}
                     >
-                        {steps[step - 1].options?.map(option => (
-                            <Option key={option.title} option={option} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
-                        ))}
-                        {steps[step - 1]?.value && steps[step - 1].value === 'desiredWeight' && (
+                        {currentStep.long ? (
+                            <Grid container spacing={2}>
+                                {currentStep.options?.map(option => (
+                                    <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
+                                ))}
+                                <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
+                            </Grid>) : (
+                            <>
+                                {currentStep.options?.map(option => (
+                                    <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
+                                ))}
+                            </>
+                        )}
+
+                        {currentStep?.value && currentStep.value === 'desiredWeight' && (
                             <InputNumber
                                 placeholder="(kg)"
-                                min={steps[step - 1]?.min}
-                                max={steps[step - 1]?.max}
+                                min={currentStep?.min}
+                                max={currentStep?.max}
                                 onChange={val =>
                                     setAnswers(prev => ({
                                         ...prev,
-                                        [steps[step - 1].value]: val
+                                        [currentStep.value]: val
                                     }))
                                 } />
                         )}
 
-                        {steps[step - 1]?.value && steps[step - 1].value === 'dimensions' && (
+                        {currentStep?.value && currentStep.value === 'dimensions' && (
                             <Stack>
-                                {steps[step - 1]?.inputTypes?.map(option => (
+                                {currentStep?.inputTypes?.map(option => (
                                     <Stack key={option.value} alignItems='center' >
                                         <Typography sx={{ marginTop: 2 }} >{option.title}</Typography>
                                         <InputNumber
@@ -110,7 +146,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                             </Stack>
                         )}
 
-                        {steps[step - 1]?.value && steps[step - 1].value === 'desiredDate' && (
+                        {currentStep?.value && currentStep.value === 'desiredDate' && (
                             <Stack>
                                 <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
                             </Stack>

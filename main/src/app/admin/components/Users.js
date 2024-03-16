@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import moment from 'moment';
+import { useRouter } from 'next/navigation'
 import { IconButton, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 
 export default function UsersTable({ data = [] }) {
+  const router = useRouter()
   const [removeUser, setRemoveUser] = useState()
-  
+
   if (!data.length) return <CircularProgress />
 
   return (
@@ -15,13 +20,13 @@ export default function UsersTable({ data = [] }) {
         <TableHead>
           <TableRow>
             <TableCell>Email</TableCell>
-            <TableCell align="right">Paid User</TableCell>
+            <TableCell align="right">Active</TableCell>
             <TableCell align="right">Created At</TableCell>
             <TableCell align="right">BMR</TableCell>
             <TableCell align="right">BMI</TableCell>
             <TableCell align="right">Calories Needed</TableCell>
             <TableCell align="right">Kg to burn</TableCell>
-            <TableCell align="right">Date to</TableCell>
+            <TableCell align="right">Due Date</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -29,7 +34,8 @@ export default function UsersTable({ data = [] }) {
           {data.map((row) => (
             <TableRow
               key={row._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
+              onClick={() => !row.isDraftUser && router.push(`/account/plan/${row._id}`)}
             >
               <TableCell component="th" scope="row">
                 {row.email}
@@ -42,6 +48,16 @@ export default function UsersTable({ data = [] }) {
               <TableCell align="right">{row.userData.dimensions.weight - row.userData.desiredWeight}</TableCell>
               <TableCell align="right">{row.userData.desiredDate}</TableCell>
               <TableCell align="right">
+                <Tooltip title="Reset password">
+                  <IconButton>
+                    <ContactMailIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={row.isDraftUser ? 'Activate' : 'Deactivate'}>
+                  <IconButton>
+                    {!row.isDraftUser ? <ToggleOnIcon /> : <ToggleOffIcon />}
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title="Edit">
                   <IconButton>
                     <EditIcon />

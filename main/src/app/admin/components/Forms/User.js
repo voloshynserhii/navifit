@@ -3,12 +3,14 @@ import { Grid, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
-export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
-    const [recipe, setRecipe] = useState(item || {})
-
+export default function UserForm({ item, onCancel, onUpdate, onCreate }) {
+    const [user, setUser] = useState(item || {})
+    const { name, email, userData = {} } = user
+    const { age, weight, desiredWeight, height } = userData
+    
     const editFormHandler = (e) => {
         const { name, value } = e.target
-        setRecipe((prev) => ({
+        setUser((prev) => ({
             ...prev,
             [name]: value
         }))
@@ -16,10 +18,10 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
 
     const confirmHandler = () => {
         if (item && onUpdate) {
-            onUpdate(recipe)
+            onUpdate(user)
         }
-        
-        if (onCreate) onCreate(recipe)
+
+        if (onCreate) onCreate(user)
 
         return undefined
     }
@@ -27,27 +29,26 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     return (
         <Fragment>
             <Typography variant="h2" gutterBottom>
-                {item ? 'Edit Recipe' : 'Create Recipe'}
+                {item ? 'Edit User' : 'Create User'}
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
                     <TextField
-                        value={recipe.name || ''}
+                        value={name || ''}
                         multiline
-                        label="Title"
+                        label="Name"
                         name="name"
                         fullWidth
                         variant="standard"
                         onChange={editFormHandler}
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={3}>
                     <TextField
-                        value={recipe.description || ''}
+                        value={email || ''}
                         multiline
-                        maxRows={5}
-                        label="Description"
-                        name="description"
+                        label="Email"
+                        name="email"
                         fullWidth
                         variant="standard"
                         onChange={editFormHandler}
@@ -55,10 +56,10 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.fats || ''}
+                        value={age || ''}
                         multiline
-                        label="Fats"
-                        name="fats"
+                        label="Age"
+                        name="age"
                         fullWidth
                         variant="standard"
                         onChange={editFormHandler}
@@ -66,10 +67,10 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.carbs || ''}
+                        value={weight || ''}
                         multiline
-                        label="Carbs"
-                        name="carbs"
+                        label="Weight"
+                        name="weight"
                         fullWidth
                         variant="standard"
                         onChange={editFormHandler}
@@ -77,32 +78,23 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.proteins || ''}
+                        value={desiredWeight || ''}
                         multiline
-                        label="Proteins"
-                        name="proteins"
+                        label="Desired Weight"
+                        name="desiredWeight"
                         fullWidth
                         variant="standard"
                         onChange={editFormHandler}
                     />
                 </Grid>
-                <Grid item xs={3} sm={2}>
+                <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.cookingTime || ''}
-                        label="Cooking Time"
-                        name="cookingTime"
+                        value={height || ''}
+                        multiline
+                        label="Height"
+                        name="height"
                         fullWidth
-                        type="number"
-                        onChange={editFormHandler}
-                    />
-                </Grid>
-                <Grid item xs={3} sm={2}>
-                    <TextField
-                        value={recipe.calories || ''}
-                        label="Calories"
-                        name="calories"
-                        fullWidth
-                        type="number"
+                        variant="standard"
                         onChange={editFormHandler}
                     />
                 </Grid>

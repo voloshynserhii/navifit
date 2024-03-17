@@ -2,30 +2,29 @@ const Functions = require('../../util/Functions')
 const db = require('../../db')
 
 /**
- * Post User Data
+ * Update Plan
  * @param req
  * @param res
  */
 module.exports = async (req, res) => {
-  const { _id: id, email, name, userData } = req.body
+  const { title, price, duration, _id: id } = req.body
 
   if (Functions.isNull(id) || !Functions.isId(id)) {
     return res.send({
       message: 'No id provided!'
    });
   }
-
-  return res.json({ })
+  
   try {
-    const currentUser = await db.user.findById(id)
+    const plan = await db.plan.findById(id)
 
-    currentUser.name = name
-    currentUser.email = email
-    currentUser.userData = userData
+    plan.title = title
+    plan.price = price
+    plan.duration = duration
     
-    await currentUser.save()
+    await plan.save()
     
-    res.json({ currentUser })
+    res.json({ plan })
   } catch (err) {
     console.log(err)
   }

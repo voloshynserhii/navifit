@@ -4,4 +4,6 @@ module.exports = {
   SignUp: require('./SignUp'),
   Update: require('./Update'),
   GeneratePlan: require('./GenerateMonthlyPlan'),
+  Update: require('./Update'),
+  GetUsers: require('./GetUsers'),
 }

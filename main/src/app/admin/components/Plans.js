@@ -1,35 +1,75 @@
-import * as React from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
+import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Form from './Forms/Plan'
+import api from '../../../utils/api'
 
-export default function BasicTable({ data = [] }) {
+export default function PlansTable({ data }) {
+  const router = useRouter()
+  const [list, setList] = useState([])
+  const [removePlan, setRemovePlan] = useState()
+  const [editPlan, setEditPlan] = useState()
+
+  useEffect(() => {
+    if (!list.length && data?.length) setList(data)
+  }, [list, data])
+
+  const onCancel = () => setEditPlan(undefined)
+  
+  const onUpdate = item => {    
+    api.plan.updatePlan(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ plan }) => {
+      const newList = [...list]
+      const index = list.findIndex(item => item._id === plan._id)
+      
+      newList[index] = plan
+      
+      setList(newList)
+      onCancel()
+    }).catch(err => console.log(err))
+  }
+  
+  if (!data) return <CircularProgress />
+
+  if (!data?.length) return <>No plans found</>
+
+  if (editPlan) return <Form item={editPlan} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-            <TableCell align="right">Time</TableCell>
+            <TableCell>Title</TableCell>
+            <TableCell align="right">Price&nbsp;(zl)</TableCell>
+            <TableCell align="right">Duration&nbsp;(months)</TableCell>
+            <TableCell align='right' style={{ width: 200 }}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {list.map((row) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.title}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fats}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.proteins}</TableCell>
-              <TableCell align="right">{row.cookingTime}</TableCell>
+              <TableCell align="right">{row.price}</TableCell>
+              <TableCell align="right">{row.duration}</TableCell>
+              <TableCell align='right'>
+                <Tooltip title="Edit">
+                  <IconButton onClick={() => setEditPlan(row)}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton onClick={() => onDelete(row._id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

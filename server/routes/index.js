@@ -3,7 +3,6 @@ const express = require('express')
 const User = require('../lib/User')
 const Recipe = require('../lib/Recipe')
 const Plan = require('../lib/Plan')
-const Admin = require('../lib/Admin')
 
 const router = express.Router()
 
@@ -18,7 +17,10 @@ router.put('/api/user/:id', User.Update)
 /**
 * Module Plans
 */
-router.post('/api/plans', Plan.Get)
+router.get('/api/plans', Plan.GetPlans)
+router.post('/api/plans/new', Plan.Create)
+router.put('/api/plans/:id', Plan.Update)
+router.post('/api/plans', Plan.GetPlan)
 
 /**
 * Module Admin
@@ -27,7 +29,7 @@ router.get('/admin/recipes', Recipe.GetRecipes)
 router.post('/admin/recipes', Recipe.CreateRecipe)
 router.put('/admin/recipes/:id', Recipe.UpdateRecipe)
 router.delete('/admin/recipes/:id', Recipe.RemoveRecipe)
-router.get('/admin/users', Admin.GetUsers)
+router.get('/admin/users', User.GetUsers)
 
 /**
 * If not one router not found, send 404

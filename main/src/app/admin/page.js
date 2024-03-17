@@ -7,6 +7,8 @@ import RecipesTable from './components/Recipes'
 import UsersTable from './components/Users'
 import PlansTable from './components/Plans'
 import RecipeForm from './components/Forms/Recipe'
+import UserForm from './components/Forms/User'
+import PlanForm from './components/Forms/Plan'
 import { useAppStore } from '../../store'
 import api from '../../utils/api'
 import { localStorageGet, localStorageSet } from '../../utils/localStorage';
@@ -17,7 +19,7 @@ export default function Admin() {
     const [error, setError] = useState()
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [value, setValue] = useState(0);
-    const [data, setData] = useState([])
+    const [data, setData] = useState(null)
     const [createMode, setCreateMode] = useState(false)
 
     const getUsers = async () => {
@@ -61,7 +63,7 @@ export default function Admin() {
     const handleChange = async (event, newValue) => {
         setCreateMode(false)
         setValue(newValue)
-        setData([])
+        setData(null)
 
         if (newValue === 0) {
             const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
@@ -72,19 +74,40 @@ export default function Admin() {
             const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
             setData(newData)
         }
+        
+        if (newValue === 2) {
+            const { data: newData } = await api.plan.getPlans(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            setData(newData)
+        }
     };
+    
+    const handleCreateUser = (newRecipe) => {
+        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ recipe }) => {
+            setData(prev => ([...prev, recipe]))
+            setCreateMode(false)
+          }).catch(err => console.log(err))
+    }
     
     const handleCreateRecipe = (newRecipe) => {
         api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ recipe }) => {
-            setData(prev => ([...data, recipe]))
+            setData(prev => ([...prev, recipe]))
+            setCreateMode(false)
+          }).catch(err => console.log(err))
+    }
+    
+    const handleCreatePlan = (newPlan) => {
+        api.plan.createPlan(process.env.NEXT_PUBLIC_DB_HOST, newPlan).then(({ plan }) => {
+            setData(prev => ([...prev, plan]))
             setCreateMode(false)
           }).catch(err => console.log(err))
     }
 
-    if (createMode && value === 1) return (
+    if (createMode) return (
         <main>
             <Stack sx={{ padding: 5 }}>
-                <RecipeForm onCancel={() => setCreateMode(false)} onCreate={handleCreateRecipe} />
+                {value === 0 && <UserForm onCancel={() => setCreateMode(false)} onCreate={handleCreateUser} />}
+                {value === 1 && <RecipeForm onCancel={() => setCreateMode(false)} onCreate={handleCreateRecipe} />}
+                {value === 2 && <PlanForm onCancel={() => setCreateMode(false)} onCreate={handleCreatePlan} onUpdate={(newPlan) => console.log(newPlan)} />}
             </Stack>
         </main>
     )

@@ -75,5 +75,6 @@ module.exports = {
   db,
   user: require('./models/User.model'),
   recipe: require('./models/Recipe.model'),
+  plan: require('./models/Plan.model'),
   toObjectId: (id) => new mongoose.Types.ObjectId(id),
 }

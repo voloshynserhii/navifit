@@ -111,7 +111,7 @@ export default function ReactVirtualizedTable({ data }) {
   const [editRow, setEditRow] = useState()
   
   useEffect(() => {
-    if (!list.length && data.length) setList(data)
+    if (!list.length && data?.length) setList(data)
   }, [list, data])
 
   const onCancel = () => setEditRow(undefined)
@@ -137,7 +137,9 @@ export default function ReactVirtualizedTable({ data }) {
     }).catch(err => console.log(err))
   }
   
-  if (!data.length) return <CircularProgress />
+  if (!data) return <CircularProgress />
+  
+  if (!data?.length) return <>No recipes found</>
   
   if (editRow) return <Form item={editRow} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
   

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'
 import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,9 +6,7 @@ import Form from './Forms/Plan'
 import api from '../../../utils/api'
 
 export default function PlansTable({ data }) {
-  const router = useRouter()
   const [list, setList] = useState([])
-  const [removePlan, setRemovePlan] = useState()
   const [editPlan, setEditPlan] = useState()
 
   useEffect(() => {
@@ -65,7 +62,7 @@ export default function PlansTable({ data }) {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton onClick={() => onDelete(row._id)}>
+                  <IconButton onClick={() => {}}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>

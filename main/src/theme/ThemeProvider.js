@@ -31,7 +31,7 @@ const ThemeProvider = ({ children }) => {
 
   return (
     <EmotionCacheProvider options={{ key: 'mui' }}>
-      <MuiThemeProvider theme={currentTheme}>
+      <MuiThemeProvider theme={createTheme(LIGHT_THEME)}>
         <CssBaseline /* MUI Styles */ />
         {children}
       </MuiThemeProvider>

@@ -113,11 +113,11 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                     </ListItem>
                 ))}
             </List>
-            <Switch
+            {/* <Switch
                 checked={globalState.darkMode}
                 onChange={onSwitchDarkMode}
                 inputProps={{ 'aria-label': 'controlled' }}
-            />
+            /> */}
         </Box>
     );
 

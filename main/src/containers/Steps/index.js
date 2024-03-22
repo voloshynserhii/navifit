@@ -2,13 +2,11 @@ import { useState } from 'react'
 import { Grid, Stack, useTheme } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import Button from './components/Button'
-// import InputNumber from './components/InputNumber'
 import Loader from './components/Loader'
 import DatePicker from '../../components/DatePicker'
 import StepContainer from '../../components/StepContainer'
 import Option from '../../components/Option'
 import InputNumber from '../../components/InputNumber'
-import UserPermission from '../../components/UserPermission'
 
 import { useAppStore } from '../../store';
 import { steps } from './utils'
@@ -97,7 +95,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
     return (
-        <Stack sx={{ width: '100%', maxWidth: 1200, position: 'relative', paddingBottom: { xs: 8, md: 0 } }}>
+        <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
             <StepContainer step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
                 <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>
                     <Stack
@@ -105,7 +103,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                         sx={{ height: { md: '70vh' } }}
                     >
                         {currentStep.long ? (
-                            <Grid container spacing={2}>
+                            <Grid container>
                                 {currentStep.options?.map(option => (
                                     <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}
@@ -141,20 +139,16 @@ const Steps = ({ option = {}, onGetBack }) => {
                                 <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
                             </Stack>
                         )}
-
-                        <Stack sx={{ display: { xs: 'block', md: 'none' }, width: '100%', marginTop: '1.5rem', padding: '0 5px', textAlign: 'center' }}>
-                            <UserPermission />
-                        </Stack>
                     </Stack>
                 </Grid>
             </StepContainer>
-            {optionsWithNextBtn.includes(step) && step <= totalSteps && (
+            {optionsWithNextBtn.includes(step) && step <= totalSteps && !btnDisabled && !inputError && (
                 <Stack
                     alignItems='center'
                     justifyContent='center'
-                    sx={{ position: 'absolute', bottom: { xs: 0, md: 32 }, right: { xs: 16, md: 60 } }}
+                    sx={{ position: 'absolute', bottom: { xs: 40, md: 32 }, right: { xs: 16, md: 60 } }}
                 >
-                    <Button type='primary' title='Dalej' disabled={btnDisabled || inputError} onClick={stepAheadHandler} />
+                    <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                 </Stack>
             )}
         </Stack>

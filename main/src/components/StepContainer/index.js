@@ -15,17 +15,17 @@ export default function StepContainer({ step = 1, question = '', description = '
         <Container>
             <DemoPaper className={styles.container} sx={{ minHeight: { md: '60vh' } }}>
                 <Grid container >
-                    <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 2rem', md: '2rem 60px' } }}>
+                    <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 24px 12px', md: '2rem 60px' } }}>
                         <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack}/>
 
                         <Stack sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: 0, md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
                             <Typography component="h1" variant='h1'>{question}</Typography>
-                            <p style={{ width: '80%' }}>{description}</p>
+                            <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, color: 'primary.black2' }}>{description}</Typography>
                         </Stack>
 
-                        <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>
+                        {step === 1 && <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>
                             <UserPermission />
-                        </Stack>
+                        </Stack>}
                     </Grid>
                     {children}
                 </Grid>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, FilledInput, InputAdornment, FormHelperText, FormControl, useTheme } from '@mui/material';
+import { Box, FilledInput, InputAdornment, FormHelperText, FormControl, Typography, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledInput = styled(FilledInput)(({ theme, error }) => ({
@@ -8,13 +8,23 @@ const StyledInput = styled(FilledInput)(({ theme, error }) => ({
     paddingRight: 60,
     paddingBottom: 30,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF !important',
     fontSize: 50,
     color: error ? theme.palette.primary.error : 'initial',
     '.MuiFilledInput-input': {
         textAlign: 'center',
         maxWidth: 170,
         paddingTop: 40,
+    },
+    '.MuiFilledInput-root' : {
+        backgroundColor: '#FFFFFF',
+    },
+    '.Mui-focused': {
+        backgroundColor: '#FFFFFF',
+        width: 300
+    },
+    '.Mui-error' : {
+        backgroundColor: '#FFFFFF',
     },
     '&::hover': {
         backgroundColor: '#FFFFFF',
@@ -44,7 +54,11 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
     const handleChange = (e) => {
         const { value } = e.target
 
-        if (+value <= min) {
+        if (value.length > 3) return
+        
+        if (!current && value === '0') return
+        
+        if (+value < min) {
             onError(true)
             setError(true)
         } else {
@@ -70,7 +84,7 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
                     }}
                     onChange={handleChange}
                 />
-                <FormHelperText sx={{ textAlign: 'center', color: error ? theme.palette.primary.error : 'initial' }}>{`Proszę wpisać od ${min} do ${max} ${unit}`}</FormHelperText>
+                <Typography variant="body16" sx={{ textAlign: 'center', marginTop: 1.5, color: error ? theme.palette.primary.error : theme.palette.primary.bodyGrey }}>{`Proszę wpisać od ${min} do ${max} ${unit}`}</Typography>
             </FormControl>
         </Box>
     );

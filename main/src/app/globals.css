@@ -61,7 +61,7 @@ main {
   align-items: center;
   padding: 1rem 0 2rem 0;
   width: 100%;
-  min-height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height));
   overflow: hidden;
 }
 .bg {
@@ -89,8 +89,21 @@ a {
   }
 }
 @media screen and (max-width: 899px) {
+  main {
+    padding: 0;
+  }
+  .bg {
+    background-image: url('../../public/images/bg-mobile.png');
+  }
+  
   h1 {
     font-size: 30px !important;
+    line-height: 45px !important;
+  }
+  
+  h3 {
+    font-size: 14px !important;
+    line-height: 27px !important;
   }
   
 }

@@ -8,7 +8,8 @@ const OptionContainer = styled(Paper)(({ theme, selected, gridview }) => ({
     backgroundColor: 'white',
     borderRadius: !gridview ? 10 : 80,
     width: !gridview ? 'auto' : 'fit-content',
-    borderWidth: 1,
+    minWidth: 80,
+    borderWidth: selected ? 2 : 1,
     borderStyle: 'solid',
     borderColor: selected ? theme.palette.primary.main : theme.palette.primary.lightGrey,
     cursor: 'pointer',
@@ -16,6 +17,10 @@ const OptionContainer = styled(Paper)(({ theme, selected, gridview }) => ({
     '&:hover': {
         borderColor: theme.palette.primary.main,
     },
+    [theme.breakpoints.down("sm")]: {
+        padding: '15.5px 14px',
+        margin: '0 6px 14px 0'
+      },
 }));
 
 export default function Option({ option, long = false, prevData, onSelect, onCheck }) {
@@ -23,13 +28,11 @@ export default function Option({ option, long = false, prevData, onSelect, onChe
 
     return (
         <OptionContainer selected={prevData && option.value === prevData || checked} gridview={long ? 1 : 0} onClick={() => !long ? onSelect(option.value) : onCheck(option.value)}>
-            <Stack direction='row' alignItems='center' justifyContent='space-between'>
-                <Stack>
-                    <Stack direction='row' alignItems='center'>
-                        <Typography variant='h3'>{option.title}</Typography>
+            <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
+                <Stack sx={{ width: '100%' }}>
+                    <Stack sx={{ width: '100%' }} direction='row' alignItems='center'>
+                        <Typography variant='h3' sx={{ width: '100%', textAlign: 'center' }}>{option.title}</Typography>
                     </Stack>
-
-                    <Typography variant='h5'>{option.subTitle}</Typography>
                 </Stack>
             </Stack>
         </OptionContainer>

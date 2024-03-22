@@ -117,7 +117,7 @@ const steps = [
                 value: '3',
             },
             {
-                title: 'Nigdy nie byłem w mojej idealnej wadze',
+                title: 'Nigdy nie byłem w idealnej wadze',
                 value: '4',
             },
         ]
@@ -136,7 +136,7 @@ const steps = [
                 value: '2'
             },
             {
-                title: 'Nie mogę zrezygnować z jedzenia słodyczy',
+                title: 'Zawsze jedzą słodycze',
                 value: '3'
             },
             {

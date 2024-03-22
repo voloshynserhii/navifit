@@ -32,6 +32,13 @@ export const LIGHT_THEME = {
       fontWeight: 400,
       lineHeight: '27px',
       color: PALETTE_COLORS.primary.contrastText
+    },
+    body16: {
+      fontWeight: 400,
+      fontFamily: 'unset',
+      fontSize: '1rem',
+      lineHeight: '1.5rem',
+      color: PALETTE_COLORS.primary.bodyGrey
     }
   }
 };

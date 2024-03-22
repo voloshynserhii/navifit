@@ -83,12 +83,15 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
 @media screen and (max-width: 899px) {
+  * {
+    font-size: 12px !important;
+  }
   main {
     padding: 0;
   }

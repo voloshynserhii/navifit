@@ -8,7 +8,7 @@ const StyledSpan = styled(Typography)(({ theme }) => ({
 
 const UserPermission = () => {
     return (
-        <Typography variant="body16" sx={{ color: 'primary.grey2' }}>
+        <Typography variant="body16" sx={{ color: 'primary.grey2', lineHeight: { xs: '18px', md: 'inherit' } }}>
             Wybierając cel i kontynuując, wyrażasz zgodę na nasze
             <StyledSpan component='span' variant='span'> Warunki korzystania</StyledSpan> z usługi | <StyledSpan component='span' variant='span'>Polityka prywatności</StyledSpan>
         </Typography>

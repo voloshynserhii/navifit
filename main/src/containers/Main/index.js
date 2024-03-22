@@ -22,7 +22,7 @@ export default function Main({ onChooseOption }) {
             <Option key={option.title} option={option} onSelect={(val) => onChooseOption({ [mainStep.value]: val })} />
           ))}
         </Stack>
-        <Stack sx={{ display: { xs: 'block', md: 'none' }, width: '100%', marginTop: '1.5rem', padding: '0 5px', textAlign: 'center' }}>
+        <Stack sx={{ display: { xs: 'block', md: 'none' }, width: '100%', marginTop: { xs: '1rem', md: '1.5rem' }, padding: {xs: 0, md: '0 5px' }, textAlign: 'center' }}>
           <UserPermission />
         </Stack>
       </Grid>

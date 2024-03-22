@@ -103,7 +103,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                         sx={{ height: { md: '70vh' } }}
                     >
                         {currentStep.long ? (
-                            <Grid container sx={{ paddingBottom: { xs: 2, md: 'initial' }, maxHeight: { xs: '300px', md: 'unset' }, overflow: 'auto'}}>
+                            <Grid container sx={{ paddingBottom: { xs: 2, md: 'initial' }, maxHeight: { xs: '250px', md: 'unset' }, overflow: 'auto'}}>
                                 {currentStep.options?.map(option => (
                                     <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}

@@ -18,7 +18,7 @@ const OptionContainer = styled(Paper)(({ theme, selected, gridview }) => ({
         borderColor: theme.palette.primary.main,
     },
     [theme.breakpoints.down("sm")]: {
-        padding: '15.5px 14px',
+        padding: '12.5px 10px',
         margin: '0 6px 14px 0'
       },
 }));

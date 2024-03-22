@@ -15,7 +15,7 @@ export default function StepContainer({ step = 1, question = '', description = '
         <Container>
             <DemoPaper className={styles.container} sx={{ minHeight: { md: '60vh' } }}>
                 <Grid container >
-                    <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 24px 12px', md: '2rem 60px' } }}>
+                    <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 0 12px', md: '2rem 60px' } }}>
                         <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack}/>
 
                         <Stack sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: 0, md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>

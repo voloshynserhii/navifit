@@ -21,7 +21,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
-    
+
     const [, dispatch] = useAppStore();
 
     const router = useRouter()
@@ -37,7 +37,11 @@ const Steps = ({ option = {}, onGetBack }) => {
         if (step === totalSteps) {
             setLoading(true)
         } else {
-            setStep(state => state + 1)
+            setTimeout(
+                () => setStep(state => state + 1),
+                500
+            );
+
         }
     }
 
@@ -58,7 +62,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                 }))
             } else {
                 if (currentAnswer) delete currentAnswer['none']
-                
+
                 if (currentAnswer && Object.keys(currentAnswer).includes(key)) {
                     delete currentAnswer[key]
 
@@ -87,9 +91,9 @@ const Steps = ({ option = {}, onGetBack }) => {
     }
 
     let btnDisabled = false
-    
+
     if (currentStep.long && !answers[currentStep.value]) btnDisabled = true
-    
+
     if (currentStep.typeNumber && !answers[currentStep.value]) btnDisabled = true
 
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
@@ -129,7 +133,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                         ...prev,
                                         [currentStep.value]: val
                                     }))
-                                } 
+                                }
                                 onError={(val) => setInputError(val)}
                             />
                         )}
@@ -142,7 +146,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                     </Stack>
                 </Grid>
             </StepContainer>
-            {optionsWithNextBtn.includes(step) && step <= totalSteps && !btnDisabled && !inputError && (
+            {(answers[currentStep.value] || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
                 <Stack
                     alignItems='center'
                     justifyContent='center'

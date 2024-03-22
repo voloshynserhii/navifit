@@ -78,7 +78,7 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
                 <StyledInput
                     value={current}
                     error={error}
-                    endAdornment={<InputAdornment disableTypography sx={{ fontSize: 40, color: error ? theme.palette.primary.error : theme.palette.primary.main, position: 'absolute', right: 60, top: 60 }} position="end">{unit}</InputAdornment>}
+                    endAdornment={<Typography variant="h2" disableTypography sx={{ fontSize: { xs: '30px', md: '40px' }, color: error ? theme.palette.primary.error : theme.palette.primary.main, position: 'absolute', right: 60, top: 30 }} position="end">{unit}</Typography>}
                     inputProps={{
                         'aria-label': placeholder,
                     }}

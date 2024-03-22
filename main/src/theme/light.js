@@ -20,6 +20,12 @@ export const LIGHT_THEME = {
       lineHeight: '60px',
       color: PALETTE_COLORS.primary.contrastText
     },
+    h2: {
+      fontSize: 40,
+      fontFamily: 'unset',
+      fontWeight: 600,
+      lineHeight: '60px',
+    },
     span: {
       fontSize: 16,
       lineHeight: '24px',

@@ -17,21 +17,28 @@ export default function Home() {
 
     if (user) {
       dispatch({ type: 'LOG_IN' })
-      
+
       dispatch({
         type: 'CURRENT_USER',
         payload: user,
       })
-      
+
       router.push('/account/plan')
     }
   }, [])
+  
+  const onStartQuiz = (opt) => {
+    setTimeout(
+      () => setOptionChosen(opt),
+      500
+    );
+  }
 
   return (
     <main>
-      <div className='bg'/>
+      <div className='bg' />
       {!optionChosen ? (
-        <Main onChooseOption={(opt) => setOptionChosen(opt)} />
+        <Main onChooseOption={onStartQuiz} />
       ) : (
         <Steps option={optionChosen} onGetBack={() => setOptionChosen(undefined)} />
       )}

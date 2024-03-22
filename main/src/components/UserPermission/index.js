@@ -6,7 +6,7 @@ const StyledSpan = styled(Typography)(({ theme }) => ({
     cursor: 'pointer',
     [theme.breakpoints.down("md")]: {
         fontSize: '12px',
-      },
+    },
 }))
 
 const UserPermission = () => {

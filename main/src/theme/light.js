@@ -38,7 +38,10 @@ export const LIGHT_THEME = {
       fontFamily: 'unset',
       fontSize: '1rem',
       lineHeight: '1.5rem',
-      color: PALETTE_COLORS.primary.bodyGrey
+      color: PALETTE_COLORS.primary.bodyGrey,
+    //   [breakpoints.down("md")]: {
+    //     fontSize: '12px',
+    // },
     }
   }
 };

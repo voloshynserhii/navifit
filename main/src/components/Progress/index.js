@@ -18,7 +18,10 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     position: 'absolute',
     top: 32,
-    color: theme.palette.primary.black2
+    color: theme.palette.primary.black2,
+    [theme.breakpoints.down("md")]: {
+        top: 10,
+    },
 }))
 
 const StyledStep = styled(Typography)(({ theme }) => ({

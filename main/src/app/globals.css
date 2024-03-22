@@ -1,37 +1,10 @@
 :root {
-  --header-height: 72px;
-  --footer-height: 105px;
-
-  --background-rgb: 255, 255, 255;
-  /* black2 */
-  --mainText-rgb: 28, 34, 39, 1;
-  --backgroundDrawer-rgb: 214, 219, 220;
-  --cardBackground-rgb: 255, 255, 255, 0.05;
-  --cardBorder-rgb: 255, 255, 255, 0.11;
-  --footer-border: 204, 255, 51, 0.1;
-  /* main green */
-  --foreground-rgb: 28, 34, 39, 1; 
-  --mainGreen-rgb: 204, 255, 51; 
-  
-  --mainGrey-rgb: 239, 241, 244, 1;
-  --greyText-rgb: 28, 34, 39, 0.43;
-  
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-
+  /* --background-rgb: 255, 255, 255; */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-rgb: 10, 10, 10; 
-    --mainText-rgb: 255, 255, 255;
-    
-    --backgroundDrawer-rgb: 214, 219, 220;
-    --cardBackground-rgb: 255, 255, 255, 0.05;
-    --cardBorder-rgb: 255, 255, 255, 0.11;
-    --footer-border: 204, 255, 51, 0.1;
-    /* main green */
-    --foreground-rgb: 204, 255, 51; 
+    /* --background-rgb: 10, 10, 10;  */
   }
 }
 
@@ -61,7 +34,7 @@ main {
   align-items: center;
   padding: 1rem 0 2rem 0;
   width: 100%;
-  height: calc(100vh - var(--header-height));
+  height: calc(100vh - 72px);
   overflow: hidden;
 }
 .bg {
@@ -89,9 +62,6 @@ a {
   }
 } */
 @media screen and (max-width: 899px) {
-  * {
-    /* font-size: 12px !important; */
-  }
   main {
     padding: 0;
   }

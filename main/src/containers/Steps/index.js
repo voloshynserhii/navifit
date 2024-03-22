@@ -103,17 +103,17 @@ const Steps = ({ option = {}, onGetBack }) => {
                         sx={{ height: { md: '70vh' } }}
                     >
                         {currentStep.long ? (
-                            <Grid container sx={{ paddingBottom: { xs: 2, md: 'initial' }, maxHeight: { xs: '250px', md: 'unset' }, overflow: 'auto'}}>
+                            <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
                                 {currentStep.options?.map(option => (
                                     <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}
                                 <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
                             </Grid>) : (
-                            <>
+                            <Stack sx={{ maxHeight: { xs: '50vh', md: 'unset' }, overflow: 'auto' }}>
                                 {currentStep.options?.map(option => (
                                     <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}
-                            </>
+                            </Stack>
                         )}
 
                         {currentStep?.value && currentStep.typeNumber && (

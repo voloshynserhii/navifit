@@ -41,7 +41,7 @@ main {
   background-image: url('../../public/images/bg.png');
   background-repeat: no-repeat;
   background-size: cover;
-  height: calc(100% + 72px);
+  height: calc(100% + 80px);
   width: 100vw;
   position: absolute;
   top: 0;

@@ -97,13 +97,13 @@ const Steps = ({ option = {}, onGetBack }) => {
     return (
         <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
             <StepContainer step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
-                <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>
+                <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>
                     <Stack
                         justifyContent='center'
                         sx={{ height: { md: '70vh' } }}
                     >
                         {currentStep.long ? (
-                            <Grid container>
+                            <Grid container sx={{ paddingBottom: { xs: 2, md: 'initial' }, maxHeight: { xs: '300px', md: 'unset' }, overflow: 'auto'}}>
                                 {currentStep.options?.map(option => (
                                     <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}

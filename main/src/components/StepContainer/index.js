@@ -20,7 +20,7 @@ export default function StepContainer({ step = 1, question = '', description = '
 
                         <Stack sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: '-24px', md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
                             <Typography component="h1" variant='h1'>{question}</Typography>
-                            <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}>{description}</Typography>
+                            {description && <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}>{description}</Typography>}
                         </Stack>
 
                         {step === 1 && <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>

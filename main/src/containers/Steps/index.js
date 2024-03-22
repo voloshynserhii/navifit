@@ -146,7 +146,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                 <Stack
                     alignItems='center'
                     justifyContent='center'
-                    sx={{ position: 'absolute', bottom: { xs: 40, md: 32 }, right: { xs: 16, md: 60 } }}
+                    sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 16, md: 60 } }}
                 >
                     <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                 </Stack>

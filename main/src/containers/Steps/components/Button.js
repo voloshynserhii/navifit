@@ -14,7 +14,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   width: 180,
   height: 52,
   [theme.breakpoints.down("md")]: {
-    width: '93vw',
+    width: 'calc(100% - 16px)',
     padding: '14px 15% 14px 0',
   },
   '&:hover': {

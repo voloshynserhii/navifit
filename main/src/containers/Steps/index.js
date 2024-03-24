@@ -9,7 +9,7 @@ import Option from '../../components/Option'
 import InputNumber from '../../components/InputNumber'
 
 import { useAppStore } from '../../store';
-import { steps } from './utils'
+import { steps, filterIngredients } from '../../utils/Plans'
 
 const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22]
@@ -27,7 +27,12 @@ const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const currentStep = steps[step - 1]
+    let list = currentStep.options || []
 
+    if (answers['alergy'] && Object.keys(answers['alergy'])?.length && currentStep.filtered) {
+        list = filterIngredients(answers['alergy'], list)
+    }
+    
     const stepBackHandler = () => {
         if (step === 2) return onGetBack();
         setStep(state => state - 1);
@@ -101,20 +106,20 @@ const Steps = ({ option = {}, onGetBack }) => {
     return (
         <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
             <StepContainer step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
-                <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>
+                <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
                     <Stack
                         justifyContent='center'
                         sx={{ height: { md: '70vh' } }}
                     >
                         {currentStep.long ? (
                             <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
-                                {currentStep.options?.map(option => (
+                                {list.map(option => (
                                     <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}
                                 <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
                             </Grid>) : (
                             <Stack sx={{ maxHeight: { xs: '50vh', md: 'unset' }, overflow: 'auto' }}>
-                                {currentStep.options?.map(option => (
+                                {list.map(option => (
                                     <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                 ))}
                             </Stack>
@@ -150,7 +155,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                 <Stack
                     alignItems='center'
                     justifyContent='center'
-                    sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 16, md: 60 } }}
+                    sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 0, md: 60 }, width: { xs: '100%', md: 'auto'}  }}
                 >
                     <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                 </Stack>

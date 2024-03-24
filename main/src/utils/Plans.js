@@ -494,4 +494,23 @@ const steps = [
     },
 ]
 
-export { steps }
+const filterIngredients = (restrictions, list = []) => {
+    let newList = [...list]
+    
+    if (restrictions[1]) {
+        newList = newList.filter(item => !item['lactose'])
+    } 
+    if (restrictions[2]) {
+        newList = newList.filter(item => !item['gluten'])
+    } 
+    if (restrictions[3]) {
+        newList = newList.filter(item => !item['nonVegetarian'])
+    } 
+    if (restrictions[4]) {
+        newList = newList.filter(item => !item['nonVegan'])
+    }
+
+    return newList
+}
+
+export { steps, filterIngredients }

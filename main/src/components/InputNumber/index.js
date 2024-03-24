@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, FilledInput, InputAdornment, FormHelperText, FormControl, Typography, useTheme } from '@mui/material';
+import { Box, FilledInput, FormControl, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledInput = styled(FilledInput)(({ theme, error }) => ({
@@ -39,7 +39,6 @@ const StyledInput = styled(FilledInput)(({ theme, error }) => ({
 }));
 
 export default function InputAdornments({ value, currentStep, placeholder, min, max, unit, onChange, onError }) {
-    const theme = useTheme();
     const [current, setCurrent] = useState('');
     const [error, setError] = useState(false);
 
@@ -57,8 +56,8 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
         if (value.length > 3) return
         
         if (!current && value === '0') return
-        
-        if (+value < min) {
+
+        if (isNaN(+value) || +value < min) {
             onError(true)
             setError(true)
         } else {
@@ -78,13 +77,13 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
                 <StyledInput
                     value={current}
                     error={error}
-                    endAdornment={<Typography variant="h2" disableTypography sx={{ fontSize: { xs: '30px', md: '40px' }, color: error ? theme.palette.primary.error : theme.palette.primary.main, position: 'absolute', right: 60, top: 30 }} position="end">{unit}</Typography>}
+                    endAdornment={<Typography variant="h2" disabletypography="true" sx={{ fontSize: { xs: '30px', md: '40px' }, color: error ? 'primary.error' : 'primary.main', position: 'absolute', right: 60, top: 30 }} position="end">{unit}</Typography>}
                     inputProps={{
                         'aria-label': placeholder,
                     }}
                     onChange={handleChange}
                 />
-                <Typography variant="body16" sx={{ textAlign: 'center', marginTop: 1.5, color: error ? theme.palette.primary.error : theme.palette.primary.bodyGrey }}>{`Proszę wpisać od ${min} do ${max} ${unit}`}</Typography>
+                <Typography variant="body16" sx={{ textAlign: 'center', marginTop: 1.5, color: error ? 'primary.error' : 'primary.bodyGrey' }}>{`Proszę wpisać od ${min} do ${max} ${unit}`}</Typography>
             </FormControl>
         </Box>
     );

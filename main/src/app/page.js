@@ -13,6 +13,12 @@ export default function Home() {
   const [optionChosen, setOptionChosen] = useState()
 
   useEffect(() => {
+    const body = document.querySelector('body')
+    
+    if (body) {
+      body.classList.add('bg')
+    }
+
     const user = localStorageGet('loggedUser')
 
     if (user) {
@@ -25,6 +31,12 @@ export default function Home() {
 
       router.push('/account/plan')
     }
+    
+    return () => {
+      if (body) {
+        body.classList.remove('bg')
+      }
+    }
   }, [])
   
   const onStartQuiz = (opt) => {
@@ -36,7 +48,6 @@ export default function Home() {
 
   return (
     <main>
-      <div className='bg' />
       {!optionChosen ? (
         <Main onChooseOption={onStartQuiz} />
       ) : (

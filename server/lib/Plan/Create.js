@@ -20,7 +20,7 @@ module.exports = async(req, res) => {
     
         await newPlan.save()
         
-        res.json({ newPlan })
+        res.json({ plan: newPlan })
       } catch (err) {
         console.log(err)
       }

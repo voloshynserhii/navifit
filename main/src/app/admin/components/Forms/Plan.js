@@ -30,7 +30,7 @@ export default function PlanForm({ item, onCancel, onUpdate, onCreate }) {
                 {item ? 'Edit Plan' : 'Create Plan'}
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         value={plan.title || ''}
                         multiline
@@ -41,7 +41,7 @@ export default function PlanForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                <Grid item xs={3} sm={2}>
+                <Grid item xs={6} sm={2}>
                     <TextField
                         value={plan.price || ''}
                         multiline
@@ -52,7 +52,18 @@ export default function PlanForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                <Grid item xs={4} sm={3}>
+                <Grid item xs={6} sm={2}>
+                    <TextField
+                        value={plan.promoPrice || ''}
+                        multiline
+                        label="Promo Price, zl"
+                        name="promoPrice"
+                        fullWidth
+                        variant="standard"
+                        onChange={editFormHandler}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={2}>
                     <TextField
                         value={plan.duration || ''}
                         multiline

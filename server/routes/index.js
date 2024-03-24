@@ -21,6 +21,7 @@ router.get('/api/plans', Plan.GetPlans)
 router.post('/api/plans/new', Plan.Create)
 router.put('/api/plans/:id', Plan.Update)
 router.post('/api/plans', Plan.GetPlan)
+router.delete('/api/plans/:id', Plan.Remove)
 
 /**
 * Module Admin

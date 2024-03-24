@@ -7,7 +7,7 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async (req, res) => {
-  const { title, price, duration, _id: id } = req.body
+  const { title, price, promoPrice, duration, _id: id } = req.body
 
   if (Functions.isNull(id) || !Functions.isId(id)) {
     return res.send({
@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
 
     plan.title = title
     plan.price = price
+    plan.promoPrice = promoPrice
     plan.duration = duration
     
     await plan.save()

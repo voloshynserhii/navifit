@@ -16,11 +16,11 @@ module.exports = async (req, res) => {
   }
   
   try {
-    const recipe = await db.recipe.findById(id)
+    const plan = await db.plan.findById(id)
 
-    recipe.deleted = true
+    plan.deleted = true
     
-    await recipe.save()
+    await plan.save()
     
     res.json({ })
   } catch (err) {

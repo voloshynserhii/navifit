@@ -27,6 +27,15 @@ export default function PlansTable({ data }) {
     }).catch(err => console.log(err))
   }
   
+  const onRemove = id => {
+    api.plan.removePlan(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+      const newList = list.filter(plan => plan._id !== id)
+      
+      setList(newList)
+      onCancel()
+    }).catch(err => console.log(err))
+  }
+  
   if (!data) return <CircularProgress />
 
   if (!data?.length) return <>No plans found</>
@@ -40,6 +49,7 @@ export default function PlansTable({ data }) {
           <TableRow>
             <TableCell>Title</TableCell>
             <TableCell align="right">Price&nbsp;(zl)</TableCell>
+            <TableCell align="right">Promo Price&nbsp;(zl)</TableCell>
             <TableCell align="right">Duration&nbsp;(months)</TableCell>
             <TableCell align='right' style={{ width: 200 }}>Actions</TableCell>
           </TableRow>
@@ -47,14 +57,15 @@ export default function PlansTable({ data }) {
         <TableBody>
           {list.map((row) => (
             <TableRow
-              key={row._id}
+              key={row?._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.title}
+                {row?.title}
               </TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.duration}</TableCell>
+              <TableCell align="right">{row?.price}</TableCell>
+              <TableCell align="right">{row?.promoPrice}</TableCell>
+              <TableCell align="right">{row?.duration}</TableCell>
               <TableCell align='right'>
                 <Tooltip title="Edit">
                   <IconButton onClick={() => setEditPlan(row)}>
@@ -62,7 +73,7 @@ export default function PlansTable({ data }) {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton onClick={() => {}}>
+                  <IconButton onClick={() => onRemove(row._id)}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>

@@ -3,4 +3,5 @@ module.exports = {
     GetPlan: require('./GetPlan'),
     Create: require('./Create'),
     Update: require('./Update'),
+    Remove: require('./Remove'),
   }

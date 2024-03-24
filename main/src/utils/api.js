@@ -65,6 +65,7 @@ export default {
     createPlan: (url, body) => requests.post({ url: `${url}/api/plans/new`, body }),
     updatePlan: (url, body) => requests.put({ url: `${url}/api/plans/${body._id}`, body }),
     getOptions: (url, body) => requests.post({ url: `${url}/api/plans`, body }),
+    removePlan: (url, id) => requests.delete({ url: `${url}/api/plans/${id}` }),
   },
   admin: {
     getRecipes: (url, params) => requests.get({ url: `${url}/admin/recipes`, params }),

@@ -82,8 +82,8 @@ export default function Admin() {
     };
     
     const handleCreateUser = (newRecipe) => {
-        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ recipe }) => {
-            setData(prev => ([...prev, recipe]))
+        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ user }) => {
+            setData(prev => ([...prev, user]))
             setCreateMode(false)
           }).catch(err => console.log(err))
     }

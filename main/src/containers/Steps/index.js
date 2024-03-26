@@ -55,7 +55,9 @@ const Steps = ({ option = {}, onGetBack }) => {
 
         }
     }
-
+    
+    if (currentStep.options && !list.length) stepAheadHandler()
+    
     const selectOptionHandler = (val, key) => {
         if (!key) {
             setAnswers(prev => ({

@@ -3,7 +3,7 @@ import { Stack, Grid, useTheme } from '@mui/material'
 import StepContainer from '../../components/StepContainer'
 import Option from '../../components/Option'
 import UserPermission from '../../components/UserPermission'
-import { steps } from '../Steps/utils'
+import { steps } from '../../utils/Plans'
 
 const totalSteps = steps.length
 const mainStep = steps[0]

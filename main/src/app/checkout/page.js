@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Backdrop, Box, Card, CardContent, Fade, Typography, Button, Modal } from '@mui/material'
+import { Backdrop, Box, Card, CardContent, CircularProgress, Fade, Typography, Button, Modal } from '@mui/material'
 import { useAppStore } from '../../store'
 import api from '../../utils/api'
 
@@ -68,8 +68,11 @@ const Checkout = () => {
         </Modal>
       )}
 
-      <Typography>Wybierz swój plan</Typography>
-      {plans.sort((a, b) => a.duration - b.duration).map(({ _id, price, promoPrice, duration }) => (
+      {!plans.length ? <CircularProgress color="inherit" /> : (
+        <Typography>Wybierz swój plan</Typography>
+      )}
+
+      {plans.length && plans.sort((a, b) => a.duration - b.duration).map(({ _id, price, promoPrice, duration }) => (
         <Card key={_id} sx={{ width: '40%' }} onClick={() => setPaymentModalOpen(true)}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="secondary.black" gutterBottom>
@@ -81,7 +84,6 @@ const Checkout = () => {
           </CardContent>
         </Card>
       ))}
-      <Button onClick={() => setPaymentModalOpen(true)}>Odbierz swój plan</Button>
     </main>
   );
 };

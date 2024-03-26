@@ -13,6 +13,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   padding: '14px 20px 14px 40px',
   width: 180,
   height: 52,
+  fontFamily: 'unset',
+  boxShadow: 'none',
   [theme.breakpoints.down("md")]: {
     width: 'calc(100% - 16px)',
     padding: '14px 15% 14px 0',

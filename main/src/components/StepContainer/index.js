@@ -10,6 +10,36 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     overflow: 'hidden',
 }));
 
+const getFormattedQuestion = (question) => {
+    let words = question.split(' ').map(word => `${word} `)
+
+    const foundWord = words.find(word => word.search('/%') > -1)
+    const foundWords = words.filter(word => word.search('/%') > -1)
+
+    if (foundWords.length > 1) {
+        const expression = foundWords.map(word => word.replace('/%', '')).join(' ')
+
+        let firstIndex, lastIndex
+
+        foundWords.forEach(foundWord => {
+            const i = words.findIndex((word) => word.search(foundWord) > -1)
+
+            if (!firstIndex) firstIndex = i
+            lastIndex = i
+        })
+
+        words.splice(firstIndex, lastIndex - firstIndex)
+        words[firstIndex] = <Typography component="h2" variant='h1' className="colored-title">{expression}</Typography>
+    } else if (foundWord) {
+        const i = words.findIndex(word => word.search('/%') > -1)
+        const newWord = <Typography component="h2" variant='h1' className="colored-title">{foundWord.replace('/%', '').replace(' ', '')}</Typography>
+
+        words[i] = newWord
+    }
+
+    return words
+}
+
 export default function StepContainer({ step = 1, question = '', description = '', totalSteps, children, onStepBack }) {
     return (
         <Container>
@@ -18,8 +48,21 @@ export default function StepContainer({ step = 1, question = '', description = '
                     <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 0 12px', md: '2rem 60px' } }}>
                         <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack} />
 
-                        <Stack sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: '-24px', md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
-                            <Typography component="h1" variant='h1'>{question}</Typography>
+                        <Stack
+                            sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: '-24px', md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
+                            <Typography
+                                component="span">
+                                {getFormattedQuestion(question).map(item => (
+                                    <Typography
+                                        key={item}
+                                        component="h2"
+                                        variant='h1'
+                                        sx={{ display: 'inline' }}
+                                    >
+                                        {item}
+                                    </Typography>
+                                ))}
+                            </Typography>
                             {description && <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}>{description}</Typography>}
                         </Stack>
 

@@ -284,7 +284,7 @@ const steps = [
         ]
     },
     {
-        title: 'Zaznacz warzywa, które chcesz uwzględnić w diecie:',
+        title: 'Zaznacz /%warzywa które chcesz uwzględnić w diecie:',
         value: 'vegetables',
         long: true,
         options: [
@@ -323,7 +323,7 @@ const steps = [
         ]
     },
     {
-        title: 'Zaznacz zboża, które chcesz uwzględnić w diecie:',
+        title: 'Zaznacz /%zboża które chcesz uwzględnić w diecie:',
         value: 'grains',
         long: true,
         filtered: true,
@@ -369,7 +369,7 @@ const steps = [
         ]
     },
     {
-        title: 'Zaznacz produkty, które chcesz uwzględnić w diecie:',
+        title: 'Zaznacz /%produkty które chcesz uwzględnić w diecie:',
         value: 'desired',
         long: true,
         filtered: true,
@@ -414,7 +414,7 @@ const steps = [
         ]
     },
     {
-        title: 'Zaznacz mięso i ryby, które chcesz uwzględnić w diecie:',
+        title: 'Zaznacz /%mięso /%i /%ryby które chcesz uwzględnić w diecie:',
         value: 'meat',
         long: true,
         filtered: true,
@@ -456,7 +456,7 @@ const steps = [
         ]
     },
     {
-        title: 'Jaka jest Twoja pożądana waga?',
+        title: 'Jaka jest Twoja /%pożądana waga?',
         value: 'desiredWeight',
         unit: 'kg',
         typeNumber: true,
@@ -464,7 +464,7 @@ const steps = [
         max: 250
     },
     {
-        title: 'Jaka jest Twoja aktualna waga?',
+        title: 'Jaka jest Twoja /%aktualna waga?',
         value: 'weight',
         unit: 'kg',
         typeNumber: true,

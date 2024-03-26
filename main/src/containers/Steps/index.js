@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Grid, Stack, useTheme } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import Button from './components/Button'
 import Loader from './components/Loader'
@@ -15,16 +15,15 @@ const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 
 const Steps = ({ option = {}, onGetBack }) => {
-    const theme = useTheme();
-
+    const router = useRouter()
+    
     const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
+    const [btnVisible, setButtonVisisble] = useState(false)
 
     const [, dispatch] = useAppStore();
-
-    const router = useRouter()
 
     const currentStep = steps[step - 1]
     let list = currentStep.options || []
@@ -34,8 +33,10 @@ const Steps = ({ option = {}, onGetBack }) => {
     }
     
     const stepBackHandler = () => {
-        if (step === 2) return onGetBack();
-        setStep(state => state - 1);
+        if (step === 2) return onGetBack()
+        
+        setStep(state => state - 1)
+        setButtonVisisble(true)
     }
 
     const stepAheadHandler = () => {
@@ -43,7 +44,12 @@ const Steps = ({ option = {}, onGetBack }) => {
             setLoading(true)
         } else {
             setTimeout(
-                () => setStep(state => state + 1),
+                () => {
+                    setStep(state => state + 1)
+                    if (Object.keys(answers).length < step) {
+                        setButtonVisisble(false)
+                    }
+                },
                 500
             );
 
@@ -151,7 +157,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                     </Stack>
                 </Grid>
             </StepContainer>
-            {(answers[currentStep.value] || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
+            {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
                 <Stack
                     alignItems='center'
                     justifyContent='center'

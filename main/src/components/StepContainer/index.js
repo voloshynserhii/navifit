@@ -11,7 +11,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const getFormattedQuestion = (question) => {
-    let words = question.split(' ').map(word => `${word} `)
+    let words = question.split(' ').map(word => ` ${word} `)
 
     const foundWord = words.find(word => word.search('/%') > -1)
     const foundWords = words.filter(word => word.search('/%') > -1)

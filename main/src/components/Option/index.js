@@ -20,7 +20,7 @@ const OptionContainer = styled(Paper)(({ theme, selected, gridview }) => ({
     [theme.breakpoints.down("sm")]: {
         padding: '12.5px 10px',
         margin: '0 6px 14px 0'
-      },
+    },
 }));
 
 export default function Option({ option, long = false, prevData, onSelect, onCheck }) {

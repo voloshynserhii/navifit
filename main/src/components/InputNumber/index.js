@@ -4,17 +4,23 @@ import { styled } from '@mui/material/styles';
 
 const StyledInput = styled(FilledInput)(({ theme, error }) => ({
     height: 115,
-    paddingLeft: 60,
-    paddingRight: 60,
-    paddingBottom: 30,
+    padding: '0 60px 30px',
+    fontFamily: 'unset',
     borderRadius: 10,
     backgroundColor: '#FFFFFF !important',
     fontSize: 50,
+    fontWeight: 600,
     color: error ? theme.palette.primary.error : 'initial',
+    [theme.breakpoints.down("md")]: {
+        height: 100,
+        padding: '20px 24px',
+        fontSize: 40,
+    },
     '.MuiFilledInput-input': {
         textAlign: 'center',
-        maxWidth: 170,
-        paddingTop: 40,
+        position: 'absolute',
+        top: '-4%',
+        left: '-12%',
     },
     '.MuiFilledInput-root' : {
         backgroundColor: '#FFFFFF',
@@ -77,7 +83,7 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
                 <StyledInput
                     value={current}
                     error={error}
-                    endAdornment={<Typography variant="h2" disabletypography="true" sx={{ fontSize: { xs: '30px', md: '40px' }, color: error ? 'primary.error' : 'primary.main', position: 'absolute', right: 60, top: 30 }} position="end">{unit}</Typography>}
+                    endAdornment={<Typography disabletypography="true" sx={{ fontWeight: 600, fontSize: { xs: '30px', md: '40px' }, color: error ? 'primary.error' : 'primary.main', position: 'absolute', right: { xs: 50, sm: 70 }, top: 30 }} position="end">{unit}</Typography>}
                     inputProps={{
                         'aria-label': placeholder,
                     }}

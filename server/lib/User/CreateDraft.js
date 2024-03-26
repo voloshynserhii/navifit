@@ -1,6 +1,7 @@
 const Functions = require('../../util/Functions')
 const db = require('../../db')
 const { countUserData } = require('./helpers')
+// const { generatePlan } = require('../../util/PlansUtil')
 
 /**
  * Post User Data
@@ -27,7 +28,8 @@ module.exports = async (req, res) => {
   if (existingUser.length) return res.json({ message: 'User with this email already exists!' })
   
   const { BMI, BMR, personalDailyKCalNeeded } = countUserData(userData)
-  
+  // await generatePlan({personalDailyKCalNeeded, ...userData})
+
   const newUser = new db.user({
     email,
     userData: { ... userData, BMI, BMR, personalDailyKCalNeeded },

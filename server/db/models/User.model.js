@@ -13,6 +13,8 @@ const UserSchema = new Schema(
       trim: true,
     },
     userData: Object,
+    currentPlan: Object, //generating every month
+    lastGenerated: Date,
     hashedPassword: { type: String, trim: true },
     salt: {
       type: String,
@@ -28,7 +30,7 @@ const UserSchema = new Schema(
   { timestamps: true }
 )
 
-const options = { collectionName: 'user' }
+// const options = { collectionName: 'user' }
 
 /**
  * Virtuals

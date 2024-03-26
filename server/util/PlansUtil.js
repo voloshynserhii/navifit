@@ -1,152 +1,269 @@
+const Functions = require('./Functions')
+const db = require('../db')
+
+const generatePlan = async ({ personalDailyKCalNeeded, vegetables, grains, desired, meat }) => {
+    try {
+        const desiredVegetables = ingredients.vegetables.filter(vegetable => Object.keys(vegetables).includes(vegetable.value))
+        const desiredGrains = ingredients.grains.filter(grain => Object.keys(grains).includes(grain.value))
+        const desiredProducts = ingredients.desiredProducts.filter(product => Object.keys(desired).includes(product.value))
+        const desiredMeat = ingredients.meat.filter(m => Object.keys(meat).includes(m.value))
+        
+        const ids = [...desiredVegetables, ...desiredGrains, ...desiredProducts, ...desiredMeat].map(ingredient => ingredient.id)
+        
+        const query = {
+            $and: [{
+                $or: [
+                    { essentialIngredientIds: { $in: ids } },
+                    { 'essentialIngredientIds.0': { $exists: false } }
+                ]
+            }]
+        }
+        
+        const calories = +personalDailyKCalNeeded
+
+        let breakfasts = await db.recipe.find({ ...query, calories: { $gt: calories * 0.2, $lt: calories * 0.35 } }).limit(28).lean().exec()
+        
+        if (breakfasts.length < 28) {
+            breakfasts = [...breakfasts, ...await db.recipe.find({ calories: { $gt: calories * 0.2, $lt: calories * 0.35 } }).limit(28 - breakfasts.length).lean().exec()]
+        }
+        
+        let branches = await db.recipe.find({ ...query, calories: { $gt: calories * 0.1, $lt: calories * 0.2 } }).limit(28).lean().exec()
+        
+        if (branches.length < 28) {
+            branches = [...branches, ...await db.recipe.find({ calories: { $gt: calories * 0.1, $lt: calories * 0.2 } }).limit(28 - branches.length).lean().exec()]
+        }
+        
+        let lunches = await db.recipe.find({ ...query, calories: { $gt: calories * 0.2, $lt: calories * 0.3 }, _id: { $nin: [...breakfasts, ...branches].map(br => br._id) } }).limit(28).lean().exec()
+        
+        if (lunches.length < 28) {
+            lunches = [...lunches, ...await db.recipe.find({ calories: { $gt: calories * 0.2, $lt: calories * 0.3 }, _id: { $nin: [...breakfasts, ...branches].map(br => br._id) } }).limit(28 - lunches.length).lean().exec()]
+        }
+        
+        let dinners = await db.recipe.find({ ...query, calories: { $gt: calories * 0.2, $lt: calories * 0.3 }, _id: { $nin: [...breakfasts, ...branches, ...lunches].map(br => br._id) } }).limit(28).lean().exec()
+        
+        if (dinners.length < 28) {
+            dinners = [ ...dinners, ...await db.recipe.find({ calories: { $gt: calories * 0.2, $lt: calories * 0.3 }, _id: { $nin: [...breakfasts, ...branches, ...lunches].map(br => br._id) } }).limit(28 - dinners.length).lean().exec()]
+        }
+        
+        console.log('breakfasts', breakfasts.length)
+        console.log('branches', branches.length)
+        console.log('lunches', lunches.length)
+        console.log('dinners', dinners.length)
+        const month = {
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
+        }
+    
+        breakfasts.forEach((breakfast, i) => {
+            let day = {}
+            day.breakfast = breakfast
+            day.branch = branches[i]
+            day.lunch = lunches[i]
+            day.dinner = dinners[i]
+    
+            if (month.week1.length < 7) {
+                month.week1.push(day)
+            } else if (month.week2.length < 7) {
+                month.week2.push(day)
+            } else if (month.week3.length < 7) {
+                month.week3.push(day)
+            } else {
+                month.week4.push(day)
+            }
+        })
+    
+        return month
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 const ingredients = {
     vegetables: [
-        { 
-            id: 'i01',
-            name: 'Broccoli' 
+        {
+            title: 'broccoli',
+            value: '1',
+            id: '1'
         },
-        { 
-            id: 'i02',
-            name: 'Cauliflower' 
+        {
+            title: 'cauliflower',
+            value: '2',
+            id: '2'
         },
-        { 
-            id: 'i03',
-            name: 'Bell pepper' 
+        {
+            title: 'asparagus',
+            value: '3',
+            id: '6'
         },
-        { 
-            id: 'i04',
-            name: 'Eggplant' 
+        {
+            title: 'bellPepper',
+            value: '4',
+            id: '3'
         },
-        { 
-            id: 'i05',
-            name: 'Cabbage' 
+        {
+            title: 'eggplant',
+            value: '4',
+            id: '4'
         },
-        { 
-            id: 'i06',
-            name: 'Asparagus' 
+        {
+            title: 'cabbage',
+            value: '5',
+            id: '5'
         },
-        { 
-            id: 'i07',
-            name: 'Spinach' 
+        {
+            title: 'spinach',
+            value: '7',
+            id: '7'
         },
-        { 
-            id: 'i08',
-            name: 'Onion' 
-        },
-    ],
-    cereals: [
-        { 
-            id: 'i11',
-            name: 'Rice' 
-        },
-        { 
-            id: 'i12',
-            name: 'Quinoa' 
-        },
-        { 
-            id: 'i13',
-            name: 'Couscous',
-            gluten: true
-        },
-        { 
-            id: 'i14',
-            name: 'Buckwheat' 
-        },
-        { 
-            id: 'i15',
-            name: 'Amaranth' 
-        },
-        { 
-            id: 'i16',
-            name: 'Cornmeal' 
-        },
-        { 
-            id: 'i17',
-            name: 'Millet groats' 
-        },
-        { 
-            id: 'i18',
-            name: 'Bulgur',
-            gluten: true
-        },
-        { 
-            id: 'i19',
-            name: 'Semolina' 
+        {
+            title: 'onion',
+            value: '8',
+            id: '8'
         },
     ],
-    products: [
-        { 
-            id: 'i21',
-            name: 'Avocado' 
+    grains: [
+        {
+            title: 'rice',
+            value: '1',
+            id: '9'
         },
-        { 
-            id: 'i22',
-            name: 'Peas' 
+        {
+            title: 'quinoa',
+            value: '2',
+            id: '10'
         },
-        { 
-            id: 'i23',
-            name: 'Mushrooms' 
+        {
+            title: 'couscous',
+            value: '3',
+            gluten: true,
+            id: '11'
         },
-        { 
-            id: 'i24',
-            name: 'Eggs',
-            nonVegan: true
+        {
+            title: 'buckwheat',
+            value: '4',
+            id: '12'
         },
-        { 
-            id: 'i25',
-            name: 'Milk',
+        {
+            title: 'amaranth',
+            value: '5',
+            id: '13'
+        },
+        {
+            title: 'cornmeal',
+            value: '6',
+            id: '14'
+        },
+        {
+            title: 'milletGroats',
+            value: '7',
+            id: '15'
+        },
+        {
+            title: 'bulgur',
+            value: '8',
+            gluten: true,
+            id: '16'
+        },
+        {
+            title: 'semolina',
+            value: '9',
+            id: '17'
+        },
+    ],
+    desiredProducts: [
+        {
+            title: 'avocado',
+            value: '1',
+            id: '18'
+        },
+        {
+            title: 'peas',
+            value: '2',
+            id: '19'
+        },
+        {
+            title: 'mushrooms',
+            value: '3',
+            id: '20'
+        },
+        {
+            title: 'milk',
+            value: '4',
             lactose: true,
-            nonVegan: true
+            nonVegan: true,
+            id: '22'
         },
-        { 
-            id: 'i26',
-            name: 'Cottage cheese',
+        {
+            title: 'hummus',
+            value: '5',
+            id: '24'
+        },
+        {
+            title: 'plantMilk',
+            value: '6',
+            id: '25'
+        },
+        {
+            title: 'eggs',
+            value: '7',
+            nonVegan: true,
+            id: '21'
+        },
+        {
+            title: 'cottageCheese',
+            value: '8',
             lactose: true,
-            nonVegan: true
-        },
-        { 
-            id: 'i27',
-            name: 'Hummus' 
-        },
-        { 
-            id: 'i28',
-            name: 'Plant milk' 
+            nonVegan: true,
+            id: '23'
         },
     ],
-    meatAndFish: [
-        { 
-            id: 'i31',
-            name: 'Turkey',
+    meat: [
+        {
+            title: 'turkey',
+            value: '1',
             nonVegetarian: true,
-            nonVegan: true
+            nonVegan: true,
+            id: '26'
         },
-        { 
-            id: 'i32',
-            name: 'Beef',
+        {
+            title: 'beef',
+            value: '2',
             nonVegetarian: true,
-            nonVegan: true
+            nonVegan: true,
+            id: '27'
         },
-        { 
-            id: 'i33',
-            name: 'Chicken',
+        {
+            title: 'chicken',
+            value: '3',
             nonVegetarian: true,
-            nonVegan: true
+            nonVegan: true,
+            id: '28'
         },
-        { 
-            id: 'i34',
-            name: 'Pork',
+        {
+            title: 'pork',
+            value: '4',
             nonVegetarian: true,
-            nonVegan: true
+            nonVegan: true,
+            id: '29'
         },
-        { 
-            id: 'i35',
-            name: 'Fish',
-            nonVegan: true
+        {
+            title: 'fish',
+            value: '5',
+            nonVegan: true,
+            id: '30'
         },
-        { 
-            id: 'i36',
-            name: 'Seafood',
-            nonVegan: true
+        {
+            title: 'seafood',
+            value: '6',
+            nonVegan: true,
+            id: '31'
         },
     ]
+}
 
+module.exports = {
+    ingredients,
+    generatePlan
 }

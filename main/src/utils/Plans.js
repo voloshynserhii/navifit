@@ -426,31 +426,31 @@ const steps = [
                 nonVegan: true
             },
             {
-                title: 'Ryba',
+                title: 'Wołowina',
                 value: '2',
-                nonVegan: true
-            },
-            {
-                title: 'Owoce morza',
-                value: '3',
+                nonVegetarian: true,
                 nonVegan: true
             },
             {
                 title: 'Kurczak',
-                value: '4',
+                value: '3',
                 nonVegetarian: true,
                 nonVegan: true
             },
             {
                 title: 'Wieprzowina',
-                value: '5',
+                value: '4',
                 nonVegetarian: true,
                 nonVegan: true
             },
             {
-                title: 'Wołowina',
+                title: 'Ryba',
+                value: '5',
+                nonVegan: true
+            },
+            {
+                title: 'Owoce morza',
                 value: '6',
-                nonVegetarian: true,
                 nonVegan: true
             },
         ]

@@ -20,17 +20,17 @@ const MyPlan = () => {
   const [plan, setPlan] = useState([]);
   const [selectedDish, setSelectedDish] = useState();
 
-  const { isAuthenticated } = state
+  const { isAuthenticated, currentUser } = state
 
   const getPlan = async () => {
-    const { month } = await api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, {})
+    const { month } = await api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, { id: currentUser?._id })
 
     if (month) setPlan(month)
   }
 
   useEffect(() => {
-    getPlan()
-  }, []);
+    if (currentUser) getPlan()
+  }, [currentUser]);
 
   useEffect(() => {
     if (!isAuthenticated) router.push('/')

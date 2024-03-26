@@ -22,6 +22,10 @@ export default function SignUpPage() {
       } else {
         localStorageSet('loggedUser', JSON.stringify(user))
         dispatch({ type })
+        dispatch({
+          type: 'CURRENT_USER',
+          payload: user,
+        });
         router.push('/account/plan')
       }
     }).catch((err) => console.log(err))

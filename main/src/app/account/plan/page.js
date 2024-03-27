@@ -19,6 +19,7 @@ const MyPlan = () => {
   const [value, setValue] = useState(0);
   const [plan, setPlan] = useState([]);
   const [selectedDish, setSelectedDish] = useState();
+  const [day, setDay] = useState()
 
   const { isAuthenticated, currentUser } = state
 
@@ -45,7 +46,7 @@ const MyPlan = () => {
 
   return (
     <main>
-      <Details selectedDish={selectedDish} />
+      <Details selectedDish={selectedDish} week={value} day={day} userId={currentUser?._id} onChangeUserPlan={(newPlan) => setPlan(newPlan)} />
       <Stack alignItems="center">
         <Typography variant="h3">My Plan</Typography>
         <Tabs
@@ -69,7 +70,10 @@ const MyPlan = () => {
             <Stack direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ width: '80vw' }}>
               {mealTypes.map(mealType => (
                 <Box key={mealType + i} sx={{ width: { xs: '100%', md: '25%' }, height: '100%' }} >
-                  <Card sx={{ width: '100%', height: '100%' }} onClick={() => setSelectedDish(day[mealType])}>
+                  <Card sx={{ width: '100%', height: '100%' }} onClick={() => {
+                      setSelectedDish(day[mealType])
+                      setDay(i)
+                    }}>
                     <CardActionArea sx={{ height: '100%' }}>
                       <CardMedia
                         component="img"

@@ -6,4 +6,5 @@ module.exports = {
   Update: require('./Update'),
   GetUsers: require('./GetUsers'),
   GetById: require('./GetById'),
+  Remove: require('./Remove'),
 }

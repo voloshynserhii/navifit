@@ -14,6 +14,7 @@ router.post('/api/user/signup', User.SignUp)
 router.get('/api/user/draft', User.GetDraft)
 router.get('/api/user/:id', User.GetById)
 router.put('/api/user/:id', User.Update)
+router.delete('/api/user/:id', User.Remove)
 
 /**
 * Module Plans

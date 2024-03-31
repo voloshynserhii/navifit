@@ -60,6 +60,7 @@ export default {
     signUp: (url, body) => requests.post({ url: `${url}/api/user/signup`, body }),
     update: (url, body) => requests.put({ url: `${url}/api/user/${body._id}`, body }),
     getUser: (url, params) => requests.get({ url: `${url}/api/user/${params.id}`, params }),
+    remove: (url, id) => requests.delete({ url: `${url}/api/user/${id}` }),
   },
   plan: {
     getPlans: (url, params) => requests.get({ url: `${url}/api/plans`, params }),

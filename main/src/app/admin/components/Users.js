@@ -8,12 +8,16 @@ import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import Form from './Forms/User'
+import PopConfirm from '../../../components/PopConfirm'
 import api from '../../../utils/api'
 
 export default function UsersTable({ data }) {
   const router = useRouter()
   const [list, setList] = useState([])
   const [editUser, setEditUser] = useState()
+  const [passwordAnchor, setPasswordAnchor] = useState()
+  const [deleteAnchor, setDeleteAnchor] = useState()
+  const [activateAnchor, setActivateAnchor] = useState()
 
   useEffect(() => {
     if (!list.length && data?.length) setList(data)
@@ -22,18 +26,51 @@ export default function UsersTable({ data }) {
   const onCancel = () => setEditUser(undefined)
   
   const onUpdate = item => {    
-    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ user }) => {
+    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ currentUser }) => {
       const newList = [...list]
-      const index = list.findIndex(item => item._id === user?._id)
+      const index = list.findIndex(item => item._id === currentUser?._id)
       
-      newList[index] = user
+      newList[index] = currentUser
       
       setList(newList)
       onCancel()
     }).catch(err => console.log(err))
   }
   
-  const onRemove = (id) => {}
+  const onOpenPopConfirm = (target, type) => {
+    if (type === 'delete') {
+      setDeleteAnchor(target)
+    }
+    if (type === 'activate') {
+      setActivateAnchor(target)
+    }
+    if (type === 'password') {
+      setPasswordAnchor(target)
+    }
+  }
+  
+  const onConfirmResetPassword = id => {
+    setPasswordAnchor(undefined)
+  }
+  
+  const onConfirmDelete = id => {
+    api.user.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+      setList(prev => prev.filter(user => user._id !== id))
+      setDeleteAnchor(undefined)
+    })
+  }
+  
+  const onConfirmChangeActive = (id, isDraft) => {
+    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: id, isDraft }).then(({ currentUser }) => {
+      const newList = [...list]
+      const index = list.findIndex(item => item._id === currentUser?._id)
+      
+      newList[index] = currentUser
+      
+      setList(newList)
+      setActivateAnchor(undefined)
+    })
+  }
   
   if (!data) return <CircularProgress />
   
@@ -73,27 +110,30 @@ export default function UsersTable({ data }) {
               <TableCell align="right">{row.userData.personalDailyKCalNeeded}</TableCell>
               <TableCell align="right">{row.userData.weight - row.userData.desiredWeight}</TableCell>
               <TableCell align="right">{row.userData.desiredDate}</TableCell>
-              <TableCell align="right">
+              <TableCell align="right" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
                 <Tooltip title="Reset password">
-                  <IconButton>
+                  <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'password')}>
                     <ContactMailIcon />
                   </IconButton>
                 </Tooltip>
+                <PopConfirm text='Are you sure you want to reset user password?' anchor={passwordAnchor} onConfirm={() => onConfirmResetPassword(row._id)} onCancel={() => setPasswordAnchor(undefined)} />
                 <Tooltip title={row.isDraftUser ? 'Activate' : 'Deactivate'}>
-                  <IconButton>
+                  <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'activate')}>
                     {!row.isDraftUser ? <ToggleOnIcon /> : <ToggleOffIcon />}
                   </IconButton>
                 </Tooltip>
+                <PopConfirm text={`Are you sure you want to ${row.isDraftUser ? 'Activate' : 'Deactivate'} user?`} anchor={activateAnchor} onConfirm={() => onConfirmChangeActive(row._id, row.isDraftUser)} onCancel={() => setActivateAnchor(undefined)} />
                 <Tooltip title="Edit">
                   <IconButton onClick={() => setEditUser(row)}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton onClick={() => onRemove(row._id)}>
+                  <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'delete')}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
+                <PopConfirm text='Are you sure you want to delete user?' anchor={deleteAnchor} onConfirm={() => onConfirmDelete(row._id)} onCancel={() => setDeleteAnchor(undefined)} />
               </TableCell>
             </TableRow>
           ))}

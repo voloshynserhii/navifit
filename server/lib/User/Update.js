@@ -7,7 +7,7 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async (req, res) => {
-  const { _id: id, email, name, userData, newRecipeId, oldRecipeId, week, day } = req.body
+  const { _id: id, email, name, userData, newRecipeId, oldRecipeId, week, day, isDraft } = req.body
 
   if (Functions.isNull(id) || !Functions.isId(id)) {
     return res.send({
@@ -15,13 +15,13 @@ module.exports = async (req, res) => {
     });
   }
 
-  if (Functions.isNull(newRecipeId) || !Functions.isId(newRecipeId)) {
+  if (!Functions.isNull(newRecipeId) && !Functions.isId(newRecipeId)) {
     return res.send({
       message: 'No new recipe id provided!'
     });
   }
 
-  if (Functions.isNull(oldRecipeId) || !Functions.isId(oldRecipeId)) {
+  if (!Functions.isNull(oldRecipeId) && !Functions.isId(oldRecipeId)) {
     return res.send({
       message: 'No old recipe id provided!'
     });
@@ -36,6 +36,10 @@ module.exports = async (req, res) => {
       });
     }
 
+    if (!Functions.isNull(isDraft)) {
+      currentUser.isDraftUser = !currentUser.isDraftUser 
+    }
+    
     if (newRecipeId && oldRecipeId) {
       const newRecipe = await db.recipe.findById(newRecipeId).lean().exec();
       const { currentPlan } = currentUser
@@ -50,9 +54,17 @@ module.exports = async (req, res) => {
       currentWeek[mealType] = newRecipe
       
       currentUser.currentPlan = newPlan
-    } else {
+    } 
+    
+    if (name) {
       currentUser.name = name
+    }
+    
+    if (email) {
       currentUser.email = email
+    }
+    
+    if (userData) {
       currentUser.userData = userData
     }
 

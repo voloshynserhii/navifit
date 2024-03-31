@@ -5,4 +5,5 @@ module.exports = {
   Update: require('./Update'),
   Update: require('./Update'),
   GetUsers: require('./GetUsers'),
+  GetById: require('./GetById'),
 }

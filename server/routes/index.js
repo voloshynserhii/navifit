@@ -12,6 +12,7 @@ const router = express.Router()
 router.post('/api/user/answer', User.CreateDraft)
 router.post('/api/user/signup', User.SignUp)
 router.get('/api/user/draft', User.GetDraft)
+router.get('/api/user/:id', User.GetById)
 router.put('/api/user/:id', User.Update)
 
 /**

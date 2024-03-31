@@ -15,6 +15,7 @@ const AppReducer = (state, action) => {
       return {
         ...state,
         currentUser: action?.currentUser || action?.payload,
+        isAuthenticated: true,
       };
     case 'USER_DATA':
       return {

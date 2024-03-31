@@ -59,6 +59,7 @@ export default {
     sendAnswers: (url, body) => requests.post({ url: `${url}/api/user/answer`, body }),
     signUp: (url, body) => requests.post({ url: `${url}/api/user/signup`, body }),
     update: (url, body) => requests.put({ url: `${url}/api/user/${body._id}`, body }),
+    getUser: (url, params) => requests.get({ url: `${url}/api/user/${params.id}`, params }),
   },
   plan: {
     getPlans: (url, params) => requests.get({ url: `${url}/api/plans`, params }),

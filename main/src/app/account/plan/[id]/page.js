@@ -1,9 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { Box, Card, CardContent, CardMedia, CardActionArea, Divider, Stack, Tabs, Tab, Typography } from '@mui/material';
 import Details from '../components/Details'
 import api from '../../../../utils/api'
+import { localStorageGet } from '../../../../utils/localStorage';
 import { useAppStore } from '../../../../store';
 
 function a11yProps(index) {
@@ -15,26 +16,33 @@ function a11yProps(index) {
 
 const MyPlan = () => {
   const router = useRouter()
+  const { id } = useParams()
   const [state, dispatch] = useAppStore();
   const [value, setValue] = useState(0);
   const [plan, setPlan] = useState([]);
   const [selectedDish, setSelectedDish] = useState();
+  const [day, setDay] = useState()
+  const { currentUser } = state
 
-  const { isAdmin } = state
+  const getUser = async () => {
+    const admin = localStorageGet('adminUser')
 
-  const getPlan = async () => {
-    const { month } = await api.plan.getOptions(process.env.NEXT_PUBLIC_DB_HOST, {})
+    if (admin || currentUser) {
+      const { user } = await api.user.getUser(process.env.NEXT_PUBLIC_DB_HOST, { id })
 
-    if (month) setPlan(month)
+      if (user.currentPlan) setPlan(user.currentPlan)
+      dispatch({
+        type: 'CURRENT_USER',
+        payload: user,
+      });
+    } else {
+      router.push('/')
+    }
   }
 
   useEffect(() => {
-    if (!isAdmin) router.push('/')
-  }, [isAdmin])
-
-  useEffect(() => {
-    getPlan()
-  }, []);
+    getUser()
+  }, [id])
 
   const handleChange = (_, newValue) => {
     setValue(newValue);
@@ -45,7 +53,7 @@ const MyPlan = () => {
 
   return (
     <main>
-      <Details selectedDish={selectedDish} />
+      <Details selectedDish={selectedDish} week={value} day={day} userId={currentUser?._id} onChangeUserPlan={(newPlan) => setPlan(newPlan)} />
       <Stack alignItems="center">
         <Typography variant="h3">My Plan</Typography>
         <Tabs
@@ -69,7 +77,10 @@ const MyPlan = () => {
             <Stack direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ width: '80vw' }}>
               {mealTypes.map(mealType => (
                 <Box key={mealType + i} sx={{ width: { xs: '100%', md: '25%' }, height: '100%' }} >
-                  <Card sx={{ width: '100%', height: '100%' }} onClick={() => setSelectedDish(day[mealType])}>
+                  <Card sx={{ width: '100%', height: '100%' }} onClick={() => {
+                    setSelectedDish(day[mealType])
+                    setDay(i)
+                  }}>
                     <CardActionArea sx={{ height: '100%' }}>
                       <CardMedia
                         component="img"

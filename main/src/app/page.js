@@ -29,7 +29,7 @@ export default function Home() {
         payload: user,
       })
 
-      router.push('/account/plan')
+      router.push(`/account/plan/${user._id}`)
     }
     
     return () => {

@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useRouter } from 'next/navigation'
 import { Accordion, AccordionSummary, AccordionDetails, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer, Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
 import { useEventSwitchDarkMode } from '../../hooks';
+import { localStorageGet } from '../../utils/localStorage';
 
 const menu = [
     {
@@ -41,11 +42,20 @@ const CustomAccordion = styled((props) => (
 
 export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
     const [globalState, dispatch] = useAppStore();
-    const { isAuthenticated } = globalState;
+    const { isAuthenticated, currentUser } = globalState;
     const router = useRouter();
     const [state, setState] = useState({
         right: false,
     });
+    const [adminUser, setAdminUser] = useState()
+
+    useEffect(() => {
+        const admin = localStorageGet('adminUser')
+
+        if (admin) {
+            setAdminUser(admin)
+        }
+    }, [])
 
     const onSwitchDarkMode = useEventSwitchDarkMode();
 
@@ -81,7 +91,7 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => router.push('/account/plan', { scroll: false })}>
+                                    <ListItemButton onClick={() => router.push(`/account/plan/${currentUser._id}`, { scroll: false })}>
                                         <ListItemText primary='Mój plan posiłków' />
                                     </ListItemButton>
                                 </ListItem>
@@ -90,13 +100,20 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                                         <ListItemText primary='Moja subskrypcja' />
                                     </ListItemButton>
                                 </ListItem>
-                                <ListItem disablePadding>
+                                {!adminUser ? <ListItem disablePadding>
                                     <ListItemButton onClick={() => {
                                         dispatch({ type: 'LOG_OUT' })
+                                        router.push('/', { scroll: false })
                                     }}>
                                         <ListItemText primary='Wyloguj' />
                                     </ListItemButton>
-                                </ListItem>
+                                </ListItem> : (
+                                    <ListItem disablePadding>
+                                        <ListItemButton onClick={() => router.push('/admin', { scroll: false })}>
+                                            <ListItemText primary='Go To Admin Panel' />
+                                        </ListItemButton>
+                                    </ListItem>
+                                )}
                             </AccordionDetails></div>) : (
                         <ListItem disablePadding>
                             <ListItemButton onClick={() => router.push('/signup', { scroll: false })}>

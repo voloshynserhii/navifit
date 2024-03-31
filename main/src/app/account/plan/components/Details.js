@@ -17,7 +17,7 @@ const style = {
     overflow: 'scroll'
 }
 
-export default function SpringModal({ selectedDish, week, day, userId, onChangeUserPlan }) {
+export default function DetailsModal({ selectedDish, week, day, userId, onChangeUserPlan }) {
     const [open, setOpen] = useState(false)
     const [availableRecipes, setAvailableRecipes] = useState([])
     const [editPlan, setEditPlan] = useState(false)

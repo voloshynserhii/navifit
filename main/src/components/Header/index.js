@@ -11,7 +11,7 @@ const Header = () => {
     const { theme } = useUserStore();
     const isDarkTheme = theme === 'dark';
 
-    if (state.isAdmin) return null
+    // if (state.isAdmin) return null
 
     return (
         <header>

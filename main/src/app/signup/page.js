@@ -26,7 +26,7 @@ export default function SignUpPage() {
           type: 'CURRENT_USER',
           payload: user,
         });
-        router.push('/account/plan')
+        router.push(`/account/plan/${user._id}`)
       }
     }).catch((err) => console.log(err))
   }

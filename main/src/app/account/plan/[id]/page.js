@@ -22,19 +22,19 @@ const MyPlan = () => {
   const [plan, setPlan] = useState([]);
   const [selectedDish, setSelectedDish] = useState();
   const [day, setDay] = useState()
-  const { currentUser } = state
+  const { isAdmin, currentUser } = state
 
-  const getUser = async () => {
-    const admin = localStorageGet('adminUser')
-
-    if (admin || currentUser) {
+  const getUser = async () => {    
+    if (isAdmin || currentUser) {
       const { user } = await api.user.getUser(process.env.NEXT_PUBLIC_DB_HOST, { id })
 
       if (user.currentPlan) setPlan(user.currentPlan)
+      
       dispatch({
         type: 'CURRENT_USER',
         payload: user,
       });
+
     } else {
       router.push('/')
     }

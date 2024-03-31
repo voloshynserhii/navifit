@@ -40,24 +40,25 @@ const CustomAccordion = styled((props) => (
     },
 }));
 
-export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
+export default function SwipeableTemporaryDrawer() {
     const [globalState, dispatch] = useAppStore();
-    const { isAuthenticated, currentUser } = globalState;
+    const { isAdmin, isAuthenticated, currentUser } = globalState;
     const router = useRouter();
     const [state, setState] = useState({
         right: false,
     });
-    const [adminUser, setAdminUser] = useState()
-
+    
     useEffect(() => {
         const admin = localStorageGet('adminUser')
 
         if (admin) {
-            setAdminUser(admin)
+            dispatch({
+                type: 'ADMIN_MODE_ON',
+            });
         }
     }, [])
 
-    const onSwitchDarkMode = useEventSwitchDarkMode();
+    // const onSwitchDarkMode = useEventSwitchDarkMode();
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (
@@ -100,7 +101,7 @@ export default function SwipeableTemporaryDrawer({ isDarkTheme = false }) {
                                         <ListItemText primary='Moja subskrypcja' />
                                     </ListItemButton>
                                 </ListItem>
-                                {!adminUser ? <ListItem disablePadding>
+                                {!isAdmin ? <ListItem disablePadding>
                                     <ListItemButton onClick={() => {
                                         dispatch({ type: 'LOG_OUT' })
                                         router.push('/', { scroll: false })

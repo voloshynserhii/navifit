@@ -29,6 +29,11 @@ export default function Admin() {
 
     useEffect(() => {
         dispatch({ type: 'ADMIN_MODE_ON' })
+        
+        dispatch({ 
+            type: 'CURRENT_USER',
+            payload: undefined,
+         })
 
         const admin = localStorageGet('adminUser')
 

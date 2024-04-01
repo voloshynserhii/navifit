@@ -47,7 +47,7 @@ export default function SwipeableTemporaryDrawer() {
     const [state, setState] = useState({
         right: false,
     });
-    
+
     useEffect(() => {
         const admin = localStorageGet('adminUser')
 

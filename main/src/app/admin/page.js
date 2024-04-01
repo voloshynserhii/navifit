@@ -76,7 +76,7 @@ export default function Admin() {
         }
 
         if (newValue === 1) {
-            const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST)
             setData(newData)
         }
         
@@ -86,6 +86,7 @@ export default function Admin() {
         }
     };
     
+    //create user!!!!
     const handleCreateUser = (newRecipe) => {
         api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ user }) => {
             setData(prev => ([...prev, user]))
@@ -93,9 +94,9 @@ export default function Admin() {
           }).catch(err => console.log(err))
     }
     
-    const handleCreateRecipe = (newRecipe) => {
-        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ recipe }) => {
-            setData(prev => ([...prev, recipe]))
+    const handleCreateRecipe = (recipe) => {
+        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, recipe).then(({ newRecipe }) => {
+            setData(prev => ([...prev, newRecipe]))
             setCreateMode(false)
           }).catch(err => console.log(err))
     }

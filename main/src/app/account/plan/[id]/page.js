@@ -4,7 +4,6 @@ import { useRouter, useParams } from 'next/navigation'
 import { Box, Card, CardContent, CardMedia, CardActionArea, Divider, Stack, Tabs, Tab, Typography } from '@mui/material';
 import Details from '../components/Details'
 import api from '../../../../utils/api'
-import { localStorageGet } from '../../../../utils/localStorage';
 import { useAppStore } from '../../../../store';
 
 function a11yProps(index) {
@@ -17,7 +16,7 @@ function a11yProps(index) {
 const MyPlan = () => {
   const router = useRouter()
   const { id } = useParams()
-  const [state, dispatch] = useAppStore();
+  const [state] = useAppStore();
   const [value, setValue] = useState(0);
   const [plan, setPlan] = useState([]);
   const [selectedDish, setSelectedDish] = useState();
@@ -29,12 +28,6 @@ const MyPlan = () => {
       const { user } = await api.user.getUser(process.env.NEXT_PUBLIC_DB_HOST, { id })
 
       if (user.currentPlan) setPlan(user.currentPlan)
-      
-      dispatch({
-        type: 'CURRENT_USER',
-        payload: user,
-      });
-
     } else {
       router.push('/')
     }

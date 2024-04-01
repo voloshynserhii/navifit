@@ -4,7 +4,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { TableVirtuoso } from 'react-virtuoso';
 import Form from './Forms/Recipe'
+import PopConfirm from '../../../components/PopConfirm'
 import api from '../../../utils/api'
+import { ingredients } from '../../../utils/Plans'
+
+const flattenedIngredients =  [] 
+
+Object.values(ingredients).forEach(arr => {
+  flattenedIngredients.push(...arr)
+})
 
 const columns = [
   {
@@ -40,6 +48,12 @@ const columns = [
     width: 120,
     label: 'Time\u00A0(min)',
     dataKey: 'cookingTime',
+    numeric: true,
+  },
+  {
+    width: 100,
+    label: 'Essential Ingredients',
+    dataKey: 'essentialIngredientIds',
     numeric: true,
   },
 ];
@@ -79,17 +93,25 @@ function fixedHeaderContent() {
   );
 }
 
-function rowContent(_index, row, onEdit, onDelete) {
+function rowContent(_index, row, { removeAnchor, onEdit, onOpenPopConfirm, onConfirmRemoveRecipe, onCancelRemoveRecipe }) {
   return (
     <Fragment>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          align={column.numeric || false ? 'right' : 'left'}
-        >
-          {row[column?.dataKey]}
-        </TableCell>
-      ))}
+      {columns.map((column) => {
+        let val
+        
+        if(Array.isArray(row[column?.dataKey])) {
+          val = flattenedIngredients.filter(ingredient => row[column?.dataKey].includes(ingredient.id)).map(item => item.title).join(', ')
+        }
+        
+        return (
+          <TableCell
+            key={column.dataKey}
+            align={column.numeric || false ? 'right' : 'left'}
+          >
+            {val ? val : row[column?.dataKey]}
+          </TableCell>
+        )
+      })}
       <TableCell align='right'>
         <Tooltip title="Edit">
           <IconButton onClick={() => onEdit(row)}>
@@ -97,10 +119,11 @@ function rowContent(_index, row, onEdit, onDelete) {
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton onClick={() => onDelete(row._id)}>
+          <IconButton onClick={(e) => onOpenPopConfirm(e.target)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
+        <PopConfirm text='Are you sure you want to delete the recipe?' anchor={removeAnchor} onConfirm={() => onConfirmRemoveRecipe(row._id)} onCancel={onCancelRemoveRecipe} />
       </TableCell>
     </Fragment>
   );
@@ -109,40 +132,42 @@ function rowContent(_index, row, onEdit, onDelete) {
 export default function ReactVirtualizedTable({ data }) {
   const [list, setList] = useState([])
   const [editRow, setEditRow] = useState()
-  
+  const [removeAnchor, setRemoveAnchor] = useState()
+
   useEffect(() => {
     if (!list.length && data?.length) setList(data)
   }, [list, data])
 
   const onCancel = () => setEditRow(undefined)
-  
-  const onUpdate = item => {    
+
+  const onUpdate = item => {
     api.admin.updateRecipe(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ recipe }) => {
       const newList = [...list]
       const index = list.findIndex(item => item._id === recipe._id)
-      
+
       newList[index] = recipe
-      
+
       setList(newList)
       onCancel()
     }).catch(err => console.log(err))
   }
-  
+
   const onRemoveRecipe = id => {
     api.admin.removeRecipe(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
       const newList = list.filter(recipe => recipe._id !== id)
-      
+
       setList(newList)
       onCancel()
+      setRemoveAnchor(undefined)
     }).catch(err => console.log(err))
   }
-  
+
   if (!data) return <CircularProgress />
-  
+
   if (!data?.length) return <>No recipes found</>
-  
+
   if (editRow) return <Form item={editRow} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
-  
+
   return (
     <Paper style={{ height: '70vh', width: '100%', position: 'relative' }}>
       <Typography sx={{ position: 'absolute', top: '-50px' }}>Total: {list.length} recipes</Typography>
@@ -150,7 +175,13 @@ export default function ReactVirtualizedTable({ data }) {
         data={list}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
-        itemContent={(i, r) => rowContent(i, r, (row) => setEditRow(row), onRemoveRecipe)}
+        itemContent={(i, r) => rowContent(i, r, {
+          removeAnchor,
+          onEdit: (row) => setEditRow(row),
+          onOpenPopConfirm: (target) => setRemoveAnchor(target),
+          onConfirmRemoveRecipe: onRemoveRecipe,
+          onCancelRemoveRecipe: () => setRemoveAnchor(undefined)
+        })}
       />
     </Paper>
   );

@@ -10,9 +10,11 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import Form from './Forms/User'
 import PopConfirm from '../../../components/PopConfirm'
 import api from '../../../utils/api'
+import { useAppStore } from '../../../store';
 
 export default function UsersTable({ data }) {
   const router = useRouter()
+  const [state, dispatch] = useAppStore();
   const [list, setList] = useState([])
   const [editUser, setEditUser] = useState()
   const [passwordAnchor, setPasswordAnchor] = useState()
@@ -72,6 +74,15 @@ export default function UsersTable({ data }) {
     })
   }
   
+  const onOpenUserAccount = user => {
+    dispatch({
+      type: 'CURRENT_USER',
+      payload: user,
+    });
+    
+    router.push(`/account/plan/${user._id}`)
+  }
+  
   if (!data) return <CircularProgress />
   
   if (!data?.length) return <>No users found</>
@@ -100,7 +111,7 @@ export default function UsersTable({ data }) {
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
             >
-              <TableCell component="th" scope="row" onClick={() => !row.isDraftUser && router.push(`/account/plan/${row._id}`)}>
+              <TableCell component="th" scope="row" onClick={() => !row.isDraftUser && onOpenUserAccount(row)}>
                 {row.email}
               </TableCell>
               <TableCell align="right">{row.isDraftUser ? 'NO' : 'YES'}</TableCell>

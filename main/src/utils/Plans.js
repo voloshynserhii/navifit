@@ -513,4 +513,187 @@ const filterIngredients = (restrictions, list = []) => {
     return newList
 }
 
-export { steps, filterIngredients }
+const ingredients = {
+    vegetables: [
+        {
+            title: 'broccoli',
+            value: '1',
+            id: '1'
+        },
+        {
+            title: 'cauliflower',
+            value: '2',
+            id: '2'
+        },
+        {
+            title: 'asparagus',
+            value: '3',
+            id: '6'
+        },
+        {
+            title: 'bellPepper',
+            value: '4',
+            id: '3'
+        },
+        {
+            title: 'eggplant',
+            value: '4',
+            id: '4'
+        },
+        {
+            title: 'cabbage',
+            value: '5',
+            id: '5'
+        },
+        {
+            title: 'spinach',
+            value: '7',
+            id: '7'
+        },
+        {
+            title: 'onion',
+            value: '8',
+            id: '8'
+        },
+    ],
+    grains: [
+        {
+            title: 'rice',
+            value: '1',
+            id: '9'
+        },
+        {
+            title: 'quinoa',
+            value: '2',
+            id: '10'
+        },
+        {
+            title: 'couscous',
+            value: '3',
+            gluten: true,
+            id: '11'
+        },
+        {
+            title: 'buckwheat',
+            value: '4',
+            id: '12'
+        },
+        {
+            title: 'amaranth',
+            value: '5',
+            id: '13'
+        },
+        {
+            title: 'cornmeal',
+            value: '6',
+            id: '14'
+        },
+        {
+            title: 'milletGroats',
+            value: '7',
+            id: '15'
+        },
+        {
+            title: 'bulgur',
+            value: '8',
+            gluten: true,
+            id: '16'
+        },
+        {
+            title: 'semolina',
+            value: '9',
+            id: '17'
+        },
+    ],
+    desiredProducts: [
+        {
+            title: 'avocado',
+            value: '1',
+            id: '18'
+        },
+        {
+            title: 'peas',
+            value: '2',
+            id: '19'
+        },
+        {
+            title: 'mushrooms',
+            value: '3',
+            id: '20'
+        },
+        {
+            title: 'milk',
+            value: '4',
+            lactose: true,
+            nonVegan: true,
+            id: '22'
+        },
+        {
+            title: 'hummus',
+            value: '5',
+            id: '24'
+        },
+        {
+            title: 'plantMilk',
+            value: '6',
+            id: '25'
+        },
+        {
+            title: 'eggs',
+            value: '7',
+            nonVegan: true,
+            id: '21'
+        },
+        {
+            title: 'cottageCheese',
+            value: '8',
+            lactose: true,
+            nonVegan: true,
+            id: '23'
+        },
+    ],
+    meat: [
+        {
+            title: 'turkey',
+            value: '1',
+            nonVegetarian: true,
+            nonVegan: true,
+            id: '26'
+        },
+        {
+            title: 'beef',
+            value: '2',
+            nonVegetarian: true,
+            nonVegan: true,
+            id: '27'
+        },
+        {
+            title: 'chicken',
+            value: '3',
+            nonVegetarian: true,
+            nonVegan: true,
+            id: '28'
+        },
+        {
+            title: 'pork',
+            value: '4',
+            nonVegetarian: true,
+            nonVegan: true,
+            id: '29'
+        },
+        {
+            title: 'fish',
+            value: '5',
+            nonVegan: true,
+            id: '30'
+        },
+        {
+            title: 'seafood',
+            value: '6',
+            nonVegan: true,
+            id: '31'
+        },
+    ]
+}
+
+export { steps, filterIngredients, ingredients }

@@ -1,16 +1,28 @@
 import { Fragment, useState } from 'react';
-import { Grid, Button } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import { Grid, Button, TextField, Typography } from '@mui/material';
+import Autocomplete from '../../../../components/Autocomplete'
+import { ingredients } from '../../../../utils/Plans'
 
 export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     const [recipe, setRecipe] = useState(item || {})
 
+    const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds } = recipe
+    
     const editFormHandler = (e) => {
         const { name, value } = e.target
+        
         setRecipe((prev) => ({
             ...prev,
             [name]: value
+        }))
+    }
+    
+    const selectEssentialIngredientsHandler = selected => {
+        const ids = selected.map(item => item.id)
+        
+        setRecipe((prev) => ({
+            ...prev,
+            essentialIngredientIds: ids
         }))
     }
 
@@ -24,6 +36,10 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
         return undefined
     }
 
+    const disabled = !name || !description || !fats || !carbs || !proteins || !cookingTime || !calories
+    
+    const preparedIngredients = [...ingredients.vegetables, ...ingredients.grains, ...ingredients.desiredProducts, ...ingredients.meat]
+    
     return (
         <Fragment>
             <Typography variant="h2" gutterBottom>
@@ -32,7 +48,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
-                        value={recipe.name || ''}
+                        value={name || ''}
                         multiline
                         label="Title"
                         name="name"
@@ -43,7 +59,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        value={recipe.description || ''}
+                        value={description || ''}
                         multiline
                         maxRows={5}
                         label="Description"
@@ -55,7 +71,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.fats || ''}
+                        value={fats || ''}
                         multiline
                         label="Fats"
                         name="fats"
@@ -66,7 +82,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.carbs || ''}
+                        value={carbs || ''}
                         multiline
                         label="Carbs"
                         name="carbs"
@@ -77,7 +93,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={2} sm={1}>
                     <TextField
-                        value={recipe.proteins || ''}
+                        value={proteins || ''}
                         multiline
                         label="Proteins"
                         name="proteins"
@@ -88,7 +104,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={3} sm={2}>
                     <TextField
-                        value={recipe.cookingTime || ''}
+                        value={cookingTime || ''}
                         label="Cooking Time"
                         name="cookingTime"
                         fullWidth
@@ -98,7 +114,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={3} sm={2}>
                     <TextField
-                        value={recipe.calories || ''}
+                        value={calories || ''}
                         label="Calories"
                         name="calories"
                         fullWidth
@@ -106,9 +122,15 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                <Grid item xs={6} sm={3}>
+                    <Autocomplete data={preparedIngredients} selected={essentialIngredientIds || []} onSelect={selectEssentialIngredientsHandler} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    Ingredients
+                </Grid>
                 <Grid item xs={12}>
                     <Button sx={{ marginRight: 5 }} onClick={onCancel}>Cancel</Button>
-                    <Button variant='contained' onClick={confirmHandler}>Confirm</Button>
+                    <Button variant='contained' disabled={disabled} onClick={confirmHandler}>Confirm</Button>
                 </Grid>
             </Grid>
         </Fragment>

@@ -90,9 +90,8 @@ export default function Admin() {
         }
     };
     
-    //create user!!!!
-    const handleCreateUser = (newRecipe) => {
-        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, newRecipe).then(({ user }) => {
+    const handleCreateUser = (newUser) => {
+        api.user.create(process.env.NEXT_PUBLIC_DB_HOST, newUser).then(({ user }) => {
             setData(prev => ([...prev, user]))
             setCreateMode(false)
           }).catch(err => console.log(err))
@@ -114,7 +113,7 @@ export default function Admin() {
 
     if (createMode) return (
         <main>
-            <Stack sx={{ padding: 5 }}>
+            <Stack sx={{ padding: 5, width: '100%' }}>
                 {value === 0 && <UserForm onCancel={() => setCreateMode(false)} onCreate={handleCreateUser} />}
                 {value === 1 && <RecipeForm onCancel={() => setCreateMode(false)} onCreate={handleCreateRecipe} />}
                 {value === 2 && <PlanForm onCancel={() => setCreateMode(false)} onCreate={handleCreatePlan} onUpdate={(newPlan) => console.log(newPlan)} />}

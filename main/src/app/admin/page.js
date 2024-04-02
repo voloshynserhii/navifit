@@ -28,6 +28,10 @@ export default function Admin() {
     }
 
     useEffect(() => {
+        const container = document.querySelector('main')
+        
+        if (container) container.style.height = 'auto'
+        
         dispatch({ type: 'ADMIN_MODE_ON' })
         
         dispatch({ 

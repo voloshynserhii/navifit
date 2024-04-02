@@ -29,7 +29,6 @@ export default function CustomAutocomplete({ data = [], selected, onSelect }) {
                     </li>
                 )
             }}
-            style={{ width: 500 }}
             renderInput={(params) => (
                 <TextField {...params} label="Essential ingredients" placeholder="Choose Essential ingredients" />
             )}

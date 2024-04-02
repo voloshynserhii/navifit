@@ -7,7 +7,7 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async(req, res) => {
-    const { recipeId, calories, essentialIngredientIds, pagination, limit } = req.query
+    const { recipeId, calories, essentialIngredientIds, limit } = req.query
 
     try {
         const query = {
@@ -27,7 +27,7 @@ module.exports = async(req, res) => {
             }]
         }
         
-        const data = await db.recipe.find(query).limit(limit).lean().exec()
+        const data = await db.recipe.find(query).sort({ updatedAt: -1 }).limit(limit).lean().exec()
         
         res.json({ data })
     } catch (err) {

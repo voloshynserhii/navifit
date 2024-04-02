@@ -7,6 +7,7 @@ import Form from './Forms/Recipe'
 import PopConfirm from '../../../components/PopConfirm'
 import api from '../../../utils/api'
 import { ingredients } from '../../../utils/Plans'
+import { getTitle } from '../helpers'
 
 const flattenedIngredients =  [] 
 
@@ -100,7 +101,7 @@ function rowContent(_index, row, { removeAnchor, onEdit, onOpenPopConfirm, onCon
         let val
         
         if(Array.isArray(row[column?.dataKey])) {
-          val = flattenedIngredients.filter(ingredient => row[column?.dataKey].includes(ingredient.id)).map(item => item.title).join(', ')
+          val = flattenedIngredients.filter(ingredient => row[column?.dataKey].includes(ingredient.id)).map(item => getTitle(item.title)).join(', ')
         }
         
         return (

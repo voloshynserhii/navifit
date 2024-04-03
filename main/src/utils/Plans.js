@@ -85,6 +85,7 @@ const steps = [
         title: 'Zmiana zachowania a restrykcyjna dieta',
         subTitle: 'Pracujemy poprzez tworzenie nawyków, co zapewnia długotrwałe rezultaty',
         value: 'diet',
+        isGraphic: true
     },
     {
         title: 'Czy odczuwasz dolegliwości żołądkowe w ciągu dnia?',

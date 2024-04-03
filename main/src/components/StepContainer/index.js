@@ -2,6 +2,7 @@ import { Container, Grid, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Progress from '../Progress'
 import UserPermission from '../UserPermission'
+import StyledDescription from './StyledDescription';
 import styles from './index.module.css'
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
@@ -40,7 +41,7 @@ const getFormattedQuestion = (question) => {
     return words
 }
 
-export default function StepContainer({ step = 1, question = '', description = '', totalSteps, children, onStepBack }) {
+export default function StepContainer({ styled, step = 1, question = '', description = '', totalSteps, children, onStepBack }) {
     return (
         <Container>
             <DemoPaper className={styles.container} sx={{ minHeight: { md: '60vh' } }}>
@@ -63,7 +64,8 @@ export default function StepContainer({ step = 1, question = '', description = '
                                     </Typography>
                                 ))}
                             </Typography>
-                            {description && <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}>{description}</Typography>}
+                            {description && !styled && <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}>{description}</Typography>}
+                            {description && styled && <StyledDescription text={description}/>}
                         </Stack>
 
                         {step === 1 && <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>

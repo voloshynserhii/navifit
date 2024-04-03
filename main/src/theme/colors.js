@@ -6,7 +6,7 @@ const COLOR_PRIMARY = {
   black2: 'rgba(28, 34, 39, 1)',
   error: 'rgba(255, 23, 68, 1)',
   bodyGrey: 'rgba(117, 117, 117, 1)',
-  grey2: 'rgba(66, 66, 66, 1)'
+  grey2: 'rgba(66, 66, 66, 1)',
 };
 
 const COLOR_SECONDARY = {

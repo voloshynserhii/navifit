@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Grid, Stack } from '@mui/material'
+import { Box, Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import Button from './components/Button'
 import Loader from './components/Loader'
@@ -7,6 +7,7 @@ import DatePicker from '../../components/DatePicker'
 import StepContainer from '../../components/StepContainer'
 import Option from '../../components/Option'
 import InputNumber from '../../components/InputNumber'
+import Graphic from '../../components/Icons/Grachic'
 
 import { useAppStore } from '../../store';
 import { steps, filterIngredients } from '../../utils/Plans'
@@ -113,12 +114,13 @@ const Steps = ({ option = {}, onGetBack }) => {
 
     return (
         <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
-            <StepContainer step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
+            <StepContainer styled={currentStep.isGraphic} step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
                 <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
                     <Stack
                         justifyContent='center'
                         sx={{ height: { md: '70vh' } }}
                     >
+                        {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
                         {currentStep.long ? (
                             <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
                                 {list.map(option => (

@@ -13,6 +13,11 @@ let defaultConfig = {
     port: process.env.PORT || 8080,
     env: process.env.NODE_ENV,
   },
+  
+  mailer: {
+    email: process.env.EMAIL_SENDER,
+    password: process.env.EMAIL_PASSWORD,
+  },
 
   /**
    * Setting MongoDB

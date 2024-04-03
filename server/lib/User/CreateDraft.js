@@ -1,6 +1,8 @@
 const Functions = require('../../util/Functions')
 const db = require('../../db')
+const config = require('../../config')
 const { countUserData } = require('./helpers')
+const { transporter } = require('../../util/mailer')
 // const { generatePlan } = require('../../util/PlansUtil')
 
 /**
@@ -39,6 +41,22 @@ module.exports = async (req, res) => {
   newUser
     .save()
     .then(() => {
+      
+      const mailOptions = {
+        from: config.mailer.email,
+        to: email,
+        subject: 'Welcome to Navifit!',
+        html:'<div>You are registered in Navifit!!! Please, confirm your registration</div>'
+      }
+      
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Email sent', info)
+        }
+      })
+    
       return res.json({ user: newUser })
     })
     .catch((err) => console.log(err))

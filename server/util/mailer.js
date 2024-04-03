@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
     secure: true, //ssl
     auth: {
         user: 'navifit@mail.ru',
-        pass: '5791huskyKEISY',
+        pass: 'Zja6Xk2Wez9cZ5TepPai',
         // type: 'LOGIN',
     }
 });

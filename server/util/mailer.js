@@ -12,8 +12,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-    from: 'The Idea project',
-    to: 'vosquery@gmail.com',
+    from: 'navifit@mail.ru',
+    to: 'garant-t@ukr.net',
     subject: 'My first Email!!!',
     text: "This is my first email. I am so excited!"
 };

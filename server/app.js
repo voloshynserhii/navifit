@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const config = require('./config')
-
+require ('./util/mailer')
 //create recipes from file
 // const db = require('./db')
 // const XLSX = require('xlsx')

@@ -9,6 +9,7 @@ const router = express.Router()
 /**
 * Module User
 */
+router.post('/api/user/new', User.Create)
 router.post('/api/user/answer', User.CreateDraft)
 router.post('/api/user/signup', User.SignUp)
 router.get('/api/user/draft', User.GetDraft)

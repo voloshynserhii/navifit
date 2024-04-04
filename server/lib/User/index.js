@@ -1,4 +1,5 @@
 module.exports = {
+  Create: require('./Create'),
   CreateDraft: require('./CreateDraft'),
   GetDraft: require('./GetDraft'),
   SignUp: require('./SignUp'),

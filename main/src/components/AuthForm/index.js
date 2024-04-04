@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { Alert, Box, Button, FormControl, FormHelperText, IconButton, InputLabel, InputAdornment, OutlinedInput, Stack } from '@mui/material'
+import { Alert, Box, Button, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Stack } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
@@ -16,11 +16,15 @@ export default function AuthForm({ currentUser = {}, error, onSubmit }) {
         event.preventDefault()
     };
 
+    const resetPasswordHandler = () => {
+        alert('This will be a modal with reset password functionality')
+    }
+    
     return (
-        <Box sx={{ width: 400, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Box sx={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {error && <Alert sx={{ zIndex: 1301 }} variant="filled" severity="error">{error}</Alert>}
-            <Stack>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <Stack sx={{ width: '100%' }}>
+                <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password">E-mail</InputLabel>
                     <OutlinedInput
                         autoFocus
@@ -33,7 +37,7 @@ export default function AuthForm({ currentUser = {}, error, onSubmit }) {
                         onChange={e => setEmail(e.target.value)}
                     />
                 </FormControl>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                     <OutlinedInput
                         value={password || ''}
@@ -57,6 +61,7 @@ export default function AuthForm({ currentUser = {}, error, onSubmit }) {
                     />
                 </FormControl>
             </Stack>
+            <Box sx={{ width: '100%' }}><Button sx={{ fontSize: 8, }} onClick={resetPasswordHandler}>Reset Password</Button></Box>
             <Button variant="contained" disabled={!email || !password} onClick={() => onSubmit({ email, password })}>{currentUser.email ? 'Sign Up' : 'Log In'}</Button>
         </Box>
     );

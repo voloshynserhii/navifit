@@ -73,15 +73,7 @@ export default function UsersTable({ data }) {
       setActivateAnchor(undefined)
     })
   }
-  
-  const onOpenUserAccount = user => {
-    dispatch({
-      type: 'CURRENT_USER',
-      payload: user,
-    });
-    
-    router.push(`/account/plan/${user._id}`)
-  }
+
   
   if (!data) return <CircularProgress />
   
@@ -95,13 +87,8 @@ export default function UsersTable({ data }) {
         <TableHead>
           <TableRow>
             <TableCell>Email</TableCell>
-            <TableCell align="right">Active</TableCell>
+            <TableCell align="right">Name</TableCell>
             <TableCell align="right">Created At</TableCell>
-            <TableCell align="right">BMR</TableCell>
-            <TableCell align="right">BMI</TableCell>
-            <TableCell align="right">Calories Needed</TableCell>
-            <TableCell align="right">Kg to burn</TableCell>
-            <TableCell align="right">Due Date</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -111,16 +98,11 @@ export default function UsersTable({ data }) {
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
             >
-              <TableCell component="th" scope="row" onClick={() => !row.isDraftUser && onOpenUserAccount(row)}>
+              <TableCell component="th" scope="row">
                 {row.email}
               </TableCell>
-              <TableCell align="right">{row.isDraftUser ? 'NO' : 'YES'}</TableCell>
+              <TableCell align="right">{row.name}</TableCell>
               <TableCell align="right">{moment(row.createdAt).format('DD MMMM YYYY, h:mm a')}</TableCell>
-              <TableCell align="right">{row.userData?.BMR}</TableCell>
-              <TableCell align="right">{row.userData?.BMI}</TableCell>
-              <TableCell align="right">{row.userData?.personalDailyKCalNeeded}</TableCell>
-              <TableCell align="right">{row.userData?.weight - row.userData?.desiredWeight}</TableCell>
-              <TableCell align="right">{row.userData?.desiredDate}</TableCell>
               <TableCell align="right" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
                 <Tooltip title="Reset password">
                   <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'password')}>

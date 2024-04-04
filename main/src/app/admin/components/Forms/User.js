@@ -9,6 +9,7 @@ export default function UserForm({ item, onCancel, onUpdate, onCreate }) {
 
     const editFormHandler = (e) => {
         const { name, value } = e.target
+        
         setUser((prev) => ({
             ...prev,
             [name]: value
@@ -20,7 +21,7 @@ export default function UserForm({ item, onCancel, onUpdate, onCreate }) {
             onUpdate(user)
         }
 
-        if (onCreate) onCreate(user)
+        if (onCreate) onCreate({ ...user, role })
 
         return undefined
     }

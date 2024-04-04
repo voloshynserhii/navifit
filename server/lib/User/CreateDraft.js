@@ -25,9 +25,9 @@ module.exports = async (req, res) => {
    });
   }
   
-  const existingUser = await db.user.find({ email }).lean().exec()
+  const existingUser = await db.user.exists({ email }).exec()
 
-  if (existingUser.length) return res.json({ message: 'User with this email already exists!' })
+  if (existingUser) return res.json({ message: 'User with this email already exists!' })
   
   const { BMI, BMR, personalDailyKCalNeeded } = countUserData(userData)
   // await generatePlan({personalDailyKCalNeeded, ...userData})

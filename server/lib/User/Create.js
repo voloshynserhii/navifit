@@ -1,15 +1,13 @@
 const Functions = require('../../util/Functions')
 const db = require('../../db')
-const { countUserData } = require('./helpers')
-// const { generatePlan } = require('../../util/PlansUtil')
 
 /**
- * Post User Data
+ * Create new user
  * @param req
  * @param res
  */
 module.exports = async (req, res) => {
-  const { email, userData = {} } = req.body
+  const { name, email, role } = req.body
 
   if (Functions.isNull(email) || !Functions.isEmail(email)) {
     return res.send({
@@ -17,24 +15,22 @@ module.exports = async (req, res) => {
    });
   }
   
-  if (Functions.isNull(userData) || !Functions.isObject(userData)) {
-    return res.send({
-      message: 'User Data is empty!'
-   });
+  const existingUser = await db.user.exists({ email }).exec()
+
+  if (existingUser) return res.json({ message: 'User with such email already exists!' })
+
+  const userObj = {
+    isAdmin: !!role,
+    name,
+    email,
+    isDraftUser: false
   }
   
-  const existingUser = await db.user.find({ email }).lean().exec()
-
-  if (existingUser.length) return res.json({ message: 'User with this email already exists!' })
+  if (!role) {
+    userObj.isDraftUser = true
+  }
   
-  const { BMI, BMR, personalDailyKCalNeeded } = countUserData(userData)
-  // await generatePlan({personalDailyKCalNeeded, ...userData})
-
-  const newUser = new db.user({
-    email,
-    userData: { ... userData, BMI, BMR, personalDailyKCalNeeded },
-    isDraftUser: true,
-  })
+  const newUser = new db.user(userObj)
 
   newUser
     .save()

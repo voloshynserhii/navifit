@@ -7,7 +7,7 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async (req, res) => {
-  const { name, email, role } = req.body
+  const { name, email, role, password } = req.body
 
   if (Functions.isNull(email) || !Functions.isEmail(email)) {
     return res.send({
@@ -28,6 +28,8 @@ module.exports = async (req, res) => {
   
   if (!role) {
     userObj.isDraftUser = true
+  } else {
+    userObj.password = password
   }
   
   const newUser = new db.user(userObj)

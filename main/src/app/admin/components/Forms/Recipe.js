@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
-import { Grid, Button, Stack, TextField, Typography } from '@mui/material';
+import { Grid, Button, IconButton, Stack, TextField, Typography } from '@mui/material';
+import FileUploadOutlined from "@mui/icons-material/FileUploadOutlined";
 import Autocomplete from '../../../../components/Autocomplete'
 import { ingredients } from '../../../../utils/Plans'
 import { getTitle } from '../../helpers'
@@ -37,13 +38,13 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
         const filteredIngredients = recipeIngredients.filter(ingredient => !ingredient[key])
         setRecipe(prev => ({ ...prev, ingredients: filteredIngredients }))
     }
-    
+
     const removeIngredientHandler = key => {
         const filteredIngredients = recipeIngredients.filter(ingredient => !ingredient[key])
-        
+
         setRecipe(prev => ({ ...prev, ingredients: filteredIngredients }))
     }
-    
+
     const selectEssentialIngredientsHandler = selected => {
         const ids = selected.map(item => item.id)
 
@@ -152,42 +153,61 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 <Grid item xs={12} md={5}>
                     <Autocomplete data={preparedIngredients} selected={essentialIngredientIds || []} onSelect={selectEssentialIngredientsHandler} />
                 </Grid>
-                <Grid item xs={12} sm={9} md={6}>
-                    <Typography variant='h5' sx={{ marginBottom: 2 }}>Ingredients:</Typography>
-                    {ingredientTitles?.map((key, i) => (
-                        <Stack key={key} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
-                            <Stack direction='row' justifyContent='space-between' sx={{ width: '80%' }}>
-                                <Typography >{key}: </Typography>
-                                <Typography >{recipeIngredients[i][key]}</Typography>
-                            </Stack>
-                            {!newIngredientTitle && (
-                                <Stack direction='row'>
-                                    <Button onClick={() => editIngredientHandler(key)}>Edit</Button>
-                                    <Button onClick={() => removeIngredientHandler(key)}>Remove</Button>
+                <Grid item xs={12}>
+                    <Grid item xs={12} sm={9} md={6}>
+                        <Typography variant='h5' sx={{ marginBottom: 2 }}>Ingredients:</Typography>
+                        {ingredientTitles?.map((key, i) => (
+                            <Stack key={key} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
+                                <Stack direction='row' justifyContent='space-between' sx={{ width: '80%' }}>
+                                    <Typography >{key}: </Typography>
+                                    <Typography >{recipeIngredients[i][key]}</Typography>
                                 </Stack>
+                                {!newIngredientTitle && (
+                                    <Stack direction='row'>
+                                        <Button onClick={() => editIngredientHandler(key)}>Edit</Button>
+                                        <Button onClick={() => removeIngredientHandler(key)}>Remove</Button>
+                                    </Stack>
 
-                            )}
+                                )}
+                            </Stack>
+                        ))}
+                        <Stack sx={{ marginTop: 2 }}>
+                            <Stack direction='row' gap={2}>
+                                <TextField
+                                    value={newIngredientTitle}
+                                    label="Title"
+                                    name="title"
+                                    fullWidth
+                                    onChange={(e) => setNewIngredientTitle(e.target.value)}
+                                />
+                                <TextField
+                                    value={newIngredientWeight}
+                                    label="Weight"
+                                    name="weight"
+                                    fullWidth
+                                    onChange={(e) => setNewIngredientWeight(e.target.value)}
+                                />
+                                <Button onClick={addIngredientHandler}>+ Add</Button>
+                            </Stack>
                         </Stack>
-                    ))}
-                    <Stack sx={{ marginTop: 2 }}>
-                        <Stack direction='row' gap={2}>
-                            <TextField
-                                value={newIngredientTitle}
-                                label="Title"
-                                name="title"
-                                fullWidth
-                                onChange={(e) => setNewIngredientTitle(e.target.value)}
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} sm={9} md={6}>
+                    <Typography variant='h5' sx={{ marginBottom: 2 }}>Attached images:</Typography>
+                    <IconButton component="label" sx={{ width: 250, height: 100, borderRadius: 5, border: '1px solid black' }}>
+                        <Stack alignItems='center'>
+                            <FileUploadOutlined />
+                            <Typography>Press or drag a file</Typography>
+                            <input
+                                styles={{ display: "none" }}
+                                type="file"
+                                hidden
+                                // onChange={handleUpload}
+                                name="[licenseFile]"
                             />
-                            <TextField
-                                value={newIngredientWeight}
-                                label="Weight"
-                                name="weight"
-                                fullWidth
-                                onChange={(e) => setNewIngredientWeight(e.target.value)}
-                            />
-                            <Button onClick={addIngredientHandler}>+ Add</Button>
                         </Stack>
-                    </Stack>
+
+                    </IconButton>
                 </Grid>
                 <Grid item xs={12}>
                     <Button sx={{ marginRight: 5 }} onClick={onCancel}>Cancel</Button>

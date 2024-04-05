@@ -7,7 +7,18 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async (req, res) => {
-  const { _id: id, email, name, userData, newRecipeId, oldRecipeId, week, day, isDraft } = req.body
+  const { 
+    _id: id, 
+    email, 
+    name, 
+    userData, 
+    newRecipeId, 
+    oldRecipeId, 
+    week, 
+    day, 
+    isDraft, 
+    password 
+  } = req.body
 
   if (Functions.isNull(id) || !Functions.isId(id)) {
     return res.send({
@@ -67,6 +78,10 @@ module.exports = async (req, res) => {
     if (userData) {
       currentUser.userData = userData
     }
+    
+    if (password) {
+      currentUser.password = password
+    }
 
     await currentUser.save()
 
@@ -74,6 +89,4 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.log(err)
   }
-
-
 }

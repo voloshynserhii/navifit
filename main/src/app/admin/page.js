@@ -24,6 +24,7 @@ export default function Admin() {
     const [admins, setAdmins] = useState([])
     const [createMode, setCreateMode] = useState(false)
     const [role, setRole] = useState(0)
+    const [editMode, setEditMode] = useState(false)
 
     const getUsers = async () => {
         setData(null)
@@ -166,7 +167,7 @@ export default function Admin() {
                 </Tabs>
                 {value === 0 && (
                     <Stack sx={{ width: '100%'}}>
-                        <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                        {!editMode && <FormControl fullWidth sx={{ marginBottom: 2 }}>
                             <InputLabel id="demo-simple-select-label">Select Role</InputLabel>
                             <Select
                                 sx={{ width: 150 }}
@@ -179,8 +180,8 @@ export default function Admin() {
                                 <MenuItem value={1}>Admin</MenuItem>
                                 <MenuItem value={0}>User</MenuItem>
                             </Select>
-                        </FormControl>
-                        {!role ? <UsersTable data={data} /> : <AdminsTable data={admins} />}
+                        </FormControl>}
+                        {!role ? <UsersTable data={data} onEditModeOn={val => setEditMode(val)} /> : <AdminsTable data={admins} onEditModeOn={val => setEditMode(val)}/>}
                     </Stack>
                 )}
                 {value === 1 && <RecipesTable data={data} />}

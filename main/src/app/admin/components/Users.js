@@ -12,7 +12,7 @@ import PopConfirm from '../../../components/PopConfirm'
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
 
-export default function UsersTable({ data }) {
+export default function UsersTable({ data, onEditModeOn }) {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [list, setList] = useState([])
@@ -25,7 +25,10 @@ export default function UsersTable({ data }) {
     if (!list.length && data?.length) setList(data)
   }, [list, data])
 
-  const onCancel = () => setEditUser(undefined)
+  const onCancel = () => {
+    setEditUser(undefined)
+    onEditModeOn(false)
+  }
   
   const onUpdate = item => {    
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ currentUser }) => {
@@ -135,7 +138,10 @@ export default function UsersTable({ data }) {
                 </Tooltip>
                 <PopConfirm text={`Are you sure you want to ${row.isDraftUser ? 'Activate' : 'Deactivate'} user?`} anchor={activateAnchor} onConfirm={() => onConfirmChangeActive(row._id, row.isDraftUser)} onCancel={() => setActivateAnchor(undefined)} />
                 <Tooltip title="Edit">
-                  <IconButton onClick={() => setEditUser(row)}>
+                  <IconButton onClick={() => {
+                    setEditUser(row)
+                    onEditModeOn(true)
+                  }}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>

@@ -28,7 +28,7 @@ export default function UserForm({ item, onCancel, onUpdate, onCreate }) {
 
     let disableConfirmBtn = false
     
-    if (!!role) {
+    if (role) {
         disableConfirmBtn = !email || (!password && !item?.hashedPassword)
     } else {
         disableConfirmBtn = !email

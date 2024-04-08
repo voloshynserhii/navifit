@@ -9,6 +9,7 @@ import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import Form from './Forms/User'
 import PopConfirm from '../../../components/PopConfirm'
+import ResetPasswordModal from '../../../components/ResetPassword'
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
 
@@ -20,6 +21,7 @@ export default function UsersTable({ data, onEditModeOn }) {
   const [passwordAnchor, setPasswordAnchor] = useState()
   const [deleteAnchor, setDeleteAnchor] = useState()
   const [activateAnchor, setActivateAnchor] = useState()
+  const [resetPassword, setResetPassword] = useState(false)
 
   useEffect(() => {
     if (!list.length && data?.length) setList(data)
@@ -56,6 +58,7 @@ export default function UsersTable({ data, onEditModeOn }) {
   
   const onConfirmResetPassword = id => {
     setPasswordAnchor(undefined)
+    setResetPassword(true)
   }
   
   const onConfirmDelete = id => {
@@ -92,6 +95,7 @@ export default function UsersTable({ data, onEditModeOn }) {
 
   if (editUser) return <Form item={editUser} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
   
+  if (resetPassword) return <ResetPasswordModal onClose={() => setResetPassword(false)} />
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

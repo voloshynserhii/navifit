@@ -7,11 +7,16 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async(req, res) => {
-    const { recipeId, calories, essentialIngredientIds, limit } = req.query
+    const { recipeId, calories, essentialIngredientIds, limit, filters } = req.query
 
     try {
         const query = {
             deleted: { $ne: true }
+        }
+        
+        if (filters?.name) {
+            const name = Functions.escapeRegexBrackets(filters.name.trim())
+            query.name = { $regex: name, $options: 'i' }
         }
         
         if (recipeId) {

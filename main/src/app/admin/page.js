@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Tabs, Tab } from '@mui/material'
+import { Button, FormControl, IconButton, InputLabel, InputAdornment, MenuItem, Select, Stack, Tabs, Tab, TextField, Typography } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search';
 import AuthForm from '../../components/AuthForm'
 import RecipesTable from './components/Recipes'
 import UsersTable from './components/Users'
@@ -24,7 +25,9 @@ export default function Admin() {
     const [admins, setAdmins] = useState([])
     const [createMode, setCreateMode] = useState(false)
     const [role, setRole] = useState(0)
+    const [sortingOption, setSortingOption] = useState('no')
     const [editMode, setEditMode] = useState(false)
+    const [searchValue, setSearchValue] = useState()
 
     const getUsers = async () => {
         setData(null)
@@ -126,6 +129,19 @@ export default function Admin() {
         }).catch(err => console.log(err))
     }
 
+    const handleChangeSearchValue = e => {
+        setSearchValue(e.target.value)
+    }
+    
+    const handleSearch = async() => {
+        setData([])
+        const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
+        if (newData) {
+            setData(newData)
+        }
+
+    }
+
     if (createMode) return (
         <main>
             <Stack sx={{ padding: 5, width: '100%' }}>
@@ -166,25 +182,67 @@ export default function Admin() {
                     <Tab label="Promocodes" />
                 </Tabs>
                 {value === 0 && (
-                    <Stack sx={{ width: '100%'}}>
-                        {!editMode && <FormControl fullWidth sx={{ marginBottom: 2 }}>
-                            <InputLabel id="demo-simple-select-label">Select Role</InputLabel>
-                            <Select
-                                sx={{ width: 150 }}
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={role}
-                                label="Select Role"
-                                onChange={(e) => setRole(e.target.value)}
-                            >
-                                <MenuItem value={1}>Admin</MenuItem>
-                                <MenuItem value={0}>User</MenuItem>
-                            </Select>
-                        </FormControl>}
-                        {!role ? <UsersTable data={data} onEditModeOn={val => setEditMode(val)} /> : <AdminsTable data={admins} onEditModeOn={val => setEditMode(val)}/>}
+                    <Stack sx={{ width: '100%' }}>
+                        {!editMode && (
+                            <Stack direction='row' justifyContent={'space-between'}>
+                                <FormControl sx={{ marginBottom: 2 }}>
+                                    <InputLabel id="demo-simple-select-label">Select Role</InputLabel>
+                                    <Select
+                                        sx={{ width: 150 }}
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={role}
+                                        label="Select Role"
+                                        onChange={(e) => setRole(e.target.value)}
+                                    >
+                                        <MenuItem value={1}>Admin</MenuItem>
+                                        <MenuItem value={0}>User</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <FormControl sx={{ marginBottom: 2 }}>
+                                    <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+                                    <Select
+                                        sx={{ width: 150 }}
+                                        value={sortingOption}
+                                        label="Sort By"
+                                        onChange={(e) => setSortingOption(e.target.value)}
+                                    >
+                                        <MenuItem value={'no'}>No sorting</MenuItem>
+                                        <MenuItem value={'email'}>E-mail</MenuItem>
+                                        <MenuItem value={'email'}>Name</MenuItem>
+                                        {!role && <MenuItem value={'active'}>Active</MenuItem>}
+                                        <MenuItem value={'createdAt'}>Created At</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Stack>
+                        )}
+                        {!role ? <UsersTable data={data} onEditModeOn={val => setEditMode(val)} /> : <AdminsTable data={admins} onEditModeOn={val => setEditMode(val)} />}
                     </Stack>
                 )}
-                {value === 1 && <RecipesTable data={data} />}
+                {value === 1 && (
+                    <Stack sx={{ width: '100%' }}>
+                        <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
+                            <Typography>Total: {data?.length} recipes</Typography>
+                            <TextField
+                                label='Search by name'
+                                sx={{ m: 1, width: '25ch' }}
+                                onChange={handleChangeSearchValue}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleSearch}
+                                            edge="end"
+                                        >
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>,
+                                }}
+                            />
+                        </Stack>
+                        <RecipesTable data={data} />
+                    </Stack>
+
+                )}
                 {value === 2 && <PlansTable data={data} />}
             </Stack>
         </main>

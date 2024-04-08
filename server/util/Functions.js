@@ -354,6 +354,13 @@ const Functions = {
       }
     }, object)
   },
+  
+  /**
+   * WEscape ReEx Brackets
+   */
+    escapeRegexBrackets(searchValue) {
+      return String(searchValue).replace(/([.*+?=^!:${}()|[\]/\\])/g, '\\$1')
+    },
 }
 
 module.exports = Functions

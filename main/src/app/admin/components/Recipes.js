@@ -1,5 +1,5 @@
 import { useState, useEffect, forwardRef, Fragment } from 'react';
-import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { TableVirtuoso } from 'react-virtuoso';
@@ -136,7 +136,7 @@ export default function ReactVirtualizedTable({ data }) {
   const [removeAnchor, setRemoveAnchor] = useState()
 
   useEffect(() => {
-    if (!list.length && data?.length) setList(data)
+    if (!list.length && data?.length || (list.length !== data.length)) setList(data)
   }, [list, data])
 
   const onCancel = () => setEditRow(undefined)
@@ -171,7 +171,6 @@ export default function ReactVirtualizedTable({ data }) {
 
   return (
     <Paper style={{ height: '70vh', width: '100%', position: 'relative' }}>
-      <Typography sx={{ position: 'absolute', top: '-50px' }}>Total: {list.length} recipes</Typography>
       <TableVirtuoso
         data={list}
         components={VirtuosoTableComponents}

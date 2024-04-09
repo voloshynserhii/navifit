@@ -7,7 +7,7 @@ const db = require('../../db')
  * @param res
  */
 module.exports = async(req, res) => {
-    const { pagination, limit = 20, role } = req.query
+    const { pagination, limit = 20, role, sortBy, sortingDirection = 1 } = req.query
 
     const isAdmin = role === '1' ? false : true
     
@@ -16,7 +16,11 @@ module.exports = async(req, res) => {
         deleted: { $ne: true }
     }
 
-    const data = await db.user.find(filters).limit(limit).lean().exec()
+    const sort = {}
+    
+    if (sortBy) sort[sortBy] = +sortingDirection
+
+    const data = await db.user.find(filters).sort(sort).limit(limit).lean().exec()
 
     res.json({ data })
 }

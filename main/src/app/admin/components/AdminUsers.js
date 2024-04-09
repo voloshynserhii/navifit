@@ -9,10 +9,11 @@ import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import Form from './Forms/User'
 import PopConfirm from '../../../components/PopConfirm'
+import ResetPasswordModal from '../../../components/ResetPassword'
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
 
-export default function UsersTable({ data, onEditModeOn }) {
+export default function UsersTable({ data = [], onEditModeOn }) {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [list, setList] = useState([])
@@ -20,11 +21,22 @@ export default function UsersTable({ data, onEditModeOn }) {
   const [passwordAnchor, setPasswordAnchor] = useState()
   const [deleteAnchor, setDeleteAnchor] = useState()
   const [activateAnchor, setActivateAnchor] = useState()
+  const [resetPasswordId, setResetPasswordId] = useState(null)
 
   useEffect(() => {
-    if (!list.length && data?.length) setList(data)
-  }, [list, data])
+    setList(data)
+  }, [data])
 
+  const loadData = (currentUser) => {
+    const newList = [...list]
+    const index = list.findIndex(item => item._id === currentUser?._id)
+    
+    newList[index] = currentUser
+    
+    setList(newList)
+    onCancel()
+  }
+  
   const onCancel = () => {
     setEditUser(undefined)
     onEditModeOn(false)
@@ -32,13 +44,7 @@ export default function UsersTable({ data, onEditModeOn }) {
   
   const onUpdate = item => {    
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ currentUser }) => {
-      const newList = [...list]
-      const index = list.findIndex(item => item._id === currentUser?._id)
-      
-      newList[index] = currentUser
-      
-      setList(newList)
-      onCancel()
+      loadData(currentUser)
     }).catch(err => console.log(err))
   }
   
@@ -54,8 +60,16 @@ export default function UsersTable({ data, onEditModeOn }) {
     }
   }
   
-  const onConfirmResetPassword = id => {
+  const onConfirmResetPassword = (id) => {
     setPasswordAnchor(undefined)
+    setResetPasswordId(id)
+  }
+  
+  const onResetPassword = (newPassword) => {
+    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: resetPasswordId, password: newPassword }).then(({ currentUser }) => {
+      loadData(currentUser)
+      setResetPasswordId(null)
+    })
   }
   
   const onConfirmDelete = id => {
@@ -67,12 +81,7 @@ export default function UsersTable({ data, onEditModeOn }) {
   
   const onConfirmChangeActive = (id, isDraft) => {
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: id, isDraft }).then(({ currentUser }) => {
-      const newList = [...list]
-      const index = list.findIndex(item => item._id === currentUser?._id)
-      
-      newList[index] = currentUser
-      
-      setList(newList)
+      loadData(currentUser)
       setActivateAnchor(undefined)
     })
   }
@@ -83,6 +92,8 @@ export default function UsersTable({ data, onEditModeOn }) {
   if (!data?.length) return <>No users found</>
 
   if (editUser) return <Form item={editUser} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
+  
+  if (resetPasswordId) return <ResetPasswordModal onClose={() => setResetPasswordId(null)} onConfirm={onResetPassword}/>
   
   return (
     <TableContainer component={Paper}>
@@ -96,7 +107,7 @@ export default function UsersTable({ data, onEditModeOn }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map((row) => (
+          {list?.map((row) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}

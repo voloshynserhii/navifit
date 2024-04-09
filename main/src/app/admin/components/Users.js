@@ -13,7 +13,7 @@ import ResetPasswordModal from '../../../components/ResetPassword'
 import api from '../../../utils/api'
 import { useAppStore } from '../../../store';
 
-export default function UsersTable({ data, onEditModeOn }) {
+export default function UsersTable({ data = [], onEditModeOn }) {
   const router = useRouter()
   const [state, dispatch] = useAppStore();
   const [list, setList] = useState([])
@@ -21,29 +21,33 @@ export default function UsersTable({ data, onEditModeOn }) {
   const [passwordAnchor, setPasswordAnchor] = useState()
   const [deleteAnchor, setDeleteAnchor] = useState()
   const [activateAnchor, setActivateAnchor] = useState()
-  const [resetPassword, setResetPassword] = useState(false)
+  const [resetPasswordId, setResetPasswordId] = useState(null)
 
   useEffect(() => {
-    if (!list.length && data?.length) setList(data)
-  }, [list, data])
+    setList(data)
+  }, [data])
+
+  const loadData = (currentUser) => {
+    const newList = [...list]
+    const index = list.findIndex(item => item._id === currentUser?._id)
+
+    newList[index] = currentUser
+
+    setList(newList)
+    onCancel()
+  }
 
   const onCancel = () => {
     setEditUser(undefined)
     onEditModeOn(false)
   }
-  
-  const onUpdate = item => {    
+
+  const onUpdate = item => {
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ currentUser }) => {
-      const newList = [...list]
-      const index = list.findIndex(item => item._id === currentUser?._id)
-      
-      newList[index] = currentUser
-      
-      setList(newList)
-      onCancel()
+      loadData(currentUser)
     }).catch(err => console.log(err))
   }
-  
+
   const onOpenPopConfirm = (target, type) => {
     if (type === 'delete') {
       setDeleteAnchor(target)
@@ -55,47 +59,50 @@ export default function UsersTable({ data, onEditModeOn }) {
       setPasswordAnchor(target)
     }
   }
-  
-  const onConfirmResetPassword = id => {
+
+  const onConfirmResetPassword = (id) => {
     setPasswordAnchor(undefined)
-    setResetPassword(true)
+    setResetPasswordId(id)
   }
-  
+
+  const onResetPassword = (newPassword) => {
+    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: resetPasswordId, password: newPassword }).then(({ currentUser }) => {
+      loadData(currentUser)
+      setResetPasswordId(null)
+    })
+  }
+
   const onConfirmDelete = id => {
     api.user.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
       setList(prev => prev.filter(user => user._id !== id))
       setDeleteAnchor(undefined)
     })
   }
-  
+
   const onConfirmChangeActive = (id, isDraft) => {
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: id, isDraft }).then(({ currentUser }) => {
-      const newList = [...list]
-      const index = list.findIndex(item => item._id === currentUser?._id)
-      
-      newList[index] = currentUser
-      
-      setList(newList)
+      loadData(currentUser)
       setActivateAnchor(undefined)
     })
   }
-  
+
   const onOpenUserAccount = user => {
     dispatch({
       type: 'CURRENT_USER',
       payload: user,
     });
-    
+
     router.push(`/account/plan/${user._id}`)
   }
-  
+
   if (!data) return <CircularProgress />
-  
+
   if (!data?.length) return <>No users found</>
 
   if (editUser) return <Form item={editUser} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
-  
-  if (resetPassword) return <ResetPasswordModal onClose={() => setResetPassword(false)} />
+
+  if (resetPasswordId) return <ResetPasswordModal onClose={() => setResetPasswordId(null)} onConfirm={onResetPassword} />
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -113,7 +120,7 @@ export default function UsersTable({ data, onEditModeOn }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map((row) => (
+          {list?.map((row) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}

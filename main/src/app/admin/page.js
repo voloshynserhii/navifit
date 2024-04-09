@@ -25,13 +25,13 @@ export default function Admin() {
     const [admins, setAdmins] = useState([])
     const [createMode, setCreateMode] = useState(false)
     const [role, setRole] = useState(0)
-    const [sortingOption, setSortingOption] = useState('no')
+    const [sortingOption, setSortingOption] = useState('')
+    const [sortingDirection, setSortingDirection] = useState(1)
     const [editMode, setEditMode] = useState(false)
     const [searchValue, setSearchValue] = useState()
 
     const getUsers = async () => {
-        setData(null)
-        const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10, role })
+        const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10, role, sortBy: sortingOption !== 'no' ? sortingOption : undefined, sortingDirection })
 
         if (newData) {
             !role ? setData(newData) : setAdmins(newData)
@@ -41,6 +41,10 @@ export default function Admin() {
     useEffect(() => {
         getUsers()
     }, [role])
+
+    useEffect(() => {
+        if (sortingOption) getUsers()
+    }, [sortingOption, sortingDirection])
 
     useEffect(() => {
         const container = document.querySelector('main')
@@ -132,8 +136,8 @@ export default function Admin() {
     const handleChangeSearchValue = e => {
         setSearchValue(e.target.value)
     }
-    
-    const handleSearch = async() => {
+
+    const handleSearch = async () => {
         setData([])
         const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
         if (newData) {
@@ -147,7 +151,7 @@ export default function Admin() {
             <Stack sx={{ padding: 5, width: '100%' }}>
                 {value === 0 && <UserForm onCancel={() => setCreateMode(false)} onCreate={handleCreateUser} />}
                 {value === 1 && <RecipeForm onCancel={() => setCreateMode(false)} onCreate={handleCreateRecipe} />}
-                {value === 2 && <PlanForm onCancel={() => setCreateMode(false)} onCreate={handleCreatePlan} onUpdate={(newPlan) => console.log(newPlan)} />}
+                {value === 2 && <PlanForm onCancel={() => setCreateMode(false)} onCreate={handleCreatePlan} />}
             </Stack>
         </main>
     )
@@ -199,21 +203,35 @@ export default function Admin() {
                                         <MenuItem value={0}>User</MenuItem>
                                     </Select>
                                 </FormControl>
-                                <FormControl sx={{ marginBottom: 2 }}>
-                                    <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
-                                    <Select
-                                        sx={{ width: 150 }}
-                                        value={sortingOption}
-                                        label="Sort By"
-                                        onChange={(e) => setSortingOption(e.target.value)}
-                                    >
-                                        <MenuItem value={'no'}>No sorting</MenuItem>
-                                        <MenuItem value={'email'}>E-mail</MenuItem>
-                                        <MenuItem value={'email'}>Name</MenuItem>
-                                        {!role && <MenuItem value={'active'}>Active</MenuItem>}
-                                        <MenuItem value={'createdAt'}>Created At</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <Stack direction='row' justifyContent={'space-between'} gap={3}>
+                                    <FormControl sx={{ marginBottom: 2 }}>
+                                        <InputLabel id="demo-simple-select-label">Direction</InputLabel>
+                                        <Select
+                                            sx={{ width: 150 }}
+                                            value={sortingDirection}
+                                            label="Sort By"
+                                            onChange={(e) => setSortingDirection(e.target.value)}
+                                        >
+                                            <MenuItem value={-1}>Ascend</MenuItem>
+                                            <MenuItem value={1}>Descend</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl sx={{ marginBottom: 2 }}>
+                                        <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+                                        <Select
+                                            sx={{ width: 150 }}
+                                            value={sortingOption}
+                                            label="Sort By"
+                                            onChange={(e) => setSortingOption(e.target.value)}
+                                        >
+                                            <MenuItem value={'no'}>No sorting</MenuItem>
+                                            <MenuItem value={'email'}>E-mail</MenuItem>
+                                            <MenuItem value={'name'}>Name</MenuItem>
+                                            {!role && <MenuItem value={'isDraftUser'}>Active</MenuItem>}
+                                            <MenuItem value={'createdAt'}>Created At</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Stack>
                             </Stack>
                         )}
                         {!role ? <UsersTable data={data} onEditModeOn={val => setEditMode(val)} /> : <AdminsTable data={admins} onEditModeOn={val => setEditMode(val)} />}

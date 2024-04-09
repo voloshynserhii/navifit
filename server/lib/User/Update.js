@@ -1,5 +1,7 @@
 const Functions = require('../../util/Functions')
 const db = require('../../db')
+const config = require('../../config')
+const { transporter } = require('../../util/mailer')
 
 /**
  * Post User Data
@@ -17,12 +19,19 @@ module.exports = async (req, res) => {
     week, 
     day, 
     isDraft, 
-    password 
+    password, 
+    oldPassword
   } = req.body
 
-  if (Functions.isNull(id) || !Functions.isId(id)) {
+  if (!Functions.isNull(id) && !Functions.isId(id)) {
     return res.send({
       message: 'No id provided!'
+    });
+  }
+  
+  if (Functions.isNull(id) && Functions.isString(email) && !Functions.isEmail(email)) {
+    return res.send({
+      message: 'Enter valid email!'
     });
   }
 
@@ -39,7 +48,13 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const currentUser = await db.user.findById(id)
+    let currentUser
+    
+    if (!id) {
+      currentUser = await db.user.findOne({ email })
+    } else {
+      currentUser = await db.user.findById(id)
+    }
 
     if (!currentUser) {
       return res.send({
@@ -80,10 +95,36 @@ module.exports = async (req, res) => {
     }
     
     if (password) {
-      currentUser.password = password
+      if (oldPassword && !currentUser.authenticate(oldPassword)) {
+        return res.json({
+          message: 'Old password is incorrect!'
+        })
+      } else {
+        currentUser.password = password
+      }
     }
 
     await currentUser.save()
+    
+    if (password) {
+      const mailOptions = {
+        from: config.mailer.email,
+        to: currentUser.email,
+        subject: 'From Navifit: Your password was changed!',
+        html:`<div>
+          <h4>Someone just changed your password!</h4>
+          <p>Your new password is ${password}</p>
+        </div>`
+      }
+      
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Email sent', info)
+        }
+      })
+    }
 
     res.json({ currentUser })
   } catch (err) {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { useRouter } from 'next/navigation'
 import { IconButton, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,11 +10,8 @@ import Form from './Forms/User'
 import PopConfirm from '../../../components/PopConfirm'
 import ResetPasswordModal from '../../../components/ResetPassword'
 import api from '../../../utils/api'
-import { useAppStore } from '../../../store';
 
 export default function UsersTable({ data = [], onEditModeOn }) {
-  const router = useRouter()
-  const [state, dispatch] = useAppStore();
   const [list, setList] = useState([])
   const [editUser, setEditUser] = useState()
   const [passwordAnchor, setPasswordAnchor] = useState()

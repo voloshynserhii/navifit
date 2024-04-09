@@ -15,10 +15,9 @@ import { useAppStore } from '../../../store';
 
 export default function UsersTable({ data = [], onEditModeOn }) {
   const router = useRouter()
-  const [state, dispatch] = useAppStore();
+  const [_, dispatch] = useAppStore();
   const [list, setList] = useState([])
   const [editUser, setEditUser] = useState()
-  const [passwordAnchor, setPasswordAnchor] = useState()
   const [deleteAnchor, setDeleteAnchor] = useState()
   const [activateAnchor, setActivateAnchor] = useState()
   const [resetPasswordId, setResetPasswordId] = useState(null)
@@ -55,14 +54,6 @@ export default function UsersTable({ data = [], onEditModeOn }) {
     if (type === 'activate') {
       setActivateAnchor(target)
     }
-    if (type === 'password') {
-      setPasswordAnchor(target)
-    }
-  }
-
-  const onConfirmResetPassword = (id) => {
-    setPasswordAnchor(undefined)
-    setResetPasswordId(id)
   }
 
   const onResetPassword = (newPassword) => {
@@ -137,17 +128,21 @@ export default function UsersTable({ data = [], onEditModeOn }) {
               <TableCell align="right">{row.userData?.desiredDate}</TableCell>
               <TableCell align="right" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
                 <Tooltip title="Reset password">
-                  <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'password')}>
+                  <IconButton onClick={(e) => {
+                      setResetPasswordId(row._id)
+                      onOpenPopConfirm(e.target, 'password')
+                    }}>
                     <ContactMailIcon />
                   </IconButton>
                 </Tooltip>
-                <PopConfirm text='Are you sure you want to reset user password?' anchor={passwordAnchor} onConfirm={() => onConfirmResetPassword(row._id)} onCancel={() => setPasswordAnchor(undefined)} />
+                
                 <Tooltip title={row.isDraftUser ? 'Activate' : 'Deactivate'}>
                   <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'activate')}>
                     {!row.isDraftUser ? <ToggleOnIcon /> : <ToggleOffIcon />}
                   </IconButton>
                 </Tooltip>
                 <PopConfirm text={`Are you sure you want to ${row.isDraftUser ? 'Activate' : 'Deactivate'} user?`} anchor={activateAnchor} onConfirm={() => onConfirmChangeActive(row._id, row.isDraftUser)} onCancel={() => setActivateAnchor(undefined)} />
+                
                 <Tooltip title="Edit">
                   <IconButton onClick={() => {
                     setEditUser(row)
@@ -156,6 +151,7 @@ export default function UsersTable({ data = [], onEditModeOn }) {
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
+                
                 <Tooltip title="Delete">
                   <IconButton onClick={(e) => onOpenPopConfirm(e.target, 'delete')}>
                     <DeleteIcon />

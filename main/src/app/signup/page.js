@@ -13,27 +13,41 @@ export default function SignUpPage() {
   const { currentUser = {} } = state
   const [error, setError] = useState()
 
+  const authenticate = (user, type = 'LOG_IN') => {
+    localStorageSet('loggedUser', JSON.stringify(user))
+    dispatch({ type })
+    dispatch({
+      type: 'CURRENT_USER',
+      payload: user,
+    });
+    router.push(`/account/plan/${user._id}`)
+  }
+  
   const handleAuthorize = ({ email, password }) => {
     const type = currentUser.email ? 'SIGN_UP' : 'LOG_IN'
 
     api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ user, message }) => {
       if (message) {
         setError(message)
-      } else {
-        localStorageSet('loggedUser', JSON.stringify(user))
-        dispatch({ type })
-        dispatch({
-          type: 'CURRENT_USER',
-          payload: user,
-        });
-        router.push(`/account/plan/${user._id}`)
+      } else if (user) {
+        authenticate(user, type)
+      }
+    }).catch((err) => console.log(err))
+  }
+  
+  const handleResetPassword = ({ email, oldPassword, newPassword }) => {
+    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { email, oldPassword, password: newPassword }).then(({ currentUser, message }) => {
+      if (message) {
+        setError(message)
+      } else if (currentUser) {
+        authenticate(currentUser)
       }
     }).catch((err) => console.log(err))
   }
 
   return (
     <main>
-      <AuthForm currentUser={currentUser} error={error} onSubmit={handleAuthorize} />
+      <AuthForm currentUser={currentUser} error={error} onSubmit={handleAuthorize} onResetPassword={handleResetPassword} />
     </main>
   );
 }

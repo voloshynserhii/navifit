@@ -130,13 +130,13 @@ function rowContent(_index, row, { removeAnchor, onEdit, onOpenPopConfirm, onCon
   );
 }
 
-export default function ReactVirtualizedTable({ data }) {
+export default function ReactVirtualizedTable({ data = [] }) {
   const [list, setList] = useState([])
   const [editRow, setEditRow] = useState()
   const [removeAnchor, setRemoveAnchor] = useState()
 
   useEffect(() => {
-    if (!list.length && data?.length || (list.length !== data.length)) setList(data)
+    setList(data)
   }, [list, data])
 
   const onCancel = () => setEditRow(undefined)

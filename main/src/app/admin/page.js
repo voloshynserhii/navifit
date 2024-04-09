@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button, FormControl, IconButton, InputLabel, InputAdornment, MenuItem, Select, Stack, Tabs, Tab, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import AuthForm from '../../components/AuthForm'
 import RecipesTable from './components/Recipes'
 import UsersTable from './components/Users'
@@ -138,12 +139,13 @@ export default function Admin() {
     }
 
     const handleSearch = async () => {
-        setData([])
         const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
+        
         if (newData) {
             setData(newData)
         }
-
+        
+        setSearchValue('')
     }
 
     if (createMode) return (
@@ -244,6 +246,7 @@ export default function Admin() {
                             <TextField
                                 label='Search by name'
                                 sx={{ m: 1, width: '25ch' }}
+                                value={searchValue || ''}
                                 onChange={handleChangeSearchValue}
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">
@@ -251,7 +254,7 @@ export default function Admin() {
                                             onClick={handleSearch}
                                             edge="end"
                                         >
-                                            <SearchIcon />
+                                            {searchValue ? <SearchIcon /> : <CloseIcon />}
                                         </IconButton>
                                     </InputAdornment>,
                                 }}

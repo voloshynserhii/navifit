@@ -5,12 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import Form from './Forms/Plan'
 import api from '../../../utils/api'
 
-export default function PlansTable({ data }) {
+export default function PlansTable({ data = [] }) {
   const [list, setList] = useState([])
   const [editPlan, setEditPlan] = useState()
 
   useEffect(() => {
-    if (!list.length && data?.length) setList(data)
+    setList(data)
   }, [list, data])
 
   const onCancel = () => setEditPlan(undefined)
@@ -55,7 +55,7 @@ export default function PlansTable({ data }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map((row) => (
+          {list?.map((row) => (
             <TableRow
               key={row?._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

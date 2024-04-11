@@ -65,7 +65,7 @@ export default function PromocodesTable({ data = [] }) {
               <TableCell component="th" scope="row">
                 {row?.code}
               </TableCell>
-              <TableCell align="right">{!!+row?.type ? 'Personal' : 'Public'}</TableCell>
+              <TableCell align="right">{+row?.type ? 'Personal' : 'Public'}</TableCell>
               <TableCell align="right">{row?.email || ''}</TableCell>
               <TableCell align="right">{row?.discount}</TableCell>
               <TableCell align="right">{dayjs(row?.dateDue).format('YYYY-MM-DD')}</TableCell>

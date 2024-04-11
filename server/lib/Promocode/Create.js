@@ -24,7 +24,10 @@ module.exports = async (req, res) => {
     
     const code = arr.join('-')
 
-    const newPromocode = new db.promocode({ ...promocode, code })
+    promocode.dateDue = promocode.dateDue === 'noDate' ? undefined : promocode.dateDue
+    promocode.code = code
+    
+    const newPromocode = new db.promocode(promocode)
 
     await newPromocode.save()
 

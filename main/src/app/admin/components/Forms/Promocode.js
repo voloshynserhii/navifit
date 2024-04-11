@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import dayjs from 'dayjs';
-import { Grid, Button, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
+import { Grid, Button, Checkbox, FormControl, FormControlLabel, InputLabel, Select, Stack, MenuItem, TextField, Typography } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,6 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function PromocodeForm({ item, onCancel, onUpdate, onCreate }) {
     const [promocode, setPromocode] = useState(item || {})
+    const [noDate, setNoDate] = useState(!item?.dateDue)
 
     const editFormHandler = (e) => {
         const { name, value } = e.target
@@ -17,7 +18,7 @@ export default function PromocodeForm({ item, onCancel, onUpdate, onCreate }) {
             [name]: value
         }))
     }
-    
+
     const pickDateHandler = (val) => {
         setPromocode((prev) => ({
             ...prev,
@@ -33,6 +34,21 @@ export default function PromocodeForm({ item, onCancel, onUpdate, onCreate }) {
         if (onCreate) onCreate(promocode)
 
         return undefined
+    }
+    
+    const noDateHandler = checked => {
+        setNoDate(checked)
+        
+        let dateDue = dayjs(item.dateDue).format('YYYY-MM-DD')
+        
+        if (checked) {
+            dateDue = 'noDate'
+        }
+        
+        setPromocode((prev) => ({
+            ...prev,
+            dateDue
+        }))
     }
 
     return (
@@ -80,17 +96,20 @@ export default function PromocodeForm({ item, onCancel, onUpdate, onCreate }) {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DatePicker']}>
-                            <DatePicker
-                                sx={{ width: '100%' }}
-                                label="Date due"
-                                showDaysOutsideCurrentMonth
-                                value={dayjs(promocode.dateDue) || ''}
-                                onAccept={pickDateHandler}
-                            />
-                        </DemoContainer>
-                    </LocalizationProvider>
+                    <Stack>
+                        {!noDate && <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DatePicker']}>
+                                <DatePicker
+                                    sx={{ width: '100%' }}
+                                    label="Date due"
+                                    showDaysOutsideCurrentMonth
+                                    value={dayjs(promocode.dateDue) || ''}
+                                    onAccept={pickDateHandler}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>}
+                        <FormControlLabel control={<Checkbox checked={noDate} onChange={(e) => noDateHandler(e.target.checked)} />} label="No date" />
+                    </Stack>
                 </Grid>
 
                 <Grid item xs={12}>

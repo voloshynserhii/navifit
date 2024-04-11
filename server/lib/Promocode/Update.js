@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
     promocode.type = type
     promocode.discount = discount
     promocode.email = email
-    promocode.dateDue = dateDue
+    promocode.dateDue = dateDue === 'noDate' ? undefined : dateDue
     
     await promocode.save()
     

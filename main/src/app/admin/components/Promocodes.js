@@ -42,7 +42,7 @@ export default function PromocodesTable({ data = [] }) {
   if (!data?.length) return <>No promocodes found</>
 
   if (edit) return <Form item={edit} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
-
+console.log(list)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -68,7 +68,7 @@ export default function PromocodesTable({ data = [] }) {
               <TableCell align="right">{+row?.type ? 'Personal' : 'Public'}</TableCell>
               <TableCell align="right">{row?.email || ''}</TableCell>
               <TableCell align="right">{row?.discount}</TableCell>
-              <TableCell align="right">{dayjs(row?.dateDue).format('YYYY-MM-DD')}</TableCell>
+              <TableCell align="right">{row?.dateDue ? dayjs(row?.dateDue).format('YYYY-MM-DD') : ''}</TableCell>
               <TableCell align='right'>
                 <Tooltip title="Edit">
                   <IconButton onClick={() => setEdit(row)}>

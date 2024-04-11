@@ -66,7 +66,7 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
         if (isNaN(+value) || +value < min) {
             onError(true)
             setError(true)
-        } else {
+        } else  if (+value <= max) {
             onError(false)
             setError(false)
         }

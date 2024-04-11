@@ -130,19 +130,22 @@ function rowContent(_index, row, { removeAnchor, onEdit, onOpenPopConfirm, onCon
   );
 }
 
-export default function ReactVirtualizedTable({ data = [] }) {
+export default function ReactVirtualizedTable({ data = [], onEditModeOn }) {
   const [list, setList] = useState([])
   const [editRow, setEditRow] = useState()
   const [removeAnchor, setRemoveAnchor] = useState()
 
   useEffect(() => {
     setList(data)
-  }, [list, data])
+  }, [data])
 
-  const onCancel = () => setEditRow(undefined)
+  const onCancel = () => {
+    setEditRow(undefined)
+    onEditModeOn(false)
+  }
 
   const onUpdate = item => {
-    api.admin.updateRecipe(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ recipe }) => {
+    api.recipe.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ recipe }) => {
       const newList = [...list]
       const index = list.findIndex(item => item._id === recipe._id)
 
@@ -154,7 +157,7 @@ export default function ReactVirtualizedTable({ data = [] }) {
   }
 
   const onRemoveRecipe = id => {
-    api.admin.removeRecipe(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+    api.recipe.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
       const newList = list.filter(recipe => recipe._id !== id)
 
       setList(newList)
@@ -177,7 +180,10 @@ export default function ReactVirtualizedTable({ data = [] }) {
         fixedHeaderContent={fixedHeaderContent}
         itemContent={(i, r) => rowContent(i, r, {
           removeAnchor,
-          onEdit: (row) => setEditRow(row),
+          onEdit: (row) => {
+            setEditRow(row)
+            onEditModeOn(true)
+          },
           onOpenPopConfirm: (target) => setRemoveAnchor(target),
           onConfirmRemoveRecipe: onRemoveRecipe,
           onCancelRemoveRecipe: () => setRemoveAnchor(undefined)

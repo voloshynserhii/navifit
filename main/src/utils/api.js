@@ -62,6 +62,7 @@ export default {
     getUser: (url, params) => requests.get({ url: `${url}/api/user/${params.id}`, params }),
     remove: (url, id) => requests.delete({ url: `${url}/api/user/${id}` }),
     create: (url, body) => requests.post({ url: `${url}/api/user/new`, body }),
+    getUsers: (url, params) => requests.get({ url: `${url}/users`, params }),
   },
   plan: {
     getPlans: (url, params) => requests.get({ url: `${url}/api/plans`, params }),
@@ -70,11 +71,16 @@ export default {
     getOptions: (url, body) => requests.post({ url: `${url}/api/plans`, body }),
     removePlan: (url, id) => requests.delete({ url: `${url}/api/plans/${id}` }),
   },
-  admin: {
-    getRecipes: (url, params) => requests.get({ url: `${url}/admin/recipes`, params }),
-    createRecipe: (url, body) => requests.post({ url: `${url}/admin/recipes`, body }),
-    updateRecipe: (url, body) => requests.put({ url: `${url}/admin/recipes/${body._id}`, body }),
-    removeRecipe: (url, id) => requests.delete({ url: `${url}/admin/recipes/${id}` }),
-    getUsers: (url, params) => requests.get({ url: `${url}/admin/users`, params }),
+  promo: {
+    get: (url, params) => requests.get({ url: `${url}/api/promo`, params }),
+    create: (url, body) => requests.post({ url: `${url}/api/promo`, body }),
+    update: (url, body) => requests.put({ url: `${url}/api/promo/${body._id}`, body }),
+    remove: (url, id) => requests.delete({ url: `${url}/api/promo/${id}` }),
+  },
+  recipe: {
+    getAll: (url, params) => requests.get({ url: `${url}/recipes`, params }),
+    create: (url, body) => requests.post({ url: `${url}/recipes`, body }),
+    update: (url, body) => requests.put({ url: `${url}/recipes/${body._id}`, body }),
+    remove: (url, id) => requests.delete({ url: `${url}/recipes/${id}` }),
   },
 };

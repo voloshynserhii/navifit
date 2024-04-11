@@ -24,37 +24,39 @@ export default function ResetPassword({ onClose, onConfirm }) {
             slotProps={{
                 backdrop: {
                     timeout: 500,
-                    backgroundColor: 'white'
+                    backgroundcolor: 'white'
                 },
             }}
         >
             <Box sx={{
                 position: 'absolute', top: '50%', left: '50%', width: 350, transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: 'white', padding: "20px 25px 20px 10px", borderRadius: 1
             }}>
-                <Stack sx={{ width: '100%' }}>
-                    <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
-                        <OutlinedInput
-                            value={password || ''}
-                            error={false}
-                            type={showPassword ? 'text' : 'password'}
-                            onChange={e => setPassword(e.target.value)}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            label="New Password"
-                        />
-                    </FormControl>
-                </Stack>
+                <form>
+                    <Stack sx={{ width: '100%' }}>
+                        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
+                            <OutlinedInput
+                                value={password || ''}
+                                error={false}
+                                type={showPassword ? 'text' : 'password'}
+                                onChange={e => setPassword(e.target.value)}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="New Password"
+                            />
+                        </FormControl>
+                    </Stack>
+                </form>
                 <Button variant="contained" onClick={() => onConfirm(password)}>Confirm</Button>
             </Box>
         </Modal>

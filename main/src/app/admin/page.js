@@ -8,10 +8,12 @@ import AuthForm from '../../components/AuthForm'
 import RecipesTable from './components/Recipes'
 import UsersTable from './components/Users'
 import AdminsTable from './components/AdminUsers'
+import PromocodesTable from './components/Promocodes'
 import PlansTable from './components/Plans'
 import RecipeForm from './components/Forms/Recipe'
 import UserForm from './components/Forms/User'
 import PlanForm from './components/Forms/Plan'
+import PromocodeForm from './components/Forms/Promocode'
 import { useAppStore } from '../../store'
 import api from '../../utils/api'
 import { localStorageGet, localStorageSet } from '../../utils/localStorage';
@@ -32,7 +34,7 @@ export default function Admin() {
     const [searchValue, setSearchValue] = useState()
 
     const getUsers = async () => {
-        const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10, role, sortBy: sortingOption !== 'no' ? sortingOption : undefined, sortingDirection })
+        const { data: newData } = await api.user.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10, role, sortBy: sortingOption !== 'no' ? sortingOption : undefined, sortingDirection })
 
         if (newData) {
             !role ? setData(newData) : setAdmins(newData)
@@ -95,17 +97,21 @@ export default function Admin() {
         setData(null)
 
         if (newValue === 0) {
-            const { data: newData } = await api.admin.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            const { data: newData } = await api.user.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
             setData(newData)
         }
 
         if (newValue === 1) {
-            const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST)
+            const { data: newData } = await api.recipe.getAll(process.env.NEXT_PUBLIC_DB_HOST)
             setData(newData)
         }
 
         if (newValue === 2) {
             const { data: newData } = await api.plan.getPlans(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            setData(newData)
+        }
+        if (newValue === 4) {
+            const { data: newData } = await api.promo.get(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
             setData(newData)
         }
     };
@@ -121,7 +127,7 @@ export default function Admin() {
     }
 
     const handleCreateRecipe = (recipe) => {
-        api.admin.createRecipe(process.env.NEXT_PUBLIC_DB_HOST, recipe).then(({ newRecipe }) => {
+        api.recipe.create(process.env.NEXT_PUBLIC_DB_HOST, recipe).then(({ newRecipe }) => {
             setData(prev => ([...prev, newRecipe]))
             setCreateMode(false)
         }).catch(err => console.log(err))
@@ -133,13 +139,20 @@ export default function Admin() {
             setCreateMode(false)
         }).catch(err => console.log(err))
     }
+    
+    const handleCreatePromocode = (newPlan) => {
+        api.promo.create(process.env.NEXT_PUBLIC_DB_HOST, newPlan).then(({ promocode }) => {
+            setData(prev => ([...prev, promocode]))
+            setCreateMode(false)
+        }).catch(err => console.log(err))
+    }
 
     const handleChangeSearchValue = e => {
         setSearchValue(e.target.value)
     }
 
     const handleSearch = async () => {
-        const { data: newData } = await api.admin.getRecipes(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
+        const { data: newData } = await api.recipe.getAll(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
         
         if (newData) {
             setData(newData)
@@ -154,6 +167,7 @@ export default function Admin() {
                 {value === 0 && <UserForm onCancel={() => setCreateMode(false)} onCreate={handleCreateUser} />}
                 {value === 1 && <RecipeForm onCancel={() => setCreateMode(false)} onCreate={handleCreateRecipe} />}
                 {value === 2 && <PlanForm onCancel={() => setCreateMode(false)} onCreate={handleCreatePlan} />}
+                {value === 4 && <PromocodeForm onCancel={() => setCreateMode(false)} onCreate={handleCreatePromocode} />}
             </Stack>
         </main>
     )
@@ -241,7 +255,7 @@ export default function Admin() {
                 )}
                 {value === 1 && (
                     <Stack sx={{ width: '100%' }}>
-                        <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
+                        {!editMode && <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
                             <Typography>Total: {data?.length} recipes</Typography>
                             <TextField
                                 label='Search by name'
@@ -259,12 +273,13 @@ export default function Admin() {
                                     </InputAdornment>,
                                 }}
                             />
-                        </Stack>
-                        <RecipesTable data={data} />
+                        </Stack>}
+                        <RecipesTable data={data} onEditModeOn={val => setEditMode(val)} />
                     </Stack>
 
                 )}
                 {value === 2 && <PlansTable data={data} />}
+                {value === 4 && <PromocodesTable data={data} />}
             </Stack>
         </main>
     )

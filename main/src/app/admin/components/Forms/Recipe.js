@@ -194,7 +194,19 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
                 <Grid item xs={12} sm={9} md={6}>
                     <Typography variant='h5' sx={{ marginBottom: 2 }}>Attached images:</Typography>
-                    <IconButton component="label" sx={{ width: 250, height: 100, borderRadius: 5, border: '1px solid black' }}>
+                    <Stack sx={{ marginTop: 2 }}>
+                            <Stack direction='row' gap={2}>
+                                <TextField
+                                    // value={newIngredientWeight}
+                                    label="Add Link to an image"
+                                    name="link"
+                                    fullWidth
+                                    // onChange={(e) => setNewIngredientWeight(e.target.value)}
+                                />
+                                <Button onClick={() => {}}>+ Add</Button>
+                            </Stack>
+                        </Stack>
+                    {/* <IconButton component="label" sx={{ width: 250, height: 100, borderRadius: 5, border: '1px solid black' }}>
                         <Stack alignItems='center'>
                             <FileUploadOutlined />
                             <Typography>Press or drag a file</Typography>
@@ -206,8 +218,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                 name="[licenseFile]"
                             />
                         </Stack>
-
-                    </IconButton>
+                    </IconButton> */}
                 </Grid>
                 <Grid item xs={12}>
                     <Button sx={{ marginRight: 5 }} onClick={onCancel}>Cancel</Button>

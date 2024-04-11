@@ -3,6 +3,7 @@ const express = require('express')
 const User = require('../lib/User')
 const Recipe = require('../lib/Recipe')
 const Plan = require('../lib/Plan')
+const Promo = require('../lib/Promocode')
 
 const router = express.Router()
 
@@ -16,6 +17,7 @@ router.get('/api/user/draft', User.GetDraft)
 router.get('/api/user/:id', User.GetById)
 router.put('/api/user/:id', User.Update)
 router.delete('/api/user/:id', User.Remove)
+router.get('/users', User.GetUsers)
 
 /**
 * Module Plans
@@ -27,13 +29,20 @@ router.post('/api/plans', Plan.GetPlan)
 router.delete('/api/plans/:id', Plan.Remove)
 
 /**
-* Module Admin
+* Module Promocodes
 */
-router.get('/admin/recipes', Recipe.GetRecipes)
-router.post('/admin/recipes', Recipe.CreateRecipe)
-router.put('/admin/recipes/:id', Recipe.UpdateRecipe)
-router.delete('/admin/recipes/:id', Recipe.RemoveRecipe)
-router.get('/admin/users', User.GetUsers)
+router.get('/api/promo', Promo.Get)
+router.post('/api/promo', Promo.Create)
+router.put('/api/promo/:id', Promo.Update)
+router.delete('/api/promo/:id', Promo.Remove)
+
+/**
+* Module Recipes
+*/
+router.get('/recipes', Recipe.Get)
+router.post('/recipes', Recipe.Create)
+router.put('/recipes/:id', Recipe.Update)
+router.delete('/recipes/:id', Recipe.Remove)
 
 /**
 * If not one router not found, send 404

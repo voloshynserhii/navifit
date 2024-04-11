@@ -1,26 +1,27 @@
 import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 import { CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import Form from './Forms/Plan'
+import Form from './Forms/Promocode'
 import api from '../../../utils/api'
 
-export default function PlansTable({ data = [] }) {
+export default function PromocodesTable({ data = [] }) {
   const [list, setList] = useState(data)
-  const [editPlan, setEditPlan] = useState()
+  const [edit, setEdit] = useState()
 
   useEffect(() => {
     setList(data)
   }, [data])
 
-  const onCancel = () => setEditPlan(undefined)
+  const onCancel = () => setEdit(undefined)
   
   const onUpdate = item => {    
-    api.plan.updatePlan(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ plan }) => {
+    api.promo.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ promocode }) => {
       const newList = [...list]
-      const index = list.findIndex(item => item._id === plan._id)
+      const index = list.findIndex(item => item._id === promocode._id)
       
-      newList[index] = plan
+      newList[index] = promocode
       
       setList(newList)
       onCancel()
@@ -28,8 +29,8 @@ export default function PlansTable({ data = [] }) {
   }
   
   const onRemove = id => {
-    api.plan.removePlan(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
-      const newList = list.filter(plan => plan._id !== id)
+    api.promo.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+      const newList = list.filter(promocode => promocode._id !== id)
       
       setList(newList)
       onCancel()
@@ -38,19 +39,20 @@ export default function PlansTable({ data = [] }) {
   
   if (!data) return <CircularProgress />
 
-  if (!data?.length) return <>No plans found</>
+  if (!data?.length) return <>No promocodes found</>
 
-  if (editPlan) return <Form item={editPlan} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
+  if (edit) return <Form item={edit} onCancel={onCancel} onUpdate={item => onUpdate(item)} />
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell align="right">Price&nbsp;(zl)</TableCell>
-            <TableCell align="right">Promo Price&nbsp;(zl)</TableCell>
-            <TableCell align="right">Duration&nbsp;(months)</TableCell>
+            <TableCell>Code</TableCell>
+            <TableCell align="right">Type</TableCell>
+            <TableCell align="right">Email</TableCell>
+            <TableCell align="right">Discount&nbsp;(%)</TableCell>
+            <TableCell align="right">Date due</TableCell>
             <TableCell align='right' style={{ width: 200 }}>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -61,14 +63,15 @@ export default function PlansTable({ data = [] }) {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row?.title}
+                {row?.code}
               </TableCell>
-              <TableCell align="right">{row?.price}</TableCell>
-              <TableCell align="right">{row?.promoPrice}</TableCell>
-              <TableCell align="right">{row?.duration}</TableCell>
+              <TableCell align="right">{!!+row?.type ? 'Personal' : 'Public'}</TableCell>
+              <TableCell align="right">{row?.email || ''}</TableCell>
+              <TableCell align="right">{row?.discount}</TableCell>
+              <TableCell align="right">{dayjs(row?.dateDue).format('YYYY-MM-DD')}</TableCell>
               <TableCell align='right'>
                 <Tooltip title="Edit">
-                  <IconButton onClick={() => setEditPlan(row)}>
+                  <IconButton onClick={() => setEdit(row)}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>

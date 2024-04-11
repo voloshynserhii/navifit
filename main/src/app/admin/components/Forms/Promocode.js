@@ -8,7 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function PromocodeForm({ item, onCancel, onUpdate, onCreate }) {
     const [promocode, setPromocode] = useState(item || {})
-    const [noDate, setNoDate] = useState(!item?.dateDue)
+    const [noDate, setNoDate] = useState(item ? !item?.dateDue : false)
 
     const editFormHandler = (e) => {
         const { name, value } = e.target
@@ -103,7 +103,8 @@ export default function PromocodeForm({ item, onCancel, onUpdate, onCreate }) {
                                     sx={{ width: '100%' }}
                                     label="Date due"
                                     showDaysOutsideCurrentMonth
-                                    value={dayjs(promocode.dateDue) || ''}
+                                    minDate={dayjs(new Date()).add(1, 'month')}
+                                    value={promocode.dateDue ? dayjs(promocode.dateDue) : dayjs(new Date()).add(1, 'month')}
                                     onAccept={pickDateHandler}
                                 />
                             </DemoContainer>

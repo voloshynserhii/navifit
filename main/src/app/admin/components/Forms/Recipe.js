@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
-import { Grid, Button, IconButton, Stack, TextField, Typography } from '@mui/material';
-import FileUploadOutlined from "@mui/icons-material/FileUploadOutlined";
+import { Grid, Button, InputAdornment, IconButton, Stack, TextField, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Autocomplete from '../../../../components/Autocomplete'
 import { ingredients } from '../../../../utils/Plans'
 import { getTitle } from '../../helpers'
@@ -9,8 +9,10 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     const [recipe, setRecipe] = useState(item || {})
     const [newIngredientTitle, setNewIngredientTitle] = useState('')
     const [newIngredientWeight, setNewIngredientWeight] = useState('')
+    const [mainImageLink, setMainImageLink] = useState('')
+    const [newImageLink, setNewImageLink] = useState('')
 
-    const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients } = recipe
+    const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mainImage, images = [], videos } = recipe
     const ingredientTitles = recipeIngredients?.map(obj => Object.keys(obj))
 
     const editFormHandler = (e) => {
@@ -20,6 +22,44 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
             ...prev,
             [name]: value
         }))
+    }
+
+    const addMainImageHandler = () => {
+        setRecipe(prev => ({ ...prev, mainImage: mainImageLink }))
+        setMainImageLink('')
+    }
+
+    const editMainImageHandler = () => {
+        setRecipe(prev => ({ ...prev, mainImage: '' }))
+        setMainImageLink(mainImage)
+    }
+
+    const removeMainImageHandler = () => {
+        setRecipe(prev => ({ ...prev, mainImage: '' }))
+        setMainImageLink('')
+    }
+
+    const addNewImageHandler = () => {
+        if (!images.includes(newImageLink)) {
+            setRecipe(prev => ({ ...prev, images: prev.images?.length ? [...prev.images, newImageLink] : [newImageLink] }))
+        }
+        
+        setNewImageLink('')
+    }
+
+    const editImageHandler = (image) => {
+        const key = images.find(link => link === image)
+
+        setNewImageLink(key)
+
+        const filteredImages = images.filter(link => link !== image)
+        setRecipe(prev => ({ ...prev, images: filteredImages }))
+    }
+
+    const removeImageHandler = (image) => {
+        const filteredImages = images.filter(link => link !== image)
+
+        setRecipe(prev => ({ ...prev, images: filteredImages }))
     }
 
     const addIngredientHandler = () => {
@@ -178,6 +218,13 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     label="Title"
                                     name="title"
                                     fullWidth
+                                    InputProps={{
+                                        endAdornment: newIngredientTitle ? <InputAdornment position="start">
+                                            <IconButton onClick={() => setNewIngredientTitle('')}>
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </InputAdornment> : <></>,
+                                    }}
                                     onChange={(e) => setNewIngredientTitle(e.target.value)}
                                 />
                                 <TextField
@@ -185,44 +232,97 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     label="Weight"
                                     name="weight"
                                     fullWidth
+                                    InputProps={{
+                                        endAdornment: newIngredientWeight ? <InputAdornment position="start">
+                                            <IconButton onClick={() => setNewIngredientWeight('')}>
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </InputAdornment> : <></>,
+                                    }}
                                     onChange={(e) => setNewIngredientWeight(e.target.value)}
                                 />
-                                <Button onClick={addIngredientHandler}>+ Add</Button>
+                                <Button disabled={!newIngredientTitle || !newIngredientWeight} onClick={addIngredientHandler}>+ Add</Button>
                             </Stack>
                         </Stack>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={9} md={6}>
-                    <Typography variant='h5' sx={{ marginBottom: 2 }}>Attached images:</Typography>
-                    <Stack sx={{ marginTop: 2 }}>
+                    <Typography variant='h5' sx={{ marginBottom: 2 }}>Main image:</Typography>
+                    {mainImage && (
+                        <Stack>
+                            <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
+                                <Typography>{mainImage}</Typography>
+                                <Stack direction='row'>
+                                    <Button onClick={editMainImageHandler}>Edit</Button>
+                                    <Button onClick={removeMainImageHandler}>Remove</Button>
+                                </Stack>
+                            </Stack>
+                            <img width={100} height={100} src={mainImage} alt={mainImage} />
+                        </Stack>
+                    )}
+                    {!mainImage && <Stack sx={{ marginTop: 2 }}>
+                        <Stack direction='row' gap={2}>
+                            <TextField
+                                value={mainImageLink}
+                                label="Add Link to an image"
+                                name="link"
+                                fullWidth
+                                InputProps={{
+                                    endAdornment: mainImageLink ? <InputAdornment position="start">
+                                        <IconButton onClick={() => setMainImageLink('')}>
+                                            <CloseIcon />
+                                        </IconButton>
+                                    </InputAdornment> : <></>,
+                                }}
+                                onChange={(e) => setMainImageLink(e.target.value)}
+                            />
+                            <Button sx={{ width: 125 }} disabled={!mainImageLink} onClick={addMainImageHandler}>+ Add Link</Button>
+                        </Stack>
+                    </Stack>}
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid item xs={12} sm={9} md={6}>
+                        <Typography variant='h5' sx={{ marginBottom: 2 }}>Images:</Typography>
+                        {images?.map((imageLink, i) => (
+                            <Stack>
+                                <Stack key={imageLink + i} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
+                                    <Stack direction='row' justifyContent='space-between' sx={{ width: '80%', overflow: 'scroll' }}>
+                                        <Typography>{imageLink}</Typography>
+                                    </Stack>
+                                    {!newImageLink && (
+                                        <Stack direction='row'>
+                                            <Button onClick={() => editImageHandler(imageLink)}>Edit</Button>
+                                            <Button onClick={() => removeImageHandler(imageLink)}>Remove</Button>
+                                        </Stack>
+                                    )}
+                                </Stack>
+                                <img width={100} height={100} src={imageLink} alt={imageLink} />
+                            </Stack>
+                        ))}
+                        <Stack sx={{ marginTop: 2 }}>
                             <Stack direction='row' gap={2}>
                                 <TextField
-                                    // value={newIngredientWeight}
-                                    label="Add Link to an image"
-                                    name="link"
+                                    value={newImageLink}
+                                    label="Title"
+                                    name="title"
                                     fullWidth
-                                    // onChange={(e) => setNewIngredientWeight(e.target.value)}
+                                    InputProps={{
+                                        endAdornment: newImageLink ? <InputAdornment position="start">
+                                            <IconButton onClick={() => setNewImageLink('')}>
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </InputAdornment> : <></>,
+                                    }}
+                                    onChange={(e) => setNewImageLink(e.target.value)}
                                 />
-                                <Button onClick={() => {}}>+ Add</Button>
+                                <Button sx={{ width: 125 }} disabled={!newImageLink} onClick={addNewImageHandler}>+ Add Link</Button>
                             </Stack>
                         </Stack>
-                    {/* <IconButton component="label" sx={{ width: 250, height: 100, borderRadius: 5, border: '1px solid black' }}>
-                        <Stack alignItems='center'>
-                            <FileUploadOutlined />
-                            <Typography>Press or drag a file</Typography>
-                            <input
-                                styles={{ display: "none" }}
-                                type="file"
-                                hidden
-                                // onChange={handleUpload}
-                                name="[licenseFile]"
-                            />
-                        </Stack>
-                    </IconButton> */}
+                    </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Button sx={{ marginRight: 5 }} onClick={onCancel}>Cancel</Button>
-                    <Button variant='contained' disabled={disabled} onClick={confirmHandler}>Confirm</Button>
+                    <Button sx={{ color: 'white' }} variant='contained' disabled={disabled} onClick={confirmHandler}>Save</Button>
                 </Grid>
             </Grid>
         </Fragment>

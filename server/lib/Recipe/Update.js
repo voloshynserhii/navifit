@@ -27,6 +27,9 @@ module.exports = async (req, res) => {
     recipe.proteins = data.proteins
     recipe.carbs = data.carbs
     recipe.ingredients = data.ingredients
+    recipe.mainImage = data.mainImage
+    recipe.images = data.images
+    recipe.videos = data.videos
     
     await recipe.save()
     

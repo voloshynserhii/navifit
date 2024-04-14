@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import Image from 'next/image'
 import { Grid, Button, InputAdornment, IconButton, Stack, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Autocomplete from '../../../../components/Autocomplete'
@@ -264,7 +265,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         <Stack direction='row' gap={2}>
                             <TextField
                                 value={mainImageLink}
-                                label="Add Link to an image"
+                                label="Add new image link for the main picture"
                                 name="link"
                                 fullWidth
                                 InputProps={{
@@ -284,9 +285,9 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                     <Grid item xs={12} sm={9} md={6}>
                         <Typography variant='h5' sx={{ marginBottom: 2 }}>Images:</Typography>
                         {images?.map((imageLink, i) => (
-                            <Stack>
-                                <Stack key={imageLink + i} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
-                                    <Stack direction='row' justifyContent='space-between' sx={{ width: '80%', overflow: 'scroll' }}>
+                            <Stack key={imageLink + i}>
+                                <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
+                                    <Stack direction='row' justifyContent='space-between'>
                                         <Typography>{imageLink}</Typography>
                                     </Stack>
                                     {!newImageLink && (
@@ -303,8 +304,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                             <Stack direction='row' gap={2}>
                                 <TextField
                                     value={newImageLink}
-                                    label="Title"
-                                    name="title"
+                                    label="Add new image link"
                                     fullWidth
                                     InputProps={{
                                         endAdornment: newImageLink ? <InputAdornment position="start">

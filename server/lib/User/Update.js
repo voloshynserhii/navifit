@@ -112,7 +112,7 @@ module.exports = async (req, res) => {
         to: currentUser.email,
         subject: 'From Navifit: Your password was changed!',
         html:`<div>
-          <h4>Someone just changed your password!</h4>
+          <h4>Admin just changed your password!</h4>
           <p>Your new password is ${password}</p>
         </div>`
       }

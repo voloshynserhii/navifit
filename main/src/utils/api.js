@@ -63,6 +63,8 @@ export default {
     remove: (url, id) => requests.delete({ url: `${url}/api/user/${id}` }),
     create: (url, body) => requests.post({ url: `${url}/api/user/new`, body }),
     getUsers: (url, params) => requests.get({ url: `${url}/users`, params }),
+    restorePassword: (url, body) => requests.post({ url: `${url}/api/user/restore`, body }),
+    resetPassword: (url, body) => requests.post({ url: `${url}/api/user/reset`, body }),
   },
   plan: {
     getPlans: (url, params) => requests.get({ url: `${url}/api/plans`, params }),

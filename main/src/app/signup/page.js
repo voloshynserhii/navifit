@@ -11,7 +11,9 @@ export default function SignUpPage() {
   const router = useRouter()
   const [state, dispatch] = useAppStore()
   const { currentUser = {} } = state
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
+  const [userMessage, setUserMessage] = useState()
 
   const authenticate = (user, type = 'LOG_IN') => {
     localStorageSet('loggedUser', JSON.stringify(user))
@@ -25,29 +27,55 @@ export default function SignUpPage() {
   
   const handleAuthorize = ({ email, password }) => {
     const type = currentUser.email ? 'SIGN_UP' : 'LOG_IN'
-
+    setLoading(true)
+    
     api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {
         authenticate(user, type)
       }
-    }).catch((err) => console.log(err))
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
+    })
   }
   
-  const handleResetPassword = ({ email, oldPassword, newPassword }) => {
+  const handleChangePassword = ({ email, oldPassword, newPassword }) => {
+    setLoading(true)
+    
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { email, oldPassword, password: newPassword }).then(({ currentUser, message }) => {
       if (message) {
         setError(message)
       } else if (currentUser) {
         authenticate(currentUser)
       }
-    }).catch((err) => console.log(err))
+      
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
+    })
+  }
+  
+  const handleRestorePassword = ({ email }) => {
+    setLoading(true)
+    
+    api.user.restorePassword(process.env.NEXT_PUBLIC_DB_HOST, { email }).then(({ message }) => {
+      if (message) {
+        setError(message)
+      } else {
+        setUserMessage('Instructions with setting a new password were sent. Please check your email to continue!')
+      }
+      
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
+    })
   }
 
   return (
     <main>
-      <AuthForm currentUser={currentUser} error={error} onSubmit={handleAuthorize} onResetPassword={handleResetPassword} />
+      <AuthForm loading={loading} currentUser={currentUser} error={error} message={userMessage} onSubmit={handleAuthorize} onChangePassword={handleChangePassword} onRestorePassword={handleRestorePassword} />
     </main>
   );
 }

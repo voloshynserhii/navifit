@@ -1,7 +1,7 @@
 const Functions = require('../../util/Functions')
-// const Mailer = require('../../util/Mailer')
 const db = require('../../db')
-
+const config = require('../../config')
+const { transporter } = require('../../util/mailer')
 
 /**
  * Restore password
@@ -13,18 +13,13 @@ module.exports = async(req, res) => {
     let { email } = req.body
 
     if (Functions.isNull(email)) {
-      return res.sendError('009')
-    }
-
-    if (!Functions.isString(email)) {
-      return res.sendError('002', 'email')
-    }
-
-    if (!Functions.isEmail(email)) {
-      return res.sendError('003', 'email')
+      return res.send({
+        message: 'Email is required!'
+      });
     }
 
     const searchEmail = email.trim()
+    
     const user = await db.user
       .findOne({
         $or: [
@@ -35,17 +30,34 @@ module.exports = async(req, res) => {
       .exec()
 
     if (!user) {
-      return res.sendError('EmailNotFound')
+      return res.send({
+        message: 'User with this email not found!'
+      });
     }
 
     user.oneTimePassword = Functions.generateHash()
-    user.extra = { req, action: 'RestorePassword' }
 
     await user.save()
 
     res.json({})
-
-    // Mailer.restorePassword({ email, token: user.oneTimePassword, req })
+    
+    const mailOptions = {
+      from: config.mailer.email,
+      to: user.email,
+      subject: 'From Navifit: You requested to change a password!',
+      html:`<div>
+        <h4>In order to change your password follow the link below!</h4>
+        <p>https://navifit.vercel.app/restore/${user.oneTimePassword}</p>
+      </div>`
+    }
+    
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+          console.log(err);
+      } else {
+          console.log('Email sent', info)
+      }
+    })
   } catch (err) {
     res.sendDbError(err)
   }

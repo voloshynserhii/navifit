@@ -21,6 +21,7 @@ const UserSchema = new Schema(
       // default: Math.random().toString().substr(2),
       trim: true,
     },
+    oneTimePassword: { type: String, trim: true },
     lastLogin: Object,
     isDraftUser: { type: Boolean, default: true },
     isAdmin: { type: Boolean, default: false },

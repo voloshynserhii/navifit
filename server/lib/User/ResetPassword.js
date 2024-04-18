@@ -1,5 +1,7 @@
 const Functions = require('../../util/Functions')
 const db = require('../../db')
+const config = require('../../config')
+const { transporter } = require('../../util/mailer')
 
 /**
  * Reset Password
@@ -8,73 +10,54 @@ const db = require('../../db')
  * @param next
  */
 // eslint-disable-next-line no-unused-vars
-module.exports = function(req, res, next) {
-  let { newPassword, repeatPassword, oneTimePassword } = req.body
-  // let { oldPassword, password, oneTimePassword } = req.body
-
-  if (
-    // Functions.isNull(oldPassword) ||
-    Functions.isNull(newPassword) ||
-    Functions.isNull(repeatPassword) ||
-    Functions.isNull(oneTimePassword)
-  ) {
-    return res.sendError('009')
-  }
-
-  if (!Functions.isString(newPassword)) {
-    return res.sendError('002', 'newPassword')
-  }
-
-  if (!Functions.isString(repeatPassword)) {
-    return res.sendError('002', 'repeatPassword')
-  }
+module.exports = function (req, res, next) {
+  let { password, token: oneTimePassword } = req.body
 
   if (!Functions.isString(oneTimePassword)) {
-    return res.sendError('002', 'oneTimePassword')
-  }
-
-  if (Functions.isEmpty(newPassword) || newPassword.length > 100) {
-    return res.sendError('003', 'newPassword')
-  }
-
-  const error = Functions.checkPassword(newPassword)
-
-  if (error) {
-    return res.sendError('003', `newPassword: ${error}`)
+    return res.send({
+      message: 'Could not change password! One time password is required.'
+    });
   }
 
   db.user
     .findOne({ oneTimePassword })
-    .then(async(user) => {
+    .then(async (user) => {
       if (!user) {
-        return res.sendError('101')
+        return res.send({
+          message: 'User not found!'
+        });
       }
 
-      // if (!user.authenticate(oldPassword)) {
-      //   return res.sendError('102')
-      // }
-
-      if (user.authenticate(newPassword)) {
-        return res.sendError('301')
+      if (user.authenticate(password)) {
+        return res.send({
+          message: 'New password cannot be same as old password! Please try again.'
+        });
       }
 
-      if (user.isPasswordPreviouslyUsed(newPassword)) {
-        return res.sendError('301')
-      }
-
-      /* disabled because potentially unsecure
-      const isUniq = await db.passwordIsUnique(newPassword)
-      if (!isUniq) {
-        return res.sendError('302')
-      }
-      */
-
-      user.password = newPassword
-      user.extra = { req, action: 'ResetPassword' }
+      user.password = password
       user.oneTimePassword = undefined
-      user.unsuccessfulLoginAttempts = 0
 
-      user.save().then(() => res.json({}))
+      user.save().then(() => {
+        res.json({})
+        
+        const mailOptions = {
+          from: config.mailer.email,
+          to: user.email,
+          subject: 'From Navifit: You changed your password!',
+          html:`<div>
+            <h4>You successfully changed your password!</h4>
+            <p>Now you can login with your new password https://navifit.vercel.app/signup</p>
+          </div>`
+        }
+        
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+              console.log(err);
+          } else {
+              console.log('Email sent', info)
+          }
+        })
+      })
     })
     .catch((err) => res.sendDbError(err))
 }

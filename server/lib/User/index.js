@@ -8,4 +8,6 @@ module.exports = {
   GetUsers: require('./GetUsers'),
   GetById: require('./GetById'),
   Remove: require('./Remove'),
+  RestorePassword: require('./RestorePassword'),
+  ResetPassword: require('./ResetPassword'),
 }

@@ -53,11 +53,11 @@ export default function StepContainer({ currentStep, step = 1, totalSteps, showW
                 <Grid container >
                     <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 0 12px', md: '2rem 60px' } }}>
                         <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack} />
-
+                        
                         <Stack
                             sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: '-24px', md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
                             <Typography
-                                component="span" sx={{ marginTop: 10 }}>
+                                component="span" sx={{ marginTop: 5 }}>
                                 {getFormattedQuestion(question).map(item => (
                                     <Typography
                                         key={item}

@@ -34,13 +34,13 @@ export default function CustomizedProgressBars({ step = 1, totalSteps, onStepBac
             {step > 1 && <StyledIconButton onClick={onStepBack}>
                 <ArrowBackIosRoundedIcon />
             </StyledIconButton>}
-            <Stack direction='row' justifyContent='end'>
+            {totalSteps && <Stack direction='row' justifyContent='end'>
                 <Typography variant='span' component='div'>
                     <StyledStep variant='span' component='span'>{step}</StyledStep>
                     /{totalSteps}
                 </Typography>
-            </Stack>
-            <BorderLinearProgress variant="determinate" value={(step / totalSteps) * 100} sx={{ marginTop: '5px', marginBottom: 5 }} />
+            </Stack>}
+            {totalSteps && <BorderLinearProgress variant="determinate" value={(step / totalSteps) * 100} sx={{ marginTop: '5px', marginBottom: 5 }} />}
         </Box>
     );
 }

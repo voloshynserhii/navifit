@@ -21,10 +21,10 @@ export const LIGHT_THEME = {
       color: PALETTE_COLORS.primary.contrastText
     },
     h2: {
-      fontSize: 40,
+      fontSize: 30,
       fontFamily: 'unset',
       fontWeight: 600,
-      lineHeight: '60px',
+      lineHeight: '45px',
     },
     span: {
       fontSize: 16,

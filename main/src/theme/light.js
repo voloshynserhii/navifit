@@ -48,6 +48,20 @@ export const LIGHT_THEME = {
     //   [breakpoints.down("md")]: {
     //     fontSize: '12px',
     // },
+    },
+    body14: {
+      fontWeight: 400,
+      fontFamily: 'unset',
+      fontSize: 14,
+      lineHeight: '21px',
+      color: PALETTE_COLORS.primary.grey2,
+    },
+    medium16: {
+      fontWeight: 500,
+      fontFamily: 'unset',
+      fontSize: 16,
+      lineHeight: '24px',
+      color: PALETTE_COLORS.primary.contrastText,
     }
   }
 };

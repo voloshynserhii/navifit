@@ -1,7 +1,7 @@
 const dayjs = require('dayjs')
 
 const countUserData = (userData) => {
-    const { sex, weight, height, age, training, desiredWeight, desiredDate } = userData
+    const { gender, weight, height, age, training, desiredWeight, desiredDate } = userData
 
     const totalKalToBurn = (weight - desiredWeight) * 7700
     
@@ -14,10 +14,10 @@ const countUserData = (userData) => {
     
     let BMR = (10 * weight) + (6.25 * height) - (5 * age)
     
-    if (sex === 'male') {
+    if (gender === 'male') {
       BMR += 5
     } 
-    if (sex === 'female') {
+    if (gender === 'female') {
       BMR -= 161
     } 
     

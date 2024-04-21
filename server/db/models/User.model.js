@@ -18,7 +18,6 @@ const UserSchema = new Schema(
     hashedPassword: { type: String, trim: true },
     salt: {
       type: String,
-      // default: Math.random().toString().substr(2),
       trim: true,
     },
     oneTimePassword: { type: String, trim: true },

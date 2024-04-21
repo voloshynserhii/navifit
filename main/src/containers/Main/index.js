@@ -12,7 +12,7 @@ export default function Main({ onChooseOption }) {
   const theme = useTheme();
 
   return (
-    <StepContainer question={mainStep.title} totalSteps={totalSteps}>
+    <StepContainer currentStep={mainStep} totalSteps={totalSteps}>
       <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>
         <Stack
           justifyContent='center'

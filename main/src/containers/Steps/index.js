@@ -10,7 +10,7 @@ import InputNumber from '../../components/InputNumber'
 import Graphic from '../../components/Icons/Grachic'
 
 import { useAppStore } from '../../store';
-import { steps, filterIngredients } from '../../utils/Plans'
+import { steps, filterIngredients, getWarning } from '../../utils/Plans'
 
 const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22]
@@ -114,7 +114,15 @@ const Steps = ({ option = {}, onGetBack }) => {
 
     return (
         <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
-            <StepContainer styled={currentStep.isGraphic} step={step} question={steps[step - 1].title} description={steps[step - 1]?.subTitle} totalSteps={totalSteps} onStepBack={stepBackHandler}>
+            <StepContainer 
+                currentStep={currentStep}
+                step={step} 
+                question={steps[step - 1].title} 
+                description={steps[step - 1]?.subTitle} 
+                totalSteps={totalSteps} 
+                showWarning={getWarning(currentStep, answers)}
+                onStepBack={stepBackHandler}
+            >
                 <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
                     <Stack
                         justifyContent='center'
@@ -161,7 +169,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                     </Stack>
                 </Grid>
             </StepContainer>
-            {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
+            {/* {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && ( */}
                 <Stack
                     alignItems='center'
                     justifyContent='center'
@@ -169,7 +177,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                 >
                     <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                 </Stack>
-            )}
+            {/* // )} */}
         </Stack>
     )
 }

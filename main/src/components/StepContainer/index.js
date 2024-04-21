@@ -41,7 +41,12 @@ const getFormattedQuestion = (question) => {
     return words
 }
 
-export default function StepContainer({ styled, step = 1, question = '', description = '', totalSteps, children, onStepBack }) {
+export default function StepContainer({ currentStep, step = 1, totalSteps, showWarning, children, onStepBack }) {
+    const styled = currentStep.isGraphic
+    const question = currentStep.title || ''
+    const description = currentStep.subTitle || ''
+    const icon = currentStep.icon
+
     return (
         <Container>
             <DemoPaper className={styles.container} sx={{ minHeight: { md: '60vh' } }}>
@@ -64,8 +69,17 @@ export default function StepContainer({ styled, step = 1, question = '', descrip
                                     </Typography>
                                 ))}
                             </Typography>
-                            {description && !styled && <Typography variant="body16" sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}>{description}</Typography>}
-                            {description && styled && <StyledDescription text={description}/>}
+
+                            {description && !styled
+                                && <Typography
+                                    variant="body16"
+                                    sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}
+                                >
+                                    {description}
+                                </Typography>
+                            }
+
+                            {(showWarning || (description && styled)) && <StyledDescription icon={icon} text={description} showWarning={showWarning} />}
                         </Stack>
 
                         {step === 1 && <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>

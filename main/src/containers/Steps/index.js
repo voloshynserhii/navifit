@@ -13,7 +13,7 @@ import { useAppStore } from '../../store';
 import { steps, filterIngredients, getWarning } from '../../utils/Plans'
 
 const totalSteps = steps.length
-const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25]
 
 const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
@@ -117,8 +117,6 @@ const Steps = ({ option = {}, onGetBack }) => {
             <StepContainer 
                 currentStep={currentStep}
                 step={step} 
-                question={steps[step - 1].title} 
-                description={steps[step - 1]?.subTitle} 
                 totalSteps={totalSteps} 
                 showWarning={getWarning(currentStep, answers)}
                 onStepBack={stepBackHandler}
@@ -169,7 +167,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                     </Stack>
                 </Grid>
             </StepContainer>
-            {/* {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && ( */}
+            {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
                 <Stack
                     alignItems='center'
                     justifyContent='center'
@@ -177,7 +175,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                 >
                     <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                 </Stack>
-            {/* // )} */}
+            )}
         </Stack>
     )
 }

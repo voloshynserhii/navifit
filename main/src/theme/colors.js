@@ -7,6 +7,8 @@ const COLOR_PRIMARY = {
   error: 'rgba(255, 23, 68, 1)',
   bodyGrey: 'rgba(117, 117, 117, 1)',
   grey2: 'rgba(66, 66, 66, 1)',
+  redLighten1: 'rgba(239, 83, 80, 1)',
+  greenLighten1: 'rgba(102, 187, 106, 1)'
 };
 
 const COLOR_SECONDARY = {

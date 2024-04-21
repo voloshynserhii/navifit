@@ -57,11 +57,11 @@ export default function StepContainer({ currentStep, step = 1, totalSteps, showW
                         <Stack
                             sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: '-24px', md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
                             <Typography
-                                component="span">
+                                component="span" sx={{ marginTop: 10 }}>
                                 {getFormattedQuestion(question).map(item => (
                                     <Typography
                                         key={item}
-                                        component="h2"
+                                        component="h3"
                                         variant='h1'
                                         sx={{ display: 'inline' }}
                                     >

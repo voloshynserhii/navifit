@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box, Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import Button from './components/Button'
+import Button from '../../components/AppButton'
 import Loader from './components/Loader'
 import DatePicker from '../../components/DatePicker'
 import StepContainer from '../../components/StepContainer'
@@ -11,7 +11,7 @@ import InputNumber from '../../components/InputNumber'
 import Graphic from '../../components/Icons/Graphic'
 
 import { useAppStore } from '../../store';
-import { steps, filterIngredients, getWarning } from '../../utils/Plans'
+import { steps, filterIngredients, getWarning, getBMIInfo } from '../../utils/Plans'
 
 const totalSteps = steps.length
 const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25]
@@ -115,70 +115,72 @@ const Steps = ({ option = {}, onGetBack }) => {
 
     return (
         <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
-            {step === 21 ? <InfoStep step={step} onStepBack={stepBackHandler} answers={answers} /> : (
-                <StepContainer
-                    currentStep={currentStep}
-                    step={step}
-                    totalSteps={totalSteps}
-                    showWarning={getWarning(currentStep, answers)}
-                    onStepBack={stepBackHandler}
-                >
-                    <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
+            {/* <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: 175, weight: 72 })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> */}
+            {step === 21 ? <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> : (
+                <>
+                    <StepContainer
+                        currentStep={currentStep}
+                        step={step}
+                        totalSteps={totalSteps}
+                        showWarning={getWarning(currentStep, answers)}
+                        onStepBack={stepBackHandler}
+                    >
+                        <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
+                            <Stack
+                                justifyContent='center'
+                                sx={{ height: { md: '70vh' } }}
+                            >
+                                {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
+                                {currentStep.long ? (
+                                    <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
+                                        {list.map(option => (
+                                            <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
+                                        ))}
+                                        <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
+                                    </Grid>) : (
+                                    <Stack sx={{ maxHeight: { xs: '50vh', md: 'unset' }, overflow: 'auto' }}>
+                                        {list.map(option => (
+                                            <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
+                                        ))}
+                                    </Stack>
+                                )}
+
+                                {currentStep?.value && currentStep.typeNumber && (
+                                    <InputNumber
+                                        value={answers[currentStep.value]}
+                                        currentStep={currentStep.value}
+                                        placeholder="(kg)"
+                                        min={currentStep?.min}
+                                        max={currentStep?.max}
+                                        unit={currentStep?.unit}
+                                        onChange={val =>
+                                            setAnswers(prev => ({
+                                                ...prev,
+                                                [currentStep.value]: val
+                                            }))
+                                        }
+                                        onError={(val) => setInputError(val)}
+                                    />
+                                )}
+
+                                {currentStep?.value && currentStep.typeDate && (
+                                    <Stack>
+                                        <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
+                                    </Stack>
+                                )}
+                            </Stack>
+                        </Grid>
+                    </StepContainer>
+                    {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
                         <Stack
+                            alignItems='center'
                             justifyContent='center'
-                            sx={{ height: { md: '70vh' } }}
+                            sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 0, md: 60 }, width: { xs: '100%', md: 'auto' } }}
                         >
-                            {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
-                            {currentStep.long ? (
-                                <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
-                                    {list.map(option => (
-                                        <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
-                                    ))}
-                                    <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
-                                </Grid>) : (
-                                <Stack sx={{ maxHeight: { xs: '50vh', md: 'unset' }, overflow: 'auto' }}>
-                                    {list.map(option => (
-                                        <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
-                                    ))}
-                                </Stack>
-                            )}
-
-                            {currentStep?.value && currentStep.typeNumber && (
-                                <InputNumber
-                                    value={answers[currentStep.value]}
-                                    currentStep={currentStep.value}
-                                    placeholder="(kg)"
-                                    min={currentStep?.min}
-                                    max={currentStep?.max}
-                                    unit={currentStep?.unit}
-                                    onChange={val =>
-                                        setAnswers(prev => ({
-                                            ...prev,
-                                            [currentStep.value]: val
-                                        }))
-                                    }
-                                    onError={(val) => setInputError(val)}
-                                />
-                            )}
-
-                            {currentStep?.value && currentStep.typeDate && (
-                                <Stack>
-                                    <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
-                                </Stack>
-                            )}
+                            <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
                         </Stack>
-                    </Grid>
-                </StepContainer>
-            )}
-
-            {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
-                <Stack
-                    alignItems='center'
-                    justifyContent='center'
-                    sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 0, md: 60 }, width: { xs: '100%', md: 'auto' } }}
-                >
-                    <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
-                </Stack>
+                    )}
+                </>
             )}
         </Stack>
     )

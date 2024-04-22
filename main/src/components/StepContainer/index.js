@@ -2,7 +2,7 @@ import { Container, Grid, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Progress from '../Progress'
 import UserPermission from '../UserPermission'
-import StyledDescription from './StyledDescription';
+import InfoMessage from '../InfoMessage';
 import styles from './index.module.css'
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
@@ -79,7 +79,7 @@ export default function StepContainer({ currentStep, step = 1, totalSteps, showW
                                 </Typography>
                             }
 
-                            {(showWarning || (description && styled)) && <StyledDescription icon={icon} text={description} showWarning={showWarning} />}
+                            {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />}
                         </Stack>
 
                         {step === 1 && <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>

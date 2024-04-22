@@ -1,9 +1,9 @@
 import { Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles';
 
-const DescriptionContainer = styled(Stack)(({ theme, error, success }) => ({
+const MessageContainer = styled(Stack)(({ theme, error, success }) => ({
     marginTop: theme.spacing(2.5),
-    marginRight: theme.spacing(3.75),
+    // marginRight: theme.spacing(3.75),
     padding: `${theme.spacing(1.5)} ${theme.spacing(2)}`,
     backgroundColor: theme.palette.secondary.light,
     borderRadius: theme.spacing(1),
@@ -14,14 +14,14 @@ const DescriptionContainer = styled(Stack)(({ theme, error, success }) => ({
     // },
 }));
 
-export default function StyledDescription({ icon, text, showWarning }) {
+export default function InfoMessage({ icon, text, showWarning }) {
     return (
-        <DescriptionContainer gap={1} error={showWarning?.isWarning && 'true'} success={showWarning?.isOk && 'true'}>
+        <MessageContainer gap={1} error={showWarning?.isWarning && 'true'} success={showWarning?.isOk && 'true'}>
             <Stack direction='row' alignItems='center' gap={2}>
-                {icon || showWarning.icon}
+                {icon || showWarning?.icon}
                 <Typography variant='medium16'>{text || showWarning.title}</Typography>
             </Stack>
             {showWarning && <Typography variant='body14'>{showWarning.text}</Typography>}
-        </DescriptionContainer>
+        </MessageContainer>
     )
 }

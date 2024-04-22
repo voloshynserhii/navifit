@@ -39,6 +39,13 @@ export const LIGHT_THEME = {
       lineHeight: '27px',
       color: PALETTE_COLORS.primary.contrastText
     },
+    h3semi: {
+      fontSize: 18,
+      fontFamily: 'unset',
+      fontWeight: 600,
+      lineHeight: '27px',
+      color: PALETTE_COLORS.primary.black2
+    },
     body16: {
       fontWeight: 400,
       fontFamily: 'unset',

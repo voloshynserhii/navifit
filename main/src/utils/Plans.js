@@ -55,7 +55,7 @@ const steps = [
                 value: '3'
             },
             {
-                title: 'Znaczna nadwaga ',
+                title: 'Znaczna nadwaga',
                 value: '4'
             },
         ]
@@ -579,6 +579,34 @@ const countWeightDiapasone = ({ height, gender }) => {
     return { lowerLimit, higherLimit }
 }
 
+const getBMIInfo = ({ height, weight }) => {
+    const currentStep = steps.find(step => step.value === 'weight')
+    const BMI = countBMI({ height, weight })
+
+    if (BMI < 18.5) {
+        return {
+            title: currentStep.subTitles.lowerThanNormal.title.replace('number', BMI),
+            text: currentStep.subTitles.lowerThanNormal.text,
+            icon: currentStep.subTitles.lowerThanNormal.icon,
+            isWarning: true
+        }
+    } else if (BMI >= 25) {
+        return {
+            title: currentStep.subTitles.higherThanNormal.title.replace('number', BMI),
+            text: currentStep.subTitles.higherThanNormal.text,
+            icon: currentStep.subTitles.higherThanNormal.icon,
+            isWarning: true
+        }
+    } else {
+        return {
+            title: currentStep.subTitles.normal?.title.replace('number', BMI),
+            text: currentStep.subTitles.normal?.text,
+            icon: currentStep.subTitles.normal?.icon,
+            isOk: true
+        }
+    }
+}
+
 const getWarning = (currentStep, answers) => {
     if (currentStep.subTitles) {
         const shouldChoose = Object.keys(currentStep.subTitles).length > 1
@@ -596,25 +624,26 @@ const getWarning = (currentStep, answers) => {
             const { min, max } = currentStep
 
             if (currentStep.value === 'weight' && weight && weight >= min && weight <= max) {
-                const BMI = countBMI({ height, weight })
+                return getBMIInfo({ height, weight })
+                // const BMI = countBMI({ height, weight })
 
-                if (BMI < 18.5) {
-                    return {
-                        title: currentStep.subTitles.lowerThanNormal.title.replace('number', BMI),
-                        text: currentStep.subTitles.lowerThanNormal.text,
-                        icon: currentStep.subTitles.lowerThanNormal.icon,
-                        isWarning: true
-                    }
-                } else if (BMI >= 25) {
-                    return {
-                        title: currentStep.subTitles.higherThanNormal.title.replace('number', BMI),
-                        text: currentStep.subTitles.higherThanNormal.text,
-                        icon: currentStep.subTitles.higherThanNormal.icon,
-                        isWarning: true
-                    }
-                } else {
-                    return { ...normal, title: normal.title.replace('number', BMI), isOk: true }
-                }
+                // if (BMI < 18.5) {
+                //     return {
+                //         title: currentStep.subTitles.lowerThanNormal.title.replace('number', BMI),
+                //         text: currentStep.subTitles.lowerThanNormal.text,
+                //         icon: currentStep.subTitles.lowerThanNormal.icon,
+                //         isWarning: true
+                //     }
+                // } else if (BMI >= 25) {
+                //     return {
+                //         title: currentStep.subTitles.higherThanNormal.title.replace('number', BMI),
+                //         text: currentStep.subTitles.higherThanNormal.text,
+                //         icon: currentStep.subTitles.higherThanNormal.icon,
+                //         isWarning: true
+                //     }
+                // } else {
+                //     return { ...normal, title: normal.title.replace('number', BMI), isOk: true }
+                // }
             } else if (currentStep.value === 'desiredWeight' && desiredWeight && desiredWeight >= min && desiredWeight <= max) {
                 const { lowerLimit, higherLimit } = countWeightDiapasone({ height, gender })
 
@@ -627,7 +656,7 @@ const getWarning = (currentStep, answers) => {
                     }
                 } else if (+desiredWeight > +weight) {
                     const weightDiff = Number((desiredWeight - weight) / weight * 100).toFixed(0)
-                    
+
                     return {
                         title: currentStep.subTitles.gain.title.replace('number', weightDiff),
                         text: currentStep.subTitles.gain.text,
@@ -636,7 +665,7 @@ const getWarning = (currentStep, answers) => {
                     }
                 } else if (+desiredWeight < +weight) {
                     const weightDiff = Number((weight - desiredWeight) / weight * 100).toFixed(0)
-                    
+
                     return {
                         title: currentStep.subTitles.looseNormal.title.replace('number', weightDiff),
                         text: currentStep.subTitles.looseNormal.text,
@@ -854,4 +883,4 @@ const ingredients = {
     ]
 }
 
-export { steps, filterIngredients, ingredients, getWarning }
+export { steps, filterIngredients, ingredients, getWarning, getBMIInfo }

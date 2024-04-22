@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Alert,Backdrop, Box, CircularProgress, Fade, Modal, TextField, Typography } from '@mui/material'
 import api from '../../utils/api'
-import Button from '../../containers/Steps/components/Button'
+import Button from '../../components/AppButton'
 import { useAppStore } from '../../store';
 
 const style = {

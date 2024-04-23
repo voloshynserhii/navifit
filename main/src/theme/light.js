@@ -44,7 +44,7 @@ export const LIGHT_THEME = {
       fontFamily: 'unset',
       fontWeight: 600,
       lineHeight: '27px',
-      color: PALETTE_COLORS.primary.black2
+      color: PALETTE_COLORS.primary.contrastText
     },
     body16: {
       fontWeight: 400,
@@ -62,6 +62,13 @@ export const LIGHT_THEME = {
       fontSize: 14,
       lineHeight: '21px',
       color: PALETTE_COLORS.primary.grey2,
+    },
+    medium14: {
+      fontWeight: 500,
+      fontFamily: 'unset',
+      fontSize: 14,
+      lineHeight: '21px',
+      color: PALETTE_COLORS.primary.contrastText,
     },
     medium16: {
       fontWeight: 500,

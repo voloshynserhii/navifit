@@ -4,6 +4,7 @@ import Button from '../AppButton'
 import Progress from '../Progress'
 import InfoMessage from '../InfoMessage'
 import AnswerInfo from '../AnswerInfo'
+import BMI from '../BMI'
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
@@ -83,8 +84,8 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                                 )
                             })}
 
-                            <Grid item xs={12} sx={{ padding: 1.5 }}>
-                                Graphic here
+                            <Grid item xs={12} sx={{ padding: 1.5, marginTop: 7.5 }}>
+                                <BMI BMI={showWarning.BMI}/>
                             </Grid>
 
                             <Grid item xs={12} sx={{ padding: 1.5 }}>

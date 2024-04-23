@@ -588,21 +588,24 @@ const getBMIInfo = ({ height, weight }) => {
             title: currentStep.subTitles.lowerThanNormal.title.replace('number', BMI),
             text: currentStep.subTitles.lowerThanNormal.text,
             icon: currentStep.subTitles.lowerThanNormal.icon,
-            isWarning: true
+            isWarning: true,
+            BMI
         }
     } else if (BMI >= 25) {
         return {
             title: currentStep.subTitles.higherThanNormal.title.replace('number', BMI),
             text: currentStep.subTitles.higherThanNormal.text,
             icon: currentStep.subTitles.higherThanNormal.icon,
-            isWarning: true
+            isWarning: true,
+            BMI
         }
     } else {
         return {
             title: currentStep.subTitles.normal?.title.replace('number', BMI),
             text: currentStep.subTitles.normal?.text,
             icon: currentStep.subTitles.normal?.icon,
-            isOk: true
+            isOk: true,
+            BMI
         }
     }
 }

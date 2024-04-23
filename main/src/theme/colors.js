@@ -8,14 +8,15 @@ const COLOR_PRIMARY = {
   bodyGrey: 'rgba(117, 117, 117, 1)',
   grey2: 'rgba(66, 66, 66, 1)',
   redLighten1: 'rgba(239, 83, 80, 1)',
-  greenLighten1: 'rgba(102, 187, 106, 1)'
+  greenLighten1: 'rgba(102, 187, 106, 1)',
 };
 
 const COLOR_SECONDARY = {
   main: '#EF9A9A',
   contrastText: 'rgba(25, 118, 210, 1)',
   light: 'rgba(245, 245, 247, 1)',
-  lightGrey: 'rgba(114, 114, 114, 1)'
+  lightGrey: 'rgba(114, 114, 114, 1)',
+  gray: 'rgba(239, 241, 244, 1)'
 };
 
 /**

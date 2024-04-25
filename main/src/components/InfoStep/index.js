@@ -84,7 +84,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                                 )
                             })}
 
-                            <Grid item xs={12} sx={{ padding: 1.5, marginTop: 7.5 }}>
+                            <Grid item xs={12} sx={{ padding: 1.5, marginTop: 7.5, paddingBottom: 2 }}>
                                 <BMI BMI={showWarning.BMI}/>
                             </Grid>
 

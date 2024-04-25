@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 const BMIContainer = styled(Box)(({ theme }) => ({
@@ -60,6 +60,12 @@ export default function InfoStep({ BMI }) {
                 </BMIInfo>
                 <Connector />
             </Pointer>
+            <Stack direction='row' justifyContent='space-between' sx={{ paddingTop: 3 }}>
+                <Typography variant='medium14' color={BMI < 18.5 ? 'primary.contrastText' : 'primary.lightGrey'}>niedowaga</Typography>
+                <Typography variant='medium14' color={BMI >= 18.5 && BMI <= 25 ? 'primary.contrastText' : 'primary.lightGrey'}>normalna</Typography>
+                <Typography variant='medium14' color={BMI > 25 && BMI < 32 ? 'primary.contrastText' : 'primary.lightGrey'}>nadwaga</Typography>
+                <Typography variant='medium14' color={BMI >= 32 ? 'primary.contrastText' : 'primary.lightGrey'}>otyłość</Typography>
+            </Stack>
         </BMIContainer>
     )
 }

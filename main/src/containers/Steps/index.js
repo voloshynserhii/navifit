@@ -164,7 +164,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                 )}
 
                                 {currentStep?.value && currentStep.typeDate && (
-                                    <Stack>
+                                    <Stack sx={{ position: 'relative', top: '-30%' }}>
                                         <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
                                     </Stack>
                                 )}

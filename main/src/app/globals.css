@@ -85,3 +85,44 @@ a {
   }
   
 }
+.mui-3dah0e-MuiModal-root-MuiDialog-root .MuiDialog-paper {
+  width: 100%;
+  border-radius: 20px;
+}
+.mui-16d8vrz-MuiPickersToolbar-root-MuiDatePickerToolbar-root {
+  display: none !important;
+}
+.mui-knqc4i-MuiDialogActions-root {
+  display: none !important;
+}
+.mui-kg9q0s-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button {
+  color: rgba(51, 0, 255, 1) !important;
+}
+.mui-kg9q0s-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button.Mui-disabled {
+  color: rgba(51, 0, 255, 1) !important;
+  opacity: 0.7;
+}
+.mui-1nkg345-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button {
+  color: rgba(51, 0, 255, 1) !important;
+}
+.mui-qqwgtf-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+  color: white !important;
+}
+.mui-qvs73-MuiPickersYear-yearButton.Mui-selected {
+  color: white !important;
+}
+.mui-cyfsxc-MuiPickersCalendarHeader-labelContainer {
+  font-family: unset !important;
+}
+.mui-7xis3v-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 10px !important;
+  padding-right: 30px !important;
+  font-family: unset !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  color: rgba(28, 34, 39, 1) !important;
+}
+
+.MuiDateCalendar-viewTransitionContainer {
+  /* display: none !important; */
+}

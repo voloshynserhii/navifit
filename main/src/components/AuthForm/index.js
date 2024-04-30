@@ -5,7 +5,7 @@ import { Alert, Box, Button, FormControl, IconButton, InputLabel, InputAdornment
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
-export default function AuthForm({ loading = false, changePassword, currentUser = {}, error: serverError, message, onSubmit, onChangePassword, onRestorePassword }) {
+export default function AuthForm({ signup = false, changePassword, currentUser = {}, error: serverError, message, onSubmit, onChangePassword, onRestorePassword }) {
     const router = useRouter()
     const [error, setError] = useState(serverError)
     const [email, setEmail] = useState(currentUser.email)
@@ -44,7 +44,7 @@ export default function AuthForm({ loading = false, changePassword, currentUser 
         return (
             <Box sx={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Alert sx={{ zIndex: 1301, marginBottom: 5 }} variant="filled" severity="success">{message}</Alert>
-                <Button variant="filled" onClick={() => router.push('/signup')}>
+                <Button variant="filled" onClick={() => router.push('/login')}>
                     Go to login page
                 </Button>
             </Box>
@@ -115,13 +115,13 @@ export default function AuthForm({ loading = false, changePassword, currentUser 
                     </FormControl>
                 )}
             </Stack>
-            {!resetPassword && !changePassword && (
+            {!resetPassword && !changePassword && !signup && (
                 <Box sx={{ width: '100%', marginBottom: 2 }}>
                     <Button sx={{ fontSize: 8, }} onClick={() => setResetPassword(true)}>Nie pamiętam mojego hasła</Button>
                 </Box>
             )}
             {!resetPassword && !changePassword ? (
-                <Button sx={{ color: 'white' }} variant="contained" loading={loading} disabled={!email || !password} onClick={() => onSubmit({ email, password })}> {currentUser.email ? 'Sign Up' : 'Log In'}
+                <Button sx={{ color: 'white' }} variant="contained" disabled={!email || !password} onClick={() => onSubmit({ email, password })}> {signup ? 'Sign Up' : 'Log In'}
                 </Button>
             ) : (
                 <Stack direction='row' gap={3}>

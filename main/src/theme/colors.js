@@ -16,7 +16,9 @@ const COLOR_SECONDARY = {
   contrastText: 'rgba(25, 118, 210, 1)',
   light: 'rgba(245, 245, 247, 1)',
   lightGrey: 'rgba(114, 114, 114, 1)',
-  gray: 'rgba(239, 241, 244, 1)'
+  gray: 'rgba(239, 241, 244, 1)',
+  brandBlack: 'rgba(28, 28, 30, 1)',
+  brandGreen: 'rgba(204, 255, 51, 1)'
 };
 
 /**

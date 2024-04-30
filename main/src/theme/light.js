@@ -49,7 +49,7 @@ export const LIGHT_THEME = {
     body16: {
       fontWeight: 400,
       fontFamily: 'unset',
-      fontSize: '1rem',
+      fontSize: 16,
       lineHeight: '1.5rem',
       color: PALETTE_COLORS.primary.bodyGrey,
     //   [breakpoints.down("md")]: {
@@ -72,6 +72,13 @@ export const LIGHT_THEME = {
     },
     medium16: {
       fontWeight: 500,
+      fontFamily: 'unset',
+      fontSize: 16,
+      lineHeight: '24px',
+      color: PALETTE_COLORS.primary.contrastText,
+    },
+    regular16: {
+      fontWeight: 400,
       fontFamily: 'unset',
       fontSize: 16,
       lineHeight: '24px',

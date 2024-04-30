@@ -75,7 +75,7 @@ export default function SignUpPage() {
 
   return (
     <main>
-      <AuthForm signup loading={loading} currentUser={currentUser} error={error} message={userMessage} onSubmit={handleAuthorize} onChangePassword={handleChangePassword} onRestorePassword={handleRestorePassword} />
+      <AuthForm loading={loading} currentUser={currentUser} error={error} message={userMessage} onSubmit={handleAuthorize} onChangePassword={handleChangePassword} onRestorePassword={handleRestorePassword} />
     </main>
   );
 }

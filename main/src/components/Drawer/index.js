@@ -1,11 +1,13 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useRouter } from 'next/navigation'
-import { Accordion, AccordionSummary, AccordionDetails, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer, Switch } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Box, Divider, IconButton, List, ListItem, ListItemButton, Stack, SwipeableDrawer, Typography, Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
-import { useEventSwitchDarkMode } from '../../hooks';
+import MenuButton from '../MenuButton';
+// import { useEventSwitchDarkMode } from '../../hooks';
 import { localStorageGet } from '../../utils/localStorage';
 
 const menu = [
@@ -30,6 +32,11 @@ const menu = [
         link: '/conditions'
     },
 ];
+
+const ListItemContainer = styled(ListItemButton)(({ theme }) => ({
+    borderRadius: 8,
+    padding: '12px 16px',
+}));
 
 const CustomAccordion = styled((props) => (
     <Accordion disableGutters elevation={0} square {...props} />
@@ -73,70 +80,82 @@ export default function SwipeableTemporaryDrawer() {
     };
 
     const list = (anchor) => (
-        <Box
-            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-            role="presentation"
-        // onClick={toggleDrawer(anchor, false)}
-        // onKeyDown={toggleDrawer(anchor, false)}
-        >
-            <List>
-                <CustomAccordion>
-                    {isAuthenticated ? (
-                        <div>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
-                            >
-                                Moje Konto
-                            </AccordionSummary>
-                            <AccordionDetails>
+        <>
+            <Stack direction='row' justifyContent='space-between' sx={{ padding: '12px 24px' }}>
+                <Typography variant='h2'>Menu</Typography>
+                <IconButton
+                    sx={{ borderRadius: '8px', backgroundColor: 'secondary.light' }}
+                    onClick={toggleDrawer(anchor, false)}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </Stack>
+            <Divider />
+            <Box
+                sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 415, height: '100%', padding: '24px' }}
+                role="presentation"
+            // onClick={toggleDrawer(anchor, false)}
+            // onKeyDown={toggleDrawer(anchor, false)}
+            >
+
+                <List sx={{ height: '100%' }}>
+                    {!!isAuthenticated && (<CustomAccordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                        >
+                            Moje Konto
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <ListItem disablePadding>
+                                <ListItemContainer onClick={() => router.push(`/account/plan/${currentUser._id}`, { scroll: false })}>
+                                    <Typography variant='regular16'>Mój plan posiłków</Typography>
+                                </ListItemContainer>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemContainer onClick={() => router.push('/account/subscription', { scroll: false })}>
+                                    <Typography variant='regular16'>Moja subskrypcja</Typography>
+                                </ListItemContainer>
+                            </ListItem>
+                            {!isAdmin ? <ListItem disablePadding>
+                                <ListItemContainer onClick={() => {
+                                    dispatch({ type: 'LOG_OUT' })
+                                    router.push('/', { scroll: false })
+                                }}>
+                                    <Typography variant='regular16'>Wyloguj</Typography>
+                                </ListItemContainer>
+                            </ListItem> : (
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => router.push(`/account/plan/${currentUser._id}`, { scroll: false })}>
-                                        <ListItemText primary='Mój plan posiłków' />
-                                    </ListItemButton>
+                                    <ListItemContainer onClick={() => router.push('/admin', { scroll: false })}>
+                                        <Typography variant='regular16'>Go To Admin Panel</Typography>
+                                    </ListItemContainer>
                                 </ListItem>
-                                <ListItem disablePadding>
-                                    <ListItemButton onClick={() => router.push('/account/subscription', { scroll: false })}>
-                                        <ListItemText primary='Moja subskrypcja' />
-                                    </ListItemButton>
-                                </ListItem>
-                                {!isAdmin ? <ListItem disablePadding>
-                                    <ListItemButton onClick={() => {
-                                        dispatch({ type: 'LOG_OUT' })
-                                        router.push('/', { scroll: false })
-                                    }}>
-                                        <ListItemText primary='Wyloguj' />
-                                    </ListItemButton>
-                                </ListItem> : (
-                                    <ListItem disablePadding>
-                                        <ListItemButton onClick={() => router.push('/admin', { scroll: false })}>
-                                            <ListItemText primary='Go To Admin Panel' />
-                                        </ListItemButton>
-                                    </ListItem>
-                                )}
-                            </AccordionDetails></div>) : (
-                        <ListItem disablePadding>
-                            <ListItemButton onClick={() => router.push('/signup', { scroll: false })}>
-                                <Button variant='contained' fullWidth >Log In</Button>
-                            </ListItemButton>
+                            )}
+                        </AccordionDetails>
+                    </CustomAccordion>)}
+                    {menu.map(({ title, link }) => (
+                        <ListItem key={title} disablePadding>
+                            <ListItemContainer onClick={() => router.push(link, { scroll: false })}>
+                                <Typography variant='regular16' >{title}</Typography>
+                            </ListItemContainer>
                         </ListItem>
+                    ))}
+
+                    {!isAuthenticated && (
+                        <Stack direction='row' justifyContent='space-between' gap={1.5} sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
+                            <MenuButton type='login' title='Zaloguj się' text='Mam juz konto' mainColor='primary.main' textColor='white' onClick={() => router.push('/login', { scroll: false })} />
+                            <MenuButton type='signup' title='Nowy klient' text='Nowy klient' mainColor='secondary.brandBlack' textColor='secondary.brandGreen' onClick={() => router.push('/signup', { scroll: false })} />
+                        </Stack>
                     )}
-                </CustomAccordion>
-                {menu.map(({ title, link }) => (
-                    <ListItem key={title} disablePadding>
-                        <ListItemButton onClick={() => router.push(link, { scroll: false })}>
-                            <ListItemText primary={title} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            {/* <Switch
+                </List>
+                {/* <Switch
                 checked={globalState.darkMode}
                 onChange={onSwitchDarkMode}
                 inputProps={{ 'aria-label': 'controlled' }}
             /> */}
-        </Box>
+            </Box>
+        </>
     );
 
     return (

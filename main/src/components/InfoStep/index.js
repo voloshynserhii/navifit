@@ -10,7 +10,8 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
-    paddingBottom: 125
+    padding: 125,
+    boxShadow: 'none',
 }));
 
 const userInfo = {

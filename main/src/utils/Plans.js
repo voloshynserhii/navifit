@@ -557,7 +557,7 @@ const steps = [
     },
     {
         title: 'Ostatni plan, jakiego będziesz potrzebować, aby uzyskać formę',
-        isGraphic: true
+        // isGraphic: true
     },
 ]
 

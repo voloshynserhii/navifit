@@ -6,6 +6,7 @@ import Loader from './components/Loader'
 import DatePicker from '../../components/DatePicker'
 import StepContainer from '../../components/StepContainer'
 import InfoStep from '@src/components/InfoStep'
+import LastStep from '@src/components/LastStep'
 import Option from '../../components/Option'
 import InputNumber from '../../components/InputNumber'
 import Graphic from '../../components/Icons/Graphic'
@@ -20,7 +21,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(25)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
     const [btnVisible, setButtonVisisble] = useState(false)
@@ -131,6 +132,9 @@ const Steps = ({ option = {}, onGetBack }) => {
                                 sx={{ height: { md: '70vh' } }}
                             >
                                 {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
+                                
+                                {step === steps.length && <LastStep answers={answers} />}
+                                
                                 {currentStep.long ? (
                                     <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
                                         {list.map(option => (

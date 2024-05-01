@@ -83,6 +83,13 @@ export const LIGHT_THEME = {
       fontSize: 16,
       lineHeight: '24px',
       color: PALETTE_COLORS.primary.contrastText,
+    },
+    greyDarken1: {
+      fontWeight: 400,
+      fontFamily: 'unset',
+      fontSize: 10,
+      lineHeight: '15px',
+      color: PALETTE_COLORS.secondary.greyDarken1,
     }
   }
 };

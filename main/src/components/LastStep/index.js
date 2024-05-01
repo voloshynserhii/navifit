@@ -27,10 +27,18 @@ const ColoredText2 = styled(Typography)(({ theme }) => ({
     color: theme.palette.primary.main
 }))
 
-export default function LastStep({ answers = {} }) {
-    const { weight = 70, desiredWeight = 77, desiredDate } = answers ?? {}
-    const endDate = moment().add(6, 'M').format('DD MMMM YYYY')
+const countEndMonth = ({ weight, desiredWeight }) => {
+    const diff = Math.abs(weight - desiredWeight)
     
+    return diff / 2
+}
+
+export default function LastStep({ answers = {} }) {
+    const { weight = 70, desiredWeight = 68, desiredDate } = answers ?? {}
+    const diff = countEndMonth({ weight, desiredWeight })
+    const startDate = moment()
+    const endDate = startDate.add(diff, 'M').format('DD MMMM YYYY')
+
     return (
         <DemoPaper>
             <Stack justifyContent='center' alignItems='center'>
@@ -43,7 +51,7 @@ export default function LastStep({ answers = {} }) {
                 </Typography>
             </Stack>
             <Box sx={{ minHeight: 200, padding: '20px 0' }}>
-                <Graphic startWeight={weight} endWeight={desiredWeight} desiredDate={desiredDate} startDate={moment()} endDate={endDate}/>
+                <Graphic startWeight={weight} endWeight={desiredWeight} desiredDate={desiredDate} startDate={startDate} endDate={endDate}/>
             </Box>
             <Stack>
                 <Typography variant='greyDarken1'>*Na podstawie danych użytkowników rejestrujących swoje postępy w aplikacji. Najpierw skonsultuj się z lekarzem. Wykres nie jest ilustracją dostosowaną do indywidualnych potrzeb i wyniki mogą się różnić</Typography>

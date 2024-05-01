@@ -15,13 +15,13 @@ import { useAppStore } from '../../store';
 import { steps, filterIngredients, getWarning, getBMIInfo } from '../../utils/Plans'
 
 const totalSteps = steps.length
-const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25]
+const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 
 const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(25)
+    const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
     const [btnVisible, setButtonVisisble] = useState(false)

@@ -10,7 +10,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
-    padding: 125,
+    padding: '32px 60px 125px',
     boxShadow: 'none',
 }));
 
@@ -38,7 +38,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
         <Container>
             <DemoPaper sx={{ minHeight: { md: '60vh' }, marginBottom: 10 }}>
                 <Grid container >
-                    <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 0 12px', md: '1.5rem 60px' } }}>
+                    <Grid item xs={12} md={6}>
                         <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack} />
                     </Grid>
                     <Stack sx={{ width: '100%' }} justifyContent='center' alignItems='center' gap={1}>

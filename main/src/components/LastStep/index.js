@@ -30,14 +30,14 @@ const ColoredText2 = styled(Typography)(({ theme }) => ({
 const countEndMonth = ({ weight, desiredWeight }) => {
     const diff = Math.abs(weight - desiredWeight)
     
-    return diff / 2
+    return diff / 2 < 12 ? diff / 2 : 12
 }
 
 export default function LastStep({ answers = {} }) {
-    const { weight = 70, desiredWeight = 68, desiredDate } = answers ?? {}
+    const { weight = 140, desiredWeight = 68, desiredDate } = answers ?? {}
     const diff = countEndMonth({ weight, desiredWeight })
-    const startDate = moment()
-    const endDate = startDate.add(diff, 'M').format('DD MMMM YYYY')
+    const startDate = moment(new Date())
+    const endDate = moment(new Date()).add(diff, 'M').format('DD MMMM YYYY')
 
     return (
         <DemoPaper>

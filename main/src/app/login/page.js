@@ -26,7 +26,7 @@ export default function SignUpPage() {
   }
   
   const handleAuthorize = ({ email, password }) => {
-    const type = currentUser.email ? 'SIGN_UP' : 'LOG_IN'
+    const type = 'LOG_IN'
     setLoading(true)
     
     api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ user, message }) => {

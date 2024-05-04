@@ -21,7 +21,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(25)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
     const [btnVisible, setButtonVisisble] = useState(false)
@@ -40,11 +40,13 @@ const Steps = ({ option = {}, onGetBack }) => {
 
         setStep(state => state - 1)
         setButtonVisisble(true)
+        clearTimeout()
     }
 
     const stepAheadHandler = () => {
         if (step === totalSteps) {
             setLoading(true)
+            clearTimeout()
         } else {
             setTimeout(
                 () => {

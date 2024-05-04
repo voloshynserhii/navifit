@@ -61,7 +61,7 @@ export default function StepContainer({ currentStep, step = 1, totalSteps, showW
                                 {getFormattedQuestion(question).map(item => (
                                     <Typography
                                         key={item}
-                                        component="h3"
+                                        component="h2"
                                         variant='h1'
                                         sx={{ display: 'inline' }}
                                     >

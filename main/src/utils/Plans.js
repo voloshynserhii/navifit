@@ -562,7 +562,7 @@ const steps = [
 ]
 
 const countBMI = ({ height, weight }) => {
-    return Number(weight / (height * height) * 10000).toFixed(0)
+    return height && weight ? Number(weight / (height * height) * 10000).toFixed(0) : 0
 }
 
 // const countIBW = ({ height, gender }) => {

@@ -34,7 +34,7 @@ const countEndMonth = ({ weight, desiredWeight }) => {
 }
 
 export default function LastStep({ answers = {} }) {
-    const { weight = 140, desiredWeight = 68, desiredDate } = answers ?? {}
+    const { weight = 78, desiredWeight = 68, desiredDate } = answers ?? {}
     const diff = countEndMonth({ weight, desiredWeight })
     const startDate = moment(new Date())
     const endDate = moment(new Date()).add(diff, 'M').format('DD MMMM YYYY')

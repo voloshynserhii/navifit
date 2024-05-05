@@ -36,6 +36,15 @@ const BMIInfo = styled(Box)(({ theme }) => ({
     borderRadius: 6
 }));
 
+const DesiredWeightInfo = styled(Box)(({ theme }) => ({
+    width: 'max-content',
+    background: theme.palette.secondary.gray,
+    padding: `${theme.spacing(0.75)} ${theme.spacing(1.5)}`,
+    position: 'absolute',
+    top: '30%',
+    borderRadius: 6
+}));
+
 const Connector = styled(Box)(({ theme }) => ({
     width: 2,
     height: 15,
@@ -43,7 +52,7 @@ const Connector = styled(Box)(({ theme }) => ({
     transform: 'translate(7px, -50px)'
 }));
 
-const Row = ({ children }) => <Stack direction='row' alignItems='center' gap={2} sx={{ padding: '3px 0' }}>{children}</Stack>
+const Row = ({ children }) => <Stack direction='row' alignItems='center' gap={2} sx={{ padding: {xs: 0, md: '2px 0', lg: '3px 0' } }}>{children}</Stack>
 
 const getHorizontalLine = ({ startYear, endYear, startMonth, endMonth }) => {
     const months = [moment(startMonth, 'M').format('MMMM')]
@@ -80,6 +89,16 @@ const getVerticalLine = ({ startWeight, endWeight }) => {
     return verticalNumbers
 }
 
+const getWeightOnDesiredDate = ({ startMonth, endMonth, desiredDate, startWeight }) => {
+    const desiredMonth = moment(desiredDate).month() + 1
+    const diff = desiredMonth < startMonth ? (12 - startMonth) + desiredMonth : desiredMonth - startMonth
+    const position = diff > 0 ? diff * 10 : 10
+
+    const desiredWeight = startWeight - (diff * 1.5)
+    
+    return { desiredWeight, position}
+}
+
 export default function Graphic({ startWeight, endWeight, desiredDate, startDate, endDate }) {
     const [style, setStyle] = useState({ width: 0, height: 0 })
     const startYear = startDate.year()
@@ -89,7 +108,8 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
 
     const months = getHorizontalLine({ startYear, endYear, startMonth, endMonth })
     const verticalNumbers = getVerticalLine({ startWeight, endWeight })
-
+    const {desiredWeight, position} = getWeightOnDesiredDate({ startMonth, endMonth, desiredDate, startWeight })
+    
     useEffect(() => {
         setTimeout(
             () => {
@@ -107,9 +127,12 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
         <Box>
             {verticalNumbers.map((verticalNumber, i) => (
                 <Row key={verticalNumber + i}>
-                    <Typography>{verticalNumber}</Typography><Divider sx={{ width: '80%', borderStyle: 'dashed' }} />
+                    <Typography sx={{ lineHeight: '23px' }}>{verticalNumber}</Typography><Divider sx={{ width: '80%', borderStyle: 'dashed' }} />
                 </Row>
             ))}
+            <DesiredWeightInfo sx={{ left: `${position}%` }}>{desiredWeight}kg
+                <Divider sx={{ width: 125, borderWidth: 1, borderStyle: 'dashed', position: 'absolute', transform: 'rotate(-90deg)', top: 98, left: '-43%', borderColor: 'rgba(97, 97, 97, 1)' }} />
+            </DesiredWeightInfo>
             <div className={styles.graphic} id='graphic' style={{ position: 'absolute', left: '14%', top: '35%', width: '70%' }}>
                 <svg width="100%" height="100%" viewBox="0 0 337 135" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 4.87192C3 4.87192 52.0348 -7.3821 103.557 30.8206C136.926 55.5629 155.621 92.9904 191.021 112.657C229.286 133.917 334 131.952 334 131.952" stroke="url(#paint0_linear_2652_7963)" strokeWidth="6" strokeLinecap="round" />

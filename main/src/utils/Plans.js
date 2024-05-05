@@ -487,6 +487,11 @@ const steps = [
                 icon: OK
             },
             higherThanNormal: {
+                title: 'Twoje BMI wynosi number, co oznacza nadwaga',
+                text: 'Stracąc trochę wagi, możesz wiele zyskać. Wykorzystamy Twoje BMI do stworzenia programu odchudzania, którego potrzebujesz.',
+                icon: warning
+            },
+            tooHigh: {
                 title: 'Twoje BMI wynosi number, co oznacza otyłość',
                 text: 'Stracąc trochę wagi, możesz wiele zyskać. Wykorzystamy Twoje BMI do stworzenia programu odchudzania, którego potrzebujesz.',
                 icon: warning
@@ -591,11 +596,19 @@ const getBMIInfo = ({ height, weight }) => {
             isWarning: true,
             BMI
         }
-    } else if (BMI >= 25) {
+    } else if (BMI >= 25 && BMI < 32) {
         return {
             title: currentStep.subTitles.higherThanNormal.title.replace('number', BMI),
             text: currentStep.subTitles.higherThanNormal.text,
             icon: currentStep.subTitles.higherThanNormal.icon,
+            isWarning: true,
+            BMI
+        }
+    } else if (BMI >= 32) {
+        return {
+            title: currentStep.subTitles.tooHigh.title.replace('number', BMI),
+            text: currentStep.subTitles.tooHigh.text,
+            icon: currentStep.subTitles.tooHigh.icon,
             isWarning: true,
             BMI
         }

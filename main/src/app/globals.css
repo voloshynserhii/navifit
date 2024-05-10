@@ -39,15 +39,52 @@ main {
 }
 /* class to add to body in quiz */
 .bg {
-  background-image: url('../../public/images/bg.png');
+  background: rgba(0, 0, 0, .5);
+  background-blend-mode: darken;
   background-repeat: no-repeat;
   background-size: cover;
-  /* height: calc(100% + 100px);
-  width: 100vw;
-  position: absolute;
-  top: 0;
-  z-index: -1; */
+  backdrop-filter: blur(5px);
+  animation-name: backgroundChange;
+  animation-duration: 30s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
 }
+
+@keyframes backgroundChange {
+  0% {
+    background: rgba(0, 0, 0, 1);
+    background-image: url('../../public/images/bg.png');
+  }
+  2% {
+    background: rgba(0, 0, 0, .5);
+    background-image: url('../../public/images/bg.png');
+  }
+  10% {
+    background-image: url('../../public/images/backgroundsDesktop/1.jpg');
+  }
+  20% {
+    background-image: url('../../public/images/backgroundsDesktop/2.jpg');
+  }
+  40% {
+    background-image: url('../../public/images/backgroundsDesktop/3.jpg');
+  }
+  60% {
+    background-image: url('../../public/images/backgroundsDesktop/4.jpg');
+  }
+  80% {
+    background-image: url('../../public/images/backgroundsDesktop/5.jpg');
+  }
+  99% {
+    background-image: url('../../public/images/backgroundsDesktop/6.jpg');
+  }
+  100% {
+    background: rgba(0, 0, 0, .8);
+    background-image: url('../../public/images/backgroundsDesktop/6.jpg');
+  }
+}
+
 .colored-title {
   display: inline;
   background-color: rgb(var(--mainGreen-rgb)) !important;

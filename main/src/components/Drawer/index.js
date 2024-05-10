@@ -31,6 +31,10 @@ const menu = [
         title: 'Warunki i zasady',
         link: '/conditions'
     },
+    {
+        title: 'Regulamin',
+        link: '/regulations'
+    },
 ];
 
 const ListItemContainer = styled(ListItemButton)(({ theme }) => ({

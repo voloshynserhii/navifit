@@ -19,7 +19,8 @@ const COLOR_SECONDARY = {
   gray: 'rgba(239, 241, 244, 1)',
   brandBlack: 'rgba(28, 28, 30, 1)',
   brandGreen: 'rgba(204, 255, 51, 1)',
-  greyDarken1: 'rgba(117, 117, 117, 1)'
+  greyDarken1: 'rgba(117, 117, 117, 1)',
+  greyLighten2:'rgba(224, 224, 224, 1)'
 };
 
 /**

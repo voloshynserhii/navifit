@@ -116,7 +116,7 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                 setStyle({ width: 22, height: 22 });
 
                 const el = document.getElementById('graphic')
-                el.className = ''
+                if (el) el.className = ''
             },
             4500
         );

@@ -1,25 +1,38 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Alert,Backdrop, Box, CircularProgress, Fade, Modal, TextField, Typography } from '@mui/material'
+import { Paper, Container, Stack, Alert, CircularProgress, TextField, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import api from '../../utils/api'
 import Button from '../../components/AppButton'
 import { useAppStore } from '../../store';
+import { useBackground } from '../../hooks'
+import { protection } from '../../utils/icons'
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: { xs: '95%', md: '70%', lg: '50%' },
-  borderRadius: '1rem',
-  bgcolor: '#fff',
-  boxShadow: 24,
-  p: 4,
-}
+const DemoPaper = styled(Paper)(({ theme }) => ({
+  position: 'relative',
+  display: 'flex',
+  justifyContent: 'center',
+  borderRadius: theme.spacing(4),
+  overflow: 'hidden',
+  padding: '58px 60px',
+  boxShadow: 'none',
+  backgroundColor: theme.palette.secondary.light,
+  marginBottom: 48,
+  [theme.breakpoints.down("md")]: {
+    padding: '56px 12px 30px',
+  },
+}))
+
+const EmailInput = styled(TextField)(({ theme }) => ({
+  '&.MuiTextField-root .MuiInputBase-root': {
+    borderRadius: 10
+  }
+}))
 
 export default function EmailPage() {
-  const router = useRouter()
+  useBackground();
+  const router = useRouter();
   const [state, dispatch] = useAppStore();
   const [email, setEmail] = useState('');
   const [error, setError] = useState();
@@ -36,20 +49,19 @@ export default function EmailPage() {
     }
 
     setLoading(true)
-    
+
     api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(({ user, message }) => {
-      console.log(message)
       if (!user && message) {
         setError(message)
         setLoading(false)
       } else {
         setLoading(false)
-        
+
         dispatch({
           type: 'USER_DATA',
           payload: user,
         })
-        
+
         router.push('/subscriptions', { scroll: false })
       }
     }).catch(() => {
@@ -59,34 +71,37 @@ export default function EmailPage() {
 
   return (
     <main>
-      {loading && <CircularProgress color="inherit"  />}
+      {loading && <CircularProgress color="inherit" />}
+
       {error && <Alert sx={{ zIndex: 1301 }} variant="filled" severity="error">{error}</Alert>}
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open
-        // onClose={() => router.push('/')}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h3" sx={{ mb: 2 }}>
-              Wpisz swój adres e-mail, aby dowiedzieć się, jak schudnąć z Navifit
-            </Typography>
-            <TextField id="outlined-basic" label="E-mail" variant='filled' fullWidth sx={{ mt: 2 }} value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Typography id="transition-modal-description" variant="h6" sx={{ mt: 2 }}>
-              Navifit nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
-            </Typography>
-            <Button title="Dalej" type="primary" sx={{ width: '100%', mt: 2 }} onClick={sendEmailHandler} />
-          </Box>
-        </Fade>
-      </Modal>
+
+      <Container>
+        <DemoPaper sx={{ minHeight: { md: '80vh' } }}>
+          <Stack alignItems='center' justifyContent='center' sx={{ maxWidth: { xs: '100%', md: '50%' } }}>
+            <Stack alignItems='center' mb={4}>
+              <Typography variant="h2">
+                Wpisz swój adres e-mail,
+              </Typography>
+              <Typography variant="h2" color='primary'>
+                aby dowiedzieć się, jak schudnąć
+              </Typography>
+            </Stack>
+
+            <EmailInput label="Your email" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
+
+            <Stack direction='row' gap={1} mt={1}>
+              {protection}
+              <Typography variant="bodyRegular12">
+                Navifit nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
+              </Typography>
+            </Stack>
+          </Stack>
+
+          <Button title="Dalej" type="primary" sx={{ display: { xs: 'none', md: 'flex' }, position: { md: 'absolute' }, bottom: { md: 32 }, right: { md: 60 } }} onClick={sendEmailHandler} />
+
+        </DemoPaper>
+      </Container>
+      <Button title="Dalej" type="primary" sx={{ display: { xs: 'flex', md: 'none' }, position: 'absolute', bottom: 40 }} onClick={sendEmailHandler} />
     </main>
-  );
+  )
 }

@@ -90,6 +90,13 @@ export const LIGHT_THEME = {
       fontSize: 10,
       lineHeight: '15px',
       color: PALETTE_COLORS.secondary.greyDarken1,
+    },
+    bodyRegular12: {
+      fontWeight: 400,
+      fontFamily: 'unset',
+      fontSize: 12,
+      lineHeight: '18px',
+      color: PALETTE_COLORS.primary.contrastText,
     }
   }
 };

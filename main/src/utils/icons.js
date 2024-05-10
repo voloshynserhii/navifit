@@ -56,4 +56,9 @@ const bodyType = <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xml
     <path d="M10 16.75C9.6875 15.8125 8.125 13.9375 4.375 13.9375" stroke="#C5C5C5" strokeWidth="1.5" strokeLinecap="round" />
 </svg>
 
-export { lightning, BMI, OK, warning, body, dumbbells, fire, fireGrey, runningMan, arrows, bodyType }
+const protection = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 3.08501L8.003 1.33301L14 3.08501V6.67767C14 8.51891 13.4206 10.3134 12.3439 11.8071C11.2672 13.3007 9.74781 14.4176 8.001 14.9997C6.25365 14.4177 4.73376 13.3006 3.6567 11.8067C2.57964 10.3127 2.00003 8.51772 2 6.67601V3.08501Z" stroke="#1C2227" strokeLinejoin="round" />
+    <path d="M5 7.66667L7.33333 10L11.3333 6" stroke="#1C2227" strokeLinecap="round" strokeLinejoin="round" />
+</svg>
+
+export { lightning, BMI, OK, warning, body, dumbbells, fire, fireGrey, runningMan, arrows, bodyType, protection }

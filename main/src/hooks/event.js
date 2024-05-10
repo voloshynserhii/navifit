@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppStore } from '../store';
 
 /**
@@ -15,4 +15,20 @@ export function useEventSwitchDarkMode() {
       payload: !state.darkMode,
     });
   }, [state, dispatch]);
+}
+
+export function useBackground() {
+  useEffect(() => {
+    const body = document.querySelector('body')
+    
+    if (body) {
+      body.classList.add('bg')
+    }
+    
+    return () => {
+      if (body) {
+        body.classList.remove('bg')
+      }
+    }
+  }, [])
 }

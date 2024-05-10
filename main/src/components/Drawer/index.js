@@ -27,13 +27,25 @@ const menu = [
         title: 'Wsparcie',
         link: '/about'
     },
-    {
-        title: 'Warunki i zasady',
-        link: '/conditions'
-    },
+    // {
+    //     title: 'Warunki i zasady',
+    //     link: '/conditions'
+    // },
     {
         title: 'Regulamin',
         link: '/regulations'
+    },
+    {
+        title: 'Polityka prywatności',
+        link: '/regulations/privacy'
+    },
+    {
+        title: 'Polityka cookies',
+        link: '/regulations/cookies'
+    },
+    {
+        title: 'Polityka zwrotów ',
+        link: '/regulations/returns'
     },
 ];
 
@@ -138,13 +150,15 @@ export default function SwipeableTemporaryDrawer() {
                             )}
                         </AccordionDetails>
                     </CustomAccordion>)}
-                    {menu.map(({ title, link }) => (
-                        <ListItem key={title} disablePadding>
-                            <ListItemContainer onClick={() => router.push(link, { scroll: false })}>
-                                <Typography variant='regular16' >{title}</Typography>
-                            </ListItemContainer>
-                        </ListItem>
-                    ))}
+                    <Stack sx={{ height: '75%', overflow: 'scroll' }}>
+                        {menu.map(({ title, link }) => (
+                            <ListItem key={title} disablePadding>
+                                <ListItemContainer onClick={() => router.push(link, { scroll: false })}>
+                                    <Typography variant='regular16' >{title}</Typography>
+                                </ListItemContainer>
+                            </ListItem>
+                        ))}
+                    </Stack>
 
                     {!isAuthenticated && (
                         <Stack direction='row' justifyContent='space-between' gap={1.5} sx={{ position: 'absolute', bottom: 8, width: '100%' }}>

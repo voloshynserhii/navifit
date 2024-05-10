@@ -44,7 +44,7 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   animation-name: backgroundChange;
-  animation-duration: 30s;
+  animation-duration: 60s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
   -webkit-animation-timing-function: ease-in-out;
@@ -53,34 +53,52 @@ main {
 
 @keyframes backgroundChange {
   0% {
-    background: rgba(0, 0, 0, 1);
+    background: rgba(0, 0, 0, .9);
     background-image: url('../../public/images/bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   2% {
     background: rgba(0, 0, 0, .5);
     background-image: url('../../public/images/bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   10% {
-    background-image: url('../../public/images/backgroundsDesktop/1.jpg');
+    background-image: url('../../public/images/backgroundsDesktop/5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   20% {
     background-image: url('../../public/images/backgroundsDesktop/2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   40% {
     background-image: url('../../public/images/backgroundsDesktop/3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   60% {
     background-image: url('../../public/images/backgroundsDesktop/4.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   80% {
-    background-image: url('../../public/images/backgroundsDesktop/5.jpg');
+    background-image: url('../../public/images/backgroundsDesktop/1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   99% {
     background-image: url('../../public/images/backgroundsDesktop/6.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   100% {
     background: rgba(0, 0, 0, .8);
     background-image: url('../../public/images/backgroundsDesktop/6.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 }
 

@@ -108,7 +108,7 @@ export default function SwipeableTemporaryDrawer() {
             </Stack>
             <Divider />
             <Box
-                sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 415, height: '100%', padding: '24px' }}
+                sx={{ width: { xs: '100vw', md: 415}, height: '100%', padding: '24px' }}
                 role="presentation"
             // onClick={toggleDrawer(anchor, false)}
             // onKeyDown={toggleDrawer(anchor, false)}
@@ -161,7 +161,7 @@ export default function SwipeableTemporaryDrawer() {
                     </Stack>
 
                     {!isAuthenticated && (
-                        <Stack direction='row' justifyContent='space-between' gap={1.5} sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
+                        <Stack direction='row' justifyContent='space-between' gap={1.5} sx={{ position: 'absolute', bottom: 8, width: '100%', maxWidth: 415 }}>
                             <MenuButton type='login' title='Zaloguj się' text='Mam juz konto' mainColor='primary.main' textColor='white' onClick={() => router.push('/login', { scroll: false })} />
                             <MenuButton type='signup' title='Nowy klient' text='Nowy klient' mainColor='secondary.brandBlack' textColor='secondary.brandGreen' onClick={() => router.push('/signup', { scroll: false })} />
                         </Stack>

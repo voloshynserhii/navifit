@@ -19,8 +19,8 @@ export function useEventSwitchDarkMode() {
 
 export function useBackground() {
   useEffect(() => {
-    const body = document.querySelector('body')
-    
+    // const body = document.querySelector('body')
+    const body = document.querySelector('#mainBg')
     if (body) {
       body.classList.add('bg')
     }

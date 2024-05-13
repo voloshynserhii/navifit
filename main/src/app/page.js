@@ -5,20 +5,15 @@ import Main from '../containers/Main'
 import Steps from '../containers/Steps'
 import { useAppStore } from '../store'
 import { localStorageGet } from '../utils/localStorage';
-
+import { useBackground } from '@src/hooks/event'
 
 export default function Home() {
+  useBackground()
   const router = useRouter()
   const [_, dispatch] = useAppStore()
   const [optionChosen, setOptionChosen] = useState()
 
   useEffect(() => {
-    const body = document.querySelector('body')
-    
-    if (body) {
-      body.classList.add('bg')
-    }
-
     const user = localStorageGet('loggedUser')
 
     if (user) {
@@ -30,12 +25,6 @@ export default function Home() {
       })
 
       router.push(`/account/plan/${user._id}`)
-    }
-    
-    return () => {
-      if (body) {
-        body.classList.remove('bg')
-      }
     }
   }, [])
   

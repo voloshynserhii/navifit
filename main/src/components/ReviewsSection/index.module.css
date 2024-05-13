@@ -1,0 +1,30 @@
+.active {
+    width: 55%;
+    height: 153px;
+    padding: 16px;
+    border-radius: 20px;
+    box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    z-index: 3;
+}
+.second {
+    width: 51%;
+    height: 70px;
+    padding: 16px;
+    border-radius: 20px;
+    box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+.third {
+    width: 46%;
+    height: 70px;
+    padding: 16px;
+    border-radius: 20px;
+    background-color: rgba(238, 238, 238, 1);
+    overflow: hidden;
+    transform: translateY(-100%);
+    z-index: 1;
+}

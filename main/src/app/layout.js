@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.className}>
+      <div id='mainBg'/>
         <AppStoreProvider>
           <ThemeProvider>
             <Header />

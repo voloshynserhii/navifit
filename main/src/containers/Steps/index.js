@@ -105,7 +105,7 @@ const Steps = ({ option = {}, onGetBack }) => {
             payload: answers,
         });
 
-        router.push('/email', { scroll: false })
+        // router.push('/email', { scroll: false })
     }
 
     let btnDisabled = false

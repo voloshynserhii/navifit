@@ -11,7 +11,10 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     padding: '58px 60px',
     boxShadow: 'none',
     backgroundColor: theme.palette.secondary.light,
-    marginBottom: 48
+    marginBottom: 48,
+    [theme.breakpoints.down("md")]: {
+        padding: '56px 12px 30px',
+    },
 }))
 
 export default function Loader({ onFinishLoad }) {
@@ -39,7 +42,9 @@ export default function Loader({ onFinishLoad }) {
             <DemoPaper sx={{ minHeight: { md: '60vh' } }}>
                 <Stack alignItems='center' >
                     <AppLoader onFinishLoad={onFinishLoad} />
-                    <Typography variant='regular16'>Przygotowanie spersonalizowanego planu posiłków</Typography>
+                    <Stack sx={{ textAlign: 'center' }}>
+                        <Typography variant='regular16'>Przygotowanie spersonalizowanego planu posiłków</Typography>
+                    </Stack>
                     <Reviews />
                 </Stack>
             </DemoPaper>

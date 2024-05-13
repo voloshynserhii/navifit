@@ -12,6 +12,9 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     overflow: 'hidden',
     padding: '32px 60px 125px',
     boxShadow: 'none',
+    [theme.breakpoints.down("md")]: {
+        padding: '56px 12px 30px',
+    },
 }));
 
 const userInfo = {
@@ -37,7 +40,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
     return (
         <Container>
             <DemoPaper sx={{ minHeight: { md: '60vh' }, marginBottom: 10 }}>
-                <Grid container >
+                <Grid container>
                     <Grid item xs={12} md={6}>
                         <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack} />
                     </Grid>
@@ -45,11 +48,11 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                         <Typography
                             component="h2"
                             variant='h2'
-                            sx={{ margin: 'auto' }}
+                            sx={{ margin: 'auto', paddingLeft: { xs: 1, md: 0 } }}
                         >
                             Twój profil dobrego samopoczucia
                         </Typography>
-                        <Grid container sx={{ width: { xs: '100%', md: '50%' }}}>
+                        <Grid container spacing={1} sx={{ width: { xs: '100%', md: '50%' }}}>
                             {Object.keys(userInfo).map(name => {
                                 let value = 'test'
 
@@ -79,7 +82,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                                 }
 
                                 return (
-                                    <Grid key={name} item xs={6} sx={{ padding: 1.5 }}>
+                                    <Grid item key={name} xs={6} sx={{ padding: { md: 1.5 } }}>
                                         <AnswerInfo item={item} />
                                     </Grid>
                                 )

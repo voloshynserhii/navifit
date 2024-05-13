@@ -37,13 +37,22 @@ main {
   width: 100%;
   height: calc(100vh - 72px);
 }
+
+#mainBg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
 /* class to add to body in quiz */
 .bg {
   background: rgba(0, 0, 0, .5);
+  background-image: url('../../public/images/backgroundsDesktop/5.jpg');
   background-blend-mode: darken;
   background-repeat: no-repeat;
   background-size: cover;
-  animation-name: backgroundChange;
+  /* filter: grayscale(10%) brightness(70%); */
+  /* animation-name: backgroundChange; */
+  animation-delay: 2s;
   animation-duration: 60s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;

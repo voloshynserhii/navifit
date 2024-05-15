@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 import { Alert, Box, Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { useBackground } from '@src/hooks/event'
 import { email as emailIcon, passwordHidden, passwordVisisble } from '@src/utils/icons'
 
@@ -18,7 +17,21 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    minHeight: '70vh'
+    minHeight: '70vh',
+    [theme.breakpoints.down("md")]: {
+        flexDirection: 'column',
+        padding: '36px 12px 100px',
+        minHeight: 'auto',
+    },
+}))
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    position: 'absolute',
+    top: 32,
+    color: theme.palette.primary.black2,
+    [theme.breakpoints.down("md")]: {
+        top: 10,
+    },
 }))
 
 const MainButton = styled(Button)(({ theme }) => ({
@@ -72,6 +85,7 @@ const CustomInput = styled(OutlinedInput)(({ theme, error }) => ({
 }))
 
 export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onSubmit, onChangePassword, onRestorePassword }) {
+    useBackground()
     const router = useRouter()
     const [error, setError] = useState(serverError)
     const [email, setEmail] = useState(currentUser.email)
@@ -79,8 +93,29 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     const [showPassword, setShowPassword] = useState(false)
     const [resetPassword, setResetPassword] = useState(false)
     const [confirmPassword, setConfirmPassword] = useState('')
-    useBackground()
 
+    let header = title
+    let subHeader = subTitle
+    let mainButtonTitle = 'Zaloguj się'
+    let helperButtonsText = ['Nie masz jeszcze konta NAVIFIT?', 'Załóż konto']
+    
+    if (signup) {
+        mainButtonTitle = 'Załóż konto'
+        helperButtonsText = ['Masz konta NAVIFIT?', 'Zaloguj się']
+    }
+    
+    if (resetPassword) {
+        header = 'Przypomnienie hasła'
+        subHeader = 'Wpisz adres e-mail, na który jesteś zarejestrowana w aplikacji NAVIFIT'
+        mainButtonTitle = 'Wyślij hasło'
+        helperButtonsText = ['Masz pytanie?', 'Skontaktuj się z nami']
+    }
+    
+    if (changePassword) {
+        mainButtonTitle = 'Zresetuj hasło'
+        helperButtonsText = []
+    }
+    
     useEffect(() => {
         if (error) setError(null)
     }, [email, password, confirmPassword])
@@ -95,6 +130,16 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
         event.preventDefault()
     };
 
+    const onClickMainButton = () => {
+        if (resetPassword) {
+            confirmRestorePasswordHandler()
+        } else if (changePassword) {
+            confirmChangePasswordHandler()
+        } else {
+            onSubmit({ email, password })
+        }
+    }
+    
     const confirmChangePasswordHandler = () => {
         if (password.trim() !== confirmPassword.trim()) {
             setError("New password and Confirm password don't match!")
@@ -121,17 +166,22 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     return (
         <Container>
             <DemoPaper>
-
-                <Stack sx={{ width: '50%' }}>
-                    <Typography variant='h1'>{title}</Typography>
-                    <Typography variant="body16" color='primary.contrastText' sx={{ width: '75%', marginTop: 2.5, fontSize: { xs: 12, md: 16 }, lineHeight: { xs: '18px', md: 'inherit' } }}>{subTitle}</Typography>
-                    <Typography variant='bodyRegular12' color='secondary.greyDarken2' sx={{ width: '35%', position: 'absolute', bottom: 35 }}>{agreeText}</Typography>
+                {resetPassword && (<StyledIconButton onClick={() => setResetPassword(false)}>
+                    <ArrowBackIosRoundedIcon />
+                </StyledIconButton>)}
+                
+                <Stack sx={{ width: { xs: '100%', md: '50%' } }}>
+                    <Typography variant='h1'>{header}</Typography>
+                    
+                    <Typography variant="body16" color='primary.contrastText' sx={{ width: { xs: '90%', md: '75%' }, marginTop: 2.5, fontSize: { xs: 12, md: 16 }, lineHeight: { xs: '18px', md: 'inherit' } }}>{subHeader}</Typography>
+                    
+                    {!resetPassword && <Typography variant='bodyRegular12' color='secondary.greyDarken2' sx={{ textAlign: { xs: 'center', md: 'start' }, width: { md: '35%' }, position: 'absolute', bottom: 35 }}>{agreeText}</Typography>}
                 </Stack>
 
-                <Stack sx={{ width: '50%', paddingTop: 10 }}>
-                    <Stack>
+                <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
+                    <Stack sx={{ gap: { xs: 2, md: 0 }}}>
 
-                        {!changePassword && <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                        {!changePassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
                             <CustomLabel>E-mail</CustomLabel>
                             <CustomInput
                                 autoFocus
@@ -150,7 +200,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                             />
                         </FormControl>}
 
-                        {!resetPassword && <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                        {!resetPassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
                             <CustomLabel>{changePassword ? "New Password" : "Password"}</CustomLabel>
                             <CustomInput
                                 value={password || ''}
@@ -158,7 +208,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                 type={showPassword ? 'text' : 'password'}
                                 onChange={e => setPassword(e.target.value)}
                                 endAdornment={
-                                    <InputAdornment position="end">
+                                    <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
@@ -173,8 +223,8 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                             />
                         </FormControl>}
 
-                        {changePassword && (
-                            <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                        {(signup || changePassword) && (
+                            <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
                                 <CustomLabel>Confirm Password</CustomLabel>
                                 <CustomInput
                                     value={confirmPassword || ''}
@@ -182,14 +232,14 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                     type={showPassword ? 'text' : 'password'}
                                     onChange={e => setConfirmPassword(e.target.value)}
                                     endAdornment={
-                                        <InputAdornment position="end">
+                                        <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
                                             <IconButton
                                                 aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
                                             >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                {showPassword ? passwordVisisble : passwordHidden}
                                             </IconButton>
                                         </InputAdornment>
                                     }
@@ -212,35 +262,24 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                             </Stack>
                         )}
 
-                        {!resetPassword && !changePassword ? (
-                            <MainButton
-                                variant="contained"
-                                disabled={!email || !password}
-                                onClick={() => onSubmit({ email, password })}
-                            >
-                                {signup ? 'Załóż konto' : 'Zaloguj się'}
-                            </MainButton>
-                        ) : (
-                            <Stack direction='row' gap={3}>
-                                <Button variant="filled" onClick={() => resetPassword ? setResetPassword(false) : router.push('/')}>
-                                    Cancel
-                                </Button>
-                                <Button sx={{ color: 'white' }} variant="contained" disabled={resetPassword ? !email : !password && !confirmPassword} onClick={resetPassword ? confirmRestorePasswordHandler : confirmChangePasswordHandler}>
-                                    {resetPassword ? 'Restore Password' : 'Confirm'}
-                                </Button>
-                            </Stack>
-                        )}
+                        <MainButton
+                            variant="contained"
+                            disabled={!email || !password}
+                            onClick={onClickMainButton}
+                        >
+                            {mainButtonTitle}
+                        </MainButton>
 
-                        <Stack direction='row' justifyContent='center' gap={1}
+                        {helperButtonsText?.length ? <Stack direction='row' justifyContent='center' gap={1}
                             sx={{ width: '100%', marginTop: 5 }}
                         >
                             <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='black'>
-                                {signup ? 'Masz konta NAVIFIT?' : 'Nie masz jeszcze konta NAVIFIT?'}
+                                {helperButtonsText[0]}
                             </Typography>
-                            <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => router.push(`/${signup ? 'login' : 'signup'}`)}>
-                                {signup ? 'Zaloguj się' : 'Załóż konto'}
+                            <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => router.push(`/${signup ? 'login' : resetPassword ? 'contact' : 'signup'}`)}>
+                                {helperButtonsText[1]}
                             </Typography>
-                        </Stack>
+                        </Stack> : <></>}
 
                     </Stack>
                 </Stack>

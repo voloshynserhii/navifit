@@ -14,14 +14,14 @@ export default function RestorePasswordPage() {
 
   const handleChangePassword = (password) => {
     setLoading(true)
-    
+
     api.user.resetPassword(process.env.NEXT_PUBLIC_DB_HOST, { token, password }).then(({ message }) => {
       if (message) {
         setError(message)
       } else {
         setUserMessage('You have successfully changed your password! Now you can login!')
       }
-      
+
       setLoading(false)
     }).catch(() => {
       setLoading(false)
@@ -30,7 +30,16 @@ export default function RestorePasswordPage() {
 
   return (
     <main>
-      <AuthForm changePassword loading={loading} message={userMessage} error={error} onChangePassword={handleChangePassword} />
+      <AuthForm
+        title='Zresetuj hasło'
+        subTitle='Wprowadź nowe hasło do swojego konta.'
+        agreeText=''
+        changePassword 
+        loading={loading} 
+        message={userMessage} 
+        error={error} 
+        onChangePassword={handleChangePassword} 
+      />
     </main>
   );
 }

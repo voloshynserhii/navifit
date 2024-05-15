@@ -75,7 +75,21 @@ export default function SignUpPage() {
 
   return (
     <main>
-      <AuthForm signup loading={loading} currentUser={currentUser} error={error} message={userMessage} onSubmit={handleAuthorize} onChangePassword={handleChangePassword} onRestorePassword={handleRestorePassword} />
+      <AuthForm 
+        title='Zarejestruj się' 
+        subTitle='Wpisz adres e-mail, na który jesteś zarejestrowana 
+        w aplikacji NAVIFIT' 
+        agreeText='Zakładając konto wyrażasz zgodę na nasze Warunki korzystania z usługi,
+        Polityka prywatności'
+        signup 
+        loading={loading} 
+        currentUser={currentUser} 
+        error={error} 
+        message={userMessage} 
+        onSubmit={handleAuthorize} 
+        onChangePassword={handleChangePassword} 
+        onRestorePassword={handleRestorePassword} 
+      />
     </main>
   );
 }

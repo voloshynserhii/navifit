@@ -97,6 +97,13 @@ export const LIGHT_THEME = {
       fontSize: 12,
       lineHeight: '18px',
       color: PALETTE_COLORS.primary.contrastText,
+    },
+    bodyRegular14: {
+      fontWeight: 400,
+      fontFamily: 'unset',
+      fontSize: 14,
+      lineHeight: '21px',
+      color: PALETTE_COLORS.primary.blueAccent,
     }
   }
 };

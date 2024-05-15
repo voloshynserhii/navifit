@@ -73,7 +73,8 @@ export default function StepContainer({ currentStep, step = 1, totalSteps, showW
                             {description && !styled
                                 && <Typography
                                     variant="body16"
-                                    sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 'inherit' }, lineHeight: { xs: '18px', md: 'inherit' } }}
+                                    color='primary.contrastText'
+                                    sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 16 }, lineHeight: { xs: '18px', md: 'inherit' } }}
                                 >
                                     {description}
                                 </Typography>

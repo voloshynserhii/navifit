@@ -131,7 +131,7 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                 </Row>
             ))}
             {desiredDate && <DesiredWeightInfo sx={{ left: `${position}%` }}>{desiredWeight}kg
-                <Divider sx={{ width: 125, borderWidth: 1, borderStyle: 'dashed', position: 'absolute', transform: 'rotate(-90deg)', top: 98, left: '-43%', borderColor: 'rgba(97, 97, 97, 1)' }} />
+                <Divider sx={{ width: 125, borderWidth: 1, borderStyle: 'dashed', position: 'absolute', transform: 'rotate(-90deg)', top: 98, left: '-43%', borderColor: 'secondary.greyDarken2' }} />
             </DesiredWeightInfo>}
             <div className={styles.graphic} id='graphic' style={{ position: 'absolute', left: '14%', top: '35%', width: '70%' }}>
                 <svg width="100%" height="100%" viewBox="0 0 337 135" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -9,6 +9,7 @@ const COLOR_PRIMARY = {
   grey2: 'rgba(66, 66, 66, 1)',
   redLighten1: 'rgba(239, 83, 80, 1)',
   greenLighten1: 'rgba(102, 187, 106, 1)',
+  blueAccent: 'rgba(41, 98, 255, 1)',
 };
 
 const COLOR_SECONDARY = {
@@ -20,7 +21,9 @@ const COLOR_SECONDARY = {
   brandBlack: 'rgba(28, 28, 30, 1)',
   brandGreen: 'rgba(204, 255, 51, 1)',
   greyDarken1: 'rgba(117, 117, 117, 1)',
-  greyLighten2:'rgba(224, 224, 224, 1)'
+  greyLighten2:'rgba(224, 224, 224, 1)',
+  red: 'rgba(244, 67, 54, 1)',
+  greyDarken2: 'rgba(97, 97, 97, 1)'
 };
 
 /**

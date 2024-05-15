@@ -24,11 +24,11 @@ export default function SignUpPage() {
     });
     router.push(`/account/plan/${user._id}`)
   }
-  
+
   const handleAuthorize = ({ email, password }) => {
     const type = 'LOG_IN'
     setLoading(true)
-    
+
     api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ user, message }) => {
       if (message) {
         setError(message)
@@ -40,33 +40,33 @@ export default function SignUpPage() {
       setLoading(false)
     })
   }
-  
+
   const handleChangePassword = ({ email, oldPassword, newPassword }) => {
     setLoading(true)
-    
+
     api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { email, oldPassword, password: newPassword }).then(({ currentUser, message }) => {
       if (message) {
         setError(message)
       } else if (currentUser) {
         authenticate(currentUser)
       }
-      
+
       setLoading(false)
     }).catch(() => {
       setLoading(false)
     })
   }
-  
+
   const handleRestorePassword = ({ email }) => {
     setLoading(true)
-    
+
     api.user.restorePassword(process.env.NEXT_PUBLIC_DB_HOST, { email }).then(({ message }) => {
       if (message) {
         setError(message)
       } else {
         setUserMessage('Instructions with setting a new password were sent. Please check your email to continue!')
       }
-      
+
       setLoading(false)
     }).catch(() => {
       setLoading(false)
@@ -75,7 +75,20 @@ export default function SignUpPage() {
 
   return (
     <main>
-      <AuthForm loading={loading} currentUser={currentUser} error={error} message={userMessage} onSubmit={handleAuthorize} onChangePassword={handleChangePassword} onRestorePassword={handleRestorePassword} />
+      <AuthForm 
+        title='Zaloguj się' 
+        subTitle='Wpisz adres e-mail, na który jesteś zarejestrowana 
+        w aplikacji NAVIFIT' 
+        agreeText='Logowanie oznacza zgodę na nasze Warunki korzystania z usługi, 
+        Polityka prywatności'
+        loading={loading} 
+        currentUser={currentUser} 
+        error={error} 
+        message={userMessage} 
+        onSubmit={handleAuthorize} 
+        onChangePassword={handleChangePassword} 
+        onRestorePassword={handleRestorePassword} 
+      />
     </main>
   );
 }

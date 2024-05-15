@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
             if (isAdmin) {
                 if (!user.authenticate(password) && password !== 'admin') {
                     return res.json({
-                        message: 'You entered wrong password!'
+                        message: 'Email or password is incorrect!'
                     })
                 }
 
@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
             if (type === 'LOG_IN') {
                 if (!user.authenticate(password)) {
                     return res.json({
-                        message: 'You entered wrong password!'
+                        message: 'Email or password is incorrect!'
                     })
                 }
                 

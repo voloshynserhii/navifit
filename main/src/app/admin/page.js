@@ -139,7 +139,7 @@ export default function Admin() {
             setCreateMode(false)
         }).catch(err => console.log(err))
     }
-    
+
     const handleCreatePromocode = (newPlan) => {
         api.promo.create(process.env.NEXT_PUBLIC_DB_HOST, newPlan).then(({ promocode }) => {
             setData(prev => ([...prev, promocode]))
@@ -153,11 +153,11 @@ export default function Admin() {
 
     const handleSearch = async () => {
         const { data: newData } = await api.recipe.getAll(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
-        
+
         if (newData) {
             setData(newData)
         }
-        
+
         setSearchValue('')
     }
 
@@ -175,7 +175,13 @@ export default function Admin() {
     if (!isLoggedIn) return (
         <main>
             <Stack sx={{ gap: 5, padding: 20 }}>
-                <AuthForm error={error} onSubmit={handleAuthorize} />
+                <AuthForm
+                    title='Zaloguj się'
+                    subTitle='Wpisz adres e-mail, na który jesteś zarejestrowana 
+                        w aplikacji NAVIFIT'
+                    error={error}
+                    onSubmit={handleAuthorize}
+                />
                 <Button onClick={adminOffHandler}>Admin Mode Off</Button>
             </Stack>
         </main>

@@ -42,8 +42,8 @@ export default function Admin() {
     }
 
     useEffect(() => {
-        getUsers()
-    }, [role])
+        if (isLoggedIn) getUsers()
+    }, [role, isLoggedIn])
 
     useEffect(() => {
         if (sortingOption) getUsers()

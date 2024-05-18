@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Accordion, AccordionSummary, AccordionDetails, Box, Button, Divider, IconButton, List, ListItem, ListItemButton, Stack, SwipeableDrawer, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -46,11 +46,11 @@ const menu = [
         link: '/contact',
         icon: contact
     },
-    {
-        title: 'Wsparcie',
-        link: '/about',
-        icon: about
-    },
+    // {
+    //     title: 'Wsparcie',
+    //     link: '/about',
+    //     icon: about
+    // },
     // {
     //     title: 'Warunki i zasady',
     //     link: '/conditions',
@@ -83,15 +83,6 @@ const ListItemContainer = styled(ListItemButton)(({ theme }) => ({
     padding: '12px 16px',
 }));
 
-// const CustomAccordion = styled((props) => (
-//     <Accordion disableGutters elevation={0} square {...props} />
-// ))(({ theme }) => ({
-//     border: 'none',
-//     '&::before': {
-//         display: 'none',
-//     },
-// }));
-
 const LogOutButton = styled(Button)(({ theme }) => ({
     border: `1px solid ${theme.palette.secondary.greyLighten2}`,
     borderRadius: 32,
@@ -116,7 +107,17 @@ export default function SwipeableTemporaryDrawer() {
     const [state, setState] = useState({
         right: false,
     });
-    const [userMenuExpanded, setUserMenuExpanded] = useState(false)
+    const [userMenuExpanded, setUserMenuExpanded] = useState('')
+    const [menuActive, setMenuActive] = useState('')
+    const path = usePathname();
+
+    useEffect(() => {
+        setMenuActive(path)
+        
+        if (path) {
+            userMenuExpanded ? setUserMenuExpanded(path) : setMenuActive(path)
+        }
+    }, [path])
 
     useEffect(() => {
         const admin = localStorageGet('adminUser')
@@ -131,6 +132,7 @@ export default function SwipeableTemporaryDrawer() {
     // const onSwitchDarkMode = useEventSwitchDarkMode();
 
     const toggleDrawer = (anchor, open) => (event) => {
+        console.log(anchor, open)
         if (
             event &&
             event.type === 'keydown' &&
@@ -160,45 +162,15 @@ export default function SwipeableTemporaryDrawer() {
             >
 
                 <List sx={{ height: '100%' }}>
-                    {/* {!!isAuthenticated && (<CustomAccordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                        >
-                            Moje Konto
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <ListItem disablePadding>
-                                <ListItemContainer onClick={() => router.push(`/account/plan/${currentUser._id}`, { scroll: false })}>
-                                    <Typography variant='regular16'>Mój plan posiłków</Typography>
-                                </ListItemContainer>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemContainer onClick={() => router.push('/account/subscription', { scroll: false })}>
-                                    <Typography variant='regular16'>Moja subskrypcja</Typography>
-                                </ListItemContainer>
-                            </ListItem>
-                            {!isAdmin ? <ListItem disablePadding>
-                                <ListItemContainer onClick={() => {
-                                    dispatch({ type: 'LOG_OUT' })
-                                    router.push('/', { scroll: false })
-                                }}>
-                                    <Typography variant='regular16'>Wyloguj</Typography>
-                                </ListItemContainer>
-                            </ListItem> : (
-                                <ListItem disablePadding>
-                                    <ListItemContainer onClick={() => router.push('/admin', { scroll: false })}>
-                                        <Typography variant='regular16'>Go To Admin Panel</Typography>
-                                    </ListItemContainer>
-                                </ListItem>
-                            )}
-                        </AccordionDetails>
-                    </CustomAccordion>)} */}
                     <Stack sx={{ height: isAuthenticated ? '85%' : '75%', overflow: 'scroll' }}>
                         {isAuthenticated && (
-                            <Accordion disableGutters elevation={0} square onChange={(e, expanded) => setUserMenuExpanded(userMenu.subMenu[0].title)}>
+                            <Accordion disableGutters elevation={0} square onChange={(e, expanded) => {
+                                setUserMenuExpanded(userMenu.subMenu[0].link)
+                                setMenuActive('')
+                                router.push(userMenu.subMenu[0].link.replace(':id', currentUser._id), { scroll: false })
+                            }}>
                                 <AccordionSummary
+                                    sx={{ zIndex: 2 }}
                                     aria-controls="panel1-content"
                                     id="panel1-header"
                                     className={userMenuExpanded ? styles.expanded : ''}
@@ -208,23 +180,69 @@ export default function SwipeableTemporaryDrawer() {
                                         <Typography variant='regular16'>{userMenu.title}</Typography>
                                     </Stack>
                                 </AccordionSummary>
-                                <AccordionDetails sx={{ paddingRight: 0, paddingLeft: '34px' }}>
-                                    {userMenu.subMenu.map(({ title, link }, i) => (
-                                        <ListItem key={title} disablePadding className={userMenuExpanded === title ? styles.expanded : ''}>
-                                            <ListItemContainer onClick={() => router.push(link.replace(':id', currentUser._id), { scroll: false })}>
-                                                <Stack direction='row' >
-                                                    <Typography variant='regular16'>{title}</Typography>
-                                                </Stack>
-                                            </ListItemContainer>
-                                        </ListItem>
-                                    ))}
-                                </AccordionDetails>
+                                {userMenuExpanded && <AccordionDetails sx={{ paddingRight: 0, paddingLeft: '34px' }}>
+                                    {userMenu.subMenu.map(({ title, link }, i) => {
+                                        const path = link.replace('/account', '').replace('/:id', '')
+
+                                        return (
+                                            <ListItem
+                                                sx={{ z_ndex: 2 }}
+                                                key={title}
+                                                disablePadding
+                                                className={path && userMenuExpanded?.indexOf(path) > -1 ? styles.expanded : ''}
+                                            >
+                                                {/* <div 
+                                                style={{ 
+                                                    position: 'absolute', 
+                                                    width: '100%', 
+                                                    height: `${50 * (i + 1)}px`,
+                                                    border: '2px solid rgba(224, 224, 224, 1)',
+                                                    borderRadius: 15,
+                                                    top: '-50%',
+                                                    right: '5%',
+                                                    zIndex: 0
+                                                }} 
+                                            />
+                                            <div 
+                                                style={{ 
+                                                    position: 'absolute', 
+                                                    width: '100%', 
+                                                    height: 50,
+                                                    backgroundColor: '#FFFFFF',
+                                                    top: '-50%',
+                                                    right: '0',
+                                                    zIndex: 1
+                                                }} 
+                                            /> */}
+                                                <ListItemContainer
+                                                    sx={{ zIndex: 2 }}
+                                                    onClick={() => {
+                                                        router.push(link.replace(':id', currentUser._id), { scroll: false })
+                                                        setState({ anchor: false })
+                                                        setUserMenuExpanded(link)
+                                                        setMenuActive('')
+                                                    }}
+                                                >
+                                                    <Stack direction='row' >
+                                                        <Typography variant='regular16'>{title}</Typography>
+                                                    </Stack>
+                                                </ListItemContainer>
+                                            </ListItem>
+                                        )
+                                    })}
+                                </AccordionDetails>}
                             </Accordion>
                         )}
                         <Stack>
                             {menu.map(({ title, link, icon }) => (
-                                <ListItem key={title} disablePadding>
-                                    <ListItemContainer onClick={() => router.push(link, { scroll: false })}>
+                                <ListItem key={title} disablePadding className={menuActive === link ? styles.expanded : ''}>
+                                    <ListItemContainer
+                                        onClick={() => {
+                                            router.push(link, { scroll: false })
+                                            setState({ anchor: false })
+                                            setUserMenuExpanded('')
+                                        }}
+                                    >
                                         <Stack direction='row' gap={2}>
                                             {icon}
                                             <Typography variant='regular16' >{title}</Typography>
@@ -237,8 +255,28 @@ export default function SwipeableTemporaryDrawer() {
 
                     {!isAuthenticated ? (
                         <Stack direction='row' justifyContent='space-between' gap={1.5} sx={{ position: 'absolute', bottom: 8, width: '100%', maxWidth: 415 }}>
-                            <MenuButton type='login' title='Zaloguj się' text='Mam juz konto' mainColor='primary.main' textColor='white' onClick={() => router.push('/login', { scroll: false })} />
-                            <MenuButton type='signup' title='Nowy klient' text='Nowy klient' mainColor='secondary.brandBlack' textColor='secondary.brandGreen' onClick={() => router.push('/signup', { scroll: false })} />
+                            <MenuButton
+                                type='login'
+                                title='Zaloguj się'
+                                text='Mam juz konto'
+                                mainColor='primary.main'
+                                textColor='white'
+                                onClick={() => {
+                                    setState({ anchor: false })
+                                    router.push('/login', { scroll: false })
+                                }}
+                            />
+                            <MenuButton
+                                type='signup'
+                                title='Nowy klient'
+                                text='Nowy klient'
+                                mainColor='secondary.brandBlack'
+                                textColor='secondary.brandGreen'
+                                onClick={() => {
+                                    setState({ anchor: false })
+                                    router.push('/signup', { scroll: false })
+                                }}
+                            />
                         </Stack>
                     ) : (
                         <Stack sx={{ position: 'absolute', bottom: 0, width: '100%' }}>
@@ -247,6 +285,7 @@ export default function SwipeableTemporaryDrawer() {
                                 onClick={() => {
                                     dispatch({ type: 'LOG_OUT' })
                                     router.push('/', { scroll: false })
+                                    setState({ anchor: false })
                                 }}>
                                 <Typography variant='medium14' color='secondary.greyDarken1'>Wyloguj</Typography>
                             </LogOutButton>

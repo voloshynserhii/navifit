@@ -52,7 +52,7 @@ const Connector = styled(Box)(({ theme }) => ({
     transform: 'translate(7px, -50px)'
 }));
 
-const Row = ({ children }) => <Stack direction='row' alignItems='center' gap={2} sx={{ padding: {xs: 0, md: '2px 0', lg: '3px 0' } }}>{children}</Stack>
+const Row = ({ children }) => <Stack direction='row' alignItems='center' gap={2} sx={{ padding: { xs: 0, md: '2px 0', lg: '3px 0' } }}>{children}</Stack>
 
 const getHorizontalLine = ({ startYear, endYear, startMonth, endMonth }) => {
     const months = [moment(startMonth, 'M').format('MMMM')]
@@ -95,8 +95,8 @@ const getWeightOnDesiredDate = ({ startMonth, endMonth, desiredDate, startWeight
     const position = diff > 0 ? diff * 10 : 10
 
     const desiredWeight = startWeight - (diff * 1.5)
-    
-    return { desiredWeight, position}
+
+    return { desiredWeight, position }
 }
 
 export default function Graphic({ startWeight, endWeight, desiredDate, startDate, endDate }) {
@@ -108,8 +108,8 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
 
     const months = getHorizontalLine({ startYear, endYear, startMonth, endMonth })
     const verticalNumbers = getVerticalLine({ startWeight, endWeight })
-    const {desiredWeight, position} = getWeightOnDesiredDate({ startMonth, endMonth, desiredDate, startWeight })
-    
+    const { desiredWeight, position } = getWeightOnDesiredDate({ startMonth, endMonth, desiredDate, startWeight })
+
     useEffect(() => {
         setTimeout(
             () => {
@@ -133,8 +133,8 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
             {desiredDate && <DesiredWeightInfo sx={{ left: `${position}%` }}>{desiredWeight}kg
                 <Divider sx={{ width: 125, borderWidth: 1, borderStyle: 'dashed', position: 'absolute', transform: 'rotate(-90deg)', top: 98, left: '-43%', borderColor: 'secondary.greyDarken2' }} />
             </DesiredWeightInfo>}
-            <div className={styles.graphic} id='graphic' style={{ position: 'absolute', left: '14%', top: '35%', width: '70%' }}>
-                <svg width="100%" height="100%" viewBox="0 0 337 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class={endWeight < startWeight ? styles.graphic : styles.graphicBack} id='graphic' style={{ position: 'absolute', left: '14%', top: '35%', width: '70%' }}>
+                {endWeight < startWeight ? (<svg width="100%" height="100%" viewBox="0 0 337 135" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 4.87192C3 4.87192 52.0348 -7.3821 103.557 30.8206C136.926 55.5629 155.621 92.9904 191.021 112.657C229.286 133.917 334 131.952 334 131.952" stroke="url(#paint0_linear_2652_7963)" strokeWidth="6" strokeLinecap="round" />
                     <defs>
                         <linearGradient id="paint0_linear_2652_7963" x1="-15.5" y1="-16.2835" x2="368.441" y2="79.1642" gradientUnits="userSpaceOnUse">
@@ -144,7 +144,17 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                             <stop offset="1" stopColor="#13FFE3" />
                         </linearGradient>
                     </defs>
-                </svg>
+                </svg>) : (<svg width="100%" height="100%" viewBox="0 0 337 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M334 3.87196C334 3.87196 288.523 0.436932 236.5 19.5C212.226 28.3949 197.643 44.3675 173.5 55.5C151.59 65.6028 120.483 70.526 92 85C61.0204 100.743 3.00003 135.952 3.00003 135.952" stroke="url(#paint0_linear_2898_5899)" strokeWidth="6" strokeLinecap="round" />
+                    <defs>
+                        <linearGradient id="paint0_linear_2898_5899" x1="352.5" y1="-12.2835" x2="-31.4411" y2="83.1642" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#13FFE3" />
+                            <stop offset="0.495" stopColor="#43CE21" />
+                            <stop offset="0.744544" stopColor="#FFCE80" />
+                            <stop offset="1" stopColor="#FF0000" />
+                        </linearGradient>
+                    </defs>
+                </svg>)}
                 <Pointer style={{ width: style.width, height: style.height }}>
                     <div style={{ display: style.width > 0 ? 'block' : 'none' }}>
                         <BMIInfo>
@@ -159,6 +169,6 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                     <Typography key={month + i}>{month}</Typography>
                 ))}
             </Stack>
-        </Box>
+        </Box >
     )
 }

@@ -5,17 +5,42 @@
     animation-iteration-count: 1;
     animation-timing-function: linear;
 }
+
 .graphic svg path {
     fill-opacity: 0;
     stroke: linear-gradient(95.53deg, #FF0000 -6.42%, #FFCE80 22.27%, #43CE21 50.29%, #13FFE3 105.87%);
     stroke-width: 6;
     stroke-dasharray: 870;
     stroke-dashoffset: 870;
-    animation: draw 10s infinite linear;
+    animation: draw 120s infinite linear;
 }
-  
+
 @keyframes draw {
     to {
-        stroke-dashoffset: 0;
+        stroke-dashoffset: -10000;
+    }
+}
+
+.graphicBack {
+    animation-name: drawBack;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}
+
+.graphicBack svg path {
+    fill-opacity: 0;
+    border: 6px solid;
+    stroke: linear-gradient(95.68deg, #13FFE3 -6.17%, #43CE21 49.28%, #FFCE80 77.24%, #FF0000 105.86%);
+    stroke-width: 6;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawBack 100s infinite linear;
+}
+  
+@keyframes drawBack {
+    to {
+        stroke-dashoffset: 10000;
     }
 }

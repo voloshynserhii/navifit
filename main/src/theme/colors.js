@@ -3,7 +3,6 @@ const COLOR_PRIMARY = {
   grey: 'rgba(238, 238, 238, 1)',
   contrastText: 'rgba(28, 34, 39, 1)',
   lightGrey: 'rgba(189, 189, 189, 1)',
-  black2: 'rgba(28, 34, 39, 1)',
   error: 'rgba(255, 23, 68, 1)',
   bodyGrey: 'rgba(117, 117, 117, 1)',
   grey2: 'rgba(66, 66, 66, 1)',
@@ -23,7 +22,8 @@ const COLOR_SECONDARY = {
   greyDarken1: 'rgba(117, 117, 117, 1)',
   greyLighten2:'rgba(224, 224, 224, 1)',
   red: 'rgba(244, 67, 54, 1)',
-  greyDarken2: 'rgba(97, 97, 97, 1)'
+  greyDarken2: 'rgba(97, 97, 97, 1)',
+  greenDarken1: 'rgba(67, 160, 71, 1)'
 };
 
 /**

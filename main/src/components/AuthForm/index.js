@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { useBackground } from '@src/hooks/event'
 import { email as emailIcon, passwordHidden, passwordVisisble } from '@src/utils/icons'
+import { isEmail } from '@src/utils/functions'
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
@@ -28,7 +29,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     position: 'absolute',
     top: 32,
-    color: theme.palette.primary.black2,
+    color: theme.palette.primary.contrastText,
     [theme.breakpoints.down("md")]: {
         top: 10,
     },
@@ -84,10 +85,21 @@ const CustomInput = styled(OutlinedInput)(({ theme, error }) => ({
     },
 }))
 
+const defaultValidationValue = {
+    emailError: '',
+    password: {
+        chars: false,
+        digit: false,
+        letter: false
+    },
+    passwordMatch: true
+}
+
 export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onSubmit, onChangePassword, onRestorePassword }) {
     useBackground()
     const router = useRouter()
     const [error, setError] = useState(serverError)
+    const [validation, setValidation] = useState(defaultValidationValue)
     const [email, setEmail] = useState(currentUser.email)
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -98,24 +110,24 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     let subHeader = subTitle
     let mainButtonTitle = 'Zaloguj się'
     let helperButtonsText = ['Nie masz jeszcze konta NAVIFIT?', 'Załóż konto']
-    
+
     if (signup) {
         mainButtonTitle = 'Załóż konto'
         helperButtonsText = ['Masz konta NAVIFIT?', 'Zaloguj się']
     }
-    
+
     if (resetPassword) {
         header = 'Przypomnienie hasła'
         subHeader = 'Wpisz adres e-mail, na który jesteś zarejestrowana w aplikacji NAVIFIT'
         mainButtonTitle = 'Wyślij hasło'
         helperButtonsText = ['Masz pytanie?', 'Skontaktuj się z nami']
     }
-    
+
     if (changePassword) {
         mainButtonTitle = 'Zresetuj hasło'
         helperButtonsText = []
     }
-    
+
     useEffect(() => {
         if (error) setError(null)
     }, [email, password, confirmPassword])
@@ -139,7 +151,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             onSubmit({ email, password })
         }
     }
-    
+
     const confirmChangePasswordHandler = () => {
         if (password.trim() !== confirmPassword.trim()) {
             setError("New password and Confirm password don't match!")
@@ -150,6 +162,40 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
 
     const confirmRestorePasswordHandler = () => {
         onRestorePassword({ email })
+    }
+
+    const validateFields = (field, val) => {
+        if (field === 'password') {
+            if (val) {
+                if (val.length >= 8) {
+                    setValidation((prev) => ({ ...prev, [field]: { ...prev[field], chars: true } }))
+                }  else {
+                    setValidation((prev) => ({ ...prev, [field]: { ...prev[field], chars: false } }))
+                }
+                if (/\d/.test(val)) {
+                    setValidation((prev) => ({ ...prev, [field]: { ...prev[field], digit: true } }))
+                } else {
+                    setValidation((prev) => ({ ...prev, [field]: { ...prev[field], digit: false } }))
+                }
+                if (/[a-zA-Z]/.test(val)) {
+                    setValidation((prev) => ({ ...prev, [field]: { ...prev[field], letter: true } }))
+                } else {
+                    setValidation((prev) => ({ ...prev, [field]: { ...prev[field], letter: false } }))
+                }
+            } else {
+                setValidation((prev) => ({ ...prev, ...defaultValidationValue[field] }))
+            }
+
+        } else if (field === 'passwordMatch') {
+            if (val !== password) {
+                setValidation((prev) => ({ ...prev, [field]: false }))
+            } else {
+                setValidation((prev) => ({ ...prev, [field]: true }))
+            }
+            
+        } else {
+            setValidation((prev) => ({ ...prev, [field]: val }))
+        }
     }
 
     if (message) {
@@ -169,44 +215,50 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                 {resetPassword && (<StyledIconButton onClick={() => setResetPassword(false)}>
                     <ArrowBackIosRoundedIcon />
                 </StyledIconButton>)}
-                
+
                 <Stack sx={{ width: { xs: '100%', md: '50%' } }}>
                     <Typography variant='h1'>{header}</Typography>
-                    
+
                     <Typography variant="body16" color='primary.contrastText' sx={{ width: { xs: '90%', md: '75%' }, marginTop: 2.5, fontSize: { xs: 12, md: 16 }, lineHeight: { xs: '18px', md: 'inherit' } }}>{subHeader}</Typography>
-                    
+
                     {!resetPassword && <Typography variant='bodyRegular12' color='secondary.greyDarken2' sx={{ textAlign: { xs: 'center', md: 'start' }, width: { md: '35%' }, position: 'absolute', bottom: 35 }}>{agreeText}</Typography>}
                 </Stack>
 
                 <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
-                    <Stack sx={{ gap: { xs: 2, md: 0 }}}>
+                    <Stack sx={{ gap: { xs: 2, md: 0 } }}>
 
                         {!changePassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
                             <CustomLabel>E-mail</CustomLabel>
                             <CustomInput
                                 autoFocus
                                 value={email || ''}
-                                error={!!error}
+                                error={!!error || (email && !!validation.emailError)}
                                 type='email'
                                 label="Email"
                                 name="email"
                                 disabled={!!currentUser.email}
                                 onChange={e => setEmail(e.target.value)}
+                                onBlur={(e) => !isEmail(e.target.value) ? validateFields('emailError', true) : validateFields('emailError', false)}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         {emailIcon}
                                     </InputAdornment>
                                 }
                             />
+                            {email && validation.emailError && <Typography variant='bodyRegular12' color='secondary.red'>Invalid email format</Typography>}
                         </FormControl>}
 
                         {!resetPassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
                             <CustomLabel>{changePassword ? "New Password" : "Password"}</CustomLabel>
                             <CustomInput
                                 value={password || ''}
-                                error={error}
+                                error={!!error}
                                 type={showPassword ? 'text' : 'password'}
-                                onChange={e => setPassword(e.target.value)}
+                                onChange={e => {
+                                    setPassword(e.target.value?.trim())
+                                    validateFields('password', e.target.value?.trim())
+                                }}
+                                onBlur={() => confirmPassword ? validateFields('passwordMatch', confirmPassword) : () => {}}
                                 endAdornment={
                                     <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
                                         <IconButton
@@ -221,6 +273,14 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                 }
                                 label={changePassword ? "New Password" : "Password"}
                             />
+                            {(signup || changePassword) && password && (
+                                <>
+                                    <Typography variant='bodyRegular12' color='primary.contrastText'>Make sure your password contains:</Typography>
+                                    <Typography variant='bodyRegular12' color={!validation.password.chars ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>Minimum 8 characters</Typography>
+                                    <Typography variant='bodyRegular12' color={!validation.password.digit ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>At least 1 digit</Typography>
+                                    <Typography variant='bodyRegular12' color={!validation.password.letter ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>At least 1 letter</Typography>
+                                </>
+                            )}
                         </FormControl>}
 
                         {(signup || changePassword) && (
@@ -228,9 +288,10 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                 <CustomLabel>Confirm Password</CustomLabel>
                                 <CustomInput
                                     value={confirmPassword || ''}
-                                    error={error}
+                                    error={!!error}
                                     type={showPassword ? 'text' : 'password'}
-                                    onChange={e => setConfirmPassword(e.target.value)}
+                                    onBlur={() => validateFields('passwordMatch', confirmPassword)}
+                                    onChange={e => setConfirmPassword(e.target.value?.trim())}
                                     endAdornment={
                                         <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
                                             <IconButton
@@ -245,6 +306,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                     }
                                     label="Confirm Password"
                                 />
+                                {confirmPassword && !validation.passwordMatch && <Typography variant='bodyRegular12' color='secondary.red'>Password didn’t match</Typography>}
                             </FormControl>
                         )}
                     </Stack>

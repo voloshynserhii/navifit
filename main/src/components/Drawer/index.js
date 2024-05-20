@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
 import MenuButton from '../MenuButton';
-import { sklep, info, contact, conditions, about, user, logOut } from '../../utils/icons'
+import { sklep, info, contact, conditions, about, user, logOut, menuBeforeIcon } from '../../utils/icons'
 import { localStorageGet } from '../../utils/localStorage';
 import styles from './index.module.css'
 
@@ -113,7 +113,7 @@ export default function SwipeableTemporaryDrawer() {
 
     useEffect(() => {
         setMenuActive(path)
-        
+
         if (path) {
             userMenuExpanded ? setUserMenuExpanded(path) : setMenuActive(path)
         }
@@ -191,31 +191,10 @@ export default function SwipeableTemporaryDrawer() {
                                                 disablePadding
                                                 className={path && userMenuExpanded?.indexOf(path) > -1 ? styles.expanded : ''}
                                             >
-                                                {/* <div 
-                                                style={{ 
-                                                    position: 'absolute', 
-                                                    width: '100%', 
-                                                    height: `${50 * (i + 1)}px`,
-                                                    border: '2px solid rgba(224, 224, 224, 1)',
-                                                    borderRadius: 15,
-                                                    top: '-50%',
-                                                    right: '5%',
-                                                    zIndex: 0
-                                                }} 
-                                            />
-                                            <div 
-                                                style={{ 
-                                                    position: 'absolute', 
-                                                    width: '100%', 
-                                                    height: 50,
-                                                    backgroundColor: '#FFFFFF',
-                                                    top: '-50%',
-                                                    right: '0',
-                                                    zIndex: 1
-                                                }} 
-                                            /> */}
+                                                <div style={{ position: 'absolute', top: '-80%', left: '-5%' }}>
+                                                    {menuBeforeIcon}
+                                                </div>
                                                 <ListItemContainer
-                                                    sx={{ zIndex: 2 }}
                                                     onClick={() => {
                                                         router.push(link.replace(':id', currentUser._id), { scroll: false })
                                                         setState({ anchor: false })

@@ -21,6 +21,7 @@ const COLOR_SECONDARY = {
   brandGreen: 'rgba(204, 255, 51, 1)',
   greyDarken1: 'rgba(117, 117, 117, 1)',
   greyLighten2:'rgba(224, 224, 224, 1)',
+  greyLighten4:'rgba(245, 245, 245, 1)',
   red: 'rgba(244, 67, 54, 1)',
   greyDarken2: 'rgba(97, 97, 97, 1)',
   greenDarken1: 'rgba(67, 160, 71, 1)'

@@ -1,6 +1,8 @@
 const session = require('express-session')
-const Functions = require('../../util/Functions')
 const db = require('../../db')
+const config = require('../../config')
+const { transporter } = require('../../util/mailer')
+const Functions = require('../../util/Functions')
 
 /**
  * Sign Up User
@@ -22,11 +24,11 @@ module.exports = async (req, res) => {
     //     return res.status(100).send({ message: `password: ${error}` })
     // }
 
-    const request = { email }
-    if (isAdmin) request.isAdmin = isAdmin
+    const query = { email }
+    if (isAdmin) query.isAdmin = isAdmin
     
     db.user
-        .findOne(request)
+        .findOne(query)
         .then(async (user) => {
             if (!user) {
                 return res.json({
@@ -66,6 +68,28 @@ module.exports = async (req, res) => {
                     user.hashedPassword = null
                     
                     res.json({ user })
+                    
+                    // const mailOptions = {
+                    //     from: config.mailer.email,
+                    //     to: user.email,
+                    //     subject: 'From Navifit: You requested to reset a password!',
+                    //     html: `<div>
+                    //       <h2>Reset your password</h2>
+                    //       <h4>We’ve received a request to reset the password for the NaviFIt account. No changes have been made to your account yet!</h4>
+                    //       <p>
+                    //         You can reset your password by clicking the link below:
+                    //       </p>
+                    //       <p>https://navifit.vercel.app/restore/${user.oneTimePassword}</p>
+                    //     </div>`
+                    //   }
+                      
+                    //   transporter.sendMail(mailOptions, (err, info) => {
+                    //     if (err) {
+                    //         console.log(err);
+                    //     } else {
+                    //         console.log('Email sent', info)
+                    //     }
+                    //   })
                 })
             }
         })

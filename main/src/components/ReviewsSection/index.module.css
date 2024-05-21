@@ -1,30 +1,62 @@
-.active {
-    width: 55%;
-    height: 153px;
+.review {
     padding: 16px;
     border-radius: 20px;
     box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.05);
-    background-color: #fff;
+    background-color: #fff; 
+}
+.active {
+    width: 55%;
     z-index: 3;
 }
+
 .second {
     width: 51%;
     height: 70px;
-    padding: 16px;
-    border-radius: 20px;
-    box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.05);
     background-color: rgba(255, 255, 255, 1);
-    overflow: hidden;
-    transform: translateY(-50%);
+    transform: translateY(-70%);
     z-index: 2;
 }
+
 .third {
     width: 46%;
     height: 70px;
-    padding: 16px;
-    border-radius: 20px;
     background-color: rgba(238, 238, 238, 1);
-    overflow: hidden;
-    transform: translateY(-100%);
+    transform: translateY(-140%);
     z-index: 1;
+}
+
+@media screen and (max-width: 900px) {
+    .active {
+        width: 100%;
+    }
+    
+    .second {
+        width: 90%;
+        transform: translateY(-70%);
+    }
+    
+    .third {
+        width: 80%;
+        transform: translateY(-140%);
+    }
+}
+
+.animated-active {
+    animation: myEffect 3000ms linear;
+}
+
+@keyframes myEffect {
+    0%{
+        opacity: 1;
+        transform: rotateX(90deg);
+    }
+    50%{
+        opacity: 0.5;
+        transform: rotateX(0deg);
+    }
+    100%{
+        display: none;
+        opacity: 0;
+        transform: rotateX(90deg);
+    }
 }

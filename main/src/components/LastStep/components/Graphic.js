@@ -4,9 +4,9 @@ import { Box, Stack, Typography, Divider } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import styles from './index.module.css'
 
-const Pointer = styled(Box)(({ theme, left }) => ({
+const Pointer = styled(Box)(({ theme, position }) => ({
     position: 'absolute',
-    bottom: 0,
+    bottom: position === 'bottom' ? 0 : '90%',
     right: 0,
     border: `3px solid ${theme.palette.secondary.gray}`,
     borderRadius: '70px',
@@ -18,21 +18,21 @@ const Pointer = styled(Box)(({ theme, left }) => ({
         "0%": {
             width: 0,
             height: 0,
-            bottom: 10,
+            bottom: position === 'bottom' ? 10 : '95%',
         },
         "100%": {
             width: 22,
             height: 22,
-            bottom: 0,
+            bottom: position === 'bottom' ? 0 : '90%',
         }
     },
 }));
 
-const BMIInfo = styled(Box)(({ theme }) => ({
+const BMIInfo = styled(Box)(({ theme, position }) => ({
     width: 'max-content',
     background: theme.palette.primary.main,
     padding: `${theme.spacing(0.75)} ${theme.spacing(1.5)}`,
-    transform: 'translate(-43%, -50px)',
+    transform: position === 'bottom' ? 'translate(-43%, -50px)' : 'translate(-43%, 35px)',
     borderRadius: 6
 }));
 
@@ -45,11 +45,11 @@ const DesiredWeightInfo = styled(Box)(({ theme }) => ({
     borderRadius: 6
 }));
 
-const Connector = styled(Box)(({ theme }) => ({
+const Connector = styled(Box)(({ theme, position }) => ({
     width: 2,
     height: 15,
     background: theme.palette.primary.main,
-    transform: 'translate(7px, -50px)'
+    transform: position === 'bottom' ? 'translate(7px, -50px)' : 'translate(7px, -16px)'
 }));
 
 const Row = ({ children }) => <Stack direction='row' alignItems='center' gap={2} sx={{ padding: { xs: 0, md: '2px 0', lg: '3px 0' } }}>{children}</Stack>
@@ -133,7 +133,17 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
             {desiredDate && <DesiredWeightInfo sx={{ left: `${position}%` }}>{desiredWeight}kg
                 <Divider sx={{ width: 125, borderWidth: 1, borderStyle: 'dashed', position: 'absolute', transform: 'rotate(-90deg)', top: 98, left: '-43%', borderColor: 'secondary.greyDarken2' }} />
             </DesiredWeightInfo>}
-            <div class={endWeight < startWeight ? styles.graphic : styles.graphicBack} id='graphic' style={{ position: 'absolute', left: '14%', top: '35%', width: '70%' }}>
+
+            <div
+                className={endWeight < startWeight ? styles.graphic : styles.graphicBack}
+                id='graphic'
+                style={{
+                    position: 'absolute',
+                    left: endWeight < startWeight ? '14%' : '17%',
+                    top: endWeight < startWeight ? '38%' : '42%',
+                    width: '70%'
+                }}
+            >
                 {endWeight < startWeight ? (<svg width="100%" height="100%" viewBox="0 0 337 135" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 4.87192C3 4.87192 52.0348 -7.3821 103.557 30.8206C136.926 55.5629 155.621 92.9904 191.021 112.657C229.286 133.917 334 131.952 334 131.952" stroke="url(#paint0_linear_2652_7963)" strokeWidth="6" strokeLinecap="round" />
                     <defs>
@@ -155,12 +165,12 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                         </linearGradient>
                     </defs>
                 </svg>)}
-                <Pointer style={{ width: style.width, height: style.height }}>
+                <Pointer style={{ width: style.width, height: style.height }} position={endWeight < startWeight ? 'bottom' : 'top'}>
                     <div style={{ display: style.width > 0 ? 'block' : 'none' }}>
-                        <BMIInfo>
+                        <BMIInfo position={endWeight < startWeight ? 'bottom' : 'top'}>
                             <Typography variant='medium14' color='white'>Cel - {endWeight} kg</Typography>
                         </BMIInfo>
-                        <Connector />
+                        <Connector position={endWeight < startWeight ? 'bottom' : 'top'} />
                     </div>
                 </Pointer>
             </div>

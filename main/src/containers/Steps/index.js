@@ -21,7 +21,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(25)
+    const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
     const [btnVisible, setButtonVisisble] = useState(false)
@@ -105,7 +105,7 @@ const Steps = ({ option = {}, onGetBack }) => {
             payload: answers,
         });
 
-        // router.push('/email', { scroll: false })
+        router.push('/email', { scroll: false })
     }
 
     let btnDisabled = false

@@ -131,10 +131,10 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     useEffect(() => {
         onClearError()
     }, [email, password, confirmPassword, onClearError])
-        
+
     useEffect(() => {
         const { emailError, password, passwordMatch } = validation
-        
+
         if (!emailError && password.chars && password.digit && password.letter) {
             if (signup) {
                 if (passwordMatch) {
@@ -179,7 +179,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             if (val) {
                 if (val.length >= 8) {
                     setValidation((prev) => ({ ...prev, [field]: { ...prev[field], chars: true } }))
-                }  else {
+                } else {
                     setValidation((prev) => ({ ...prev, [field]: { ...prev[field], chars: false } }))
                 }
                 if (/\d/.test(val)) {
@@ -202,7 +202,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             } else {
                 setValidation((prev) => ({ ...prev, [field]: true }))
             }
-            
+
         } else {
             setValidation((prev) => ({ ...prev, [field]: val }))
         }
@@ -218,7 +218,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             </Box>
         )
     }
-    
+
     return (
         <Container>
             <DemoPaper>
@@ -235,12 +235,12 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                 </Stack>
 
                 <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
-                    
+
                     {currentUser && currentUser.oneTimePassword && !currentUser.isConfirmed && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
                         <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
                         <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
                     </Stack>}
-                    
+
                     <Stack sx={{ gap: { xs: 2, md: 0 } }}>
 
                         {!changePassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
@@ -274,7 +274,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                     setPassword(e.target.value?.trim())
                                     validateFields('password', e.target.value?.trim())
                                 }}
-                                onBlur={() => confirmPassword ? validateFields('passwordMatch', confirmPassword) : () => {}}
+                                onBlur={() => confirmPassword ? validateFields('passwordMatch', confirmPassword) : () => { }}
                                 endAdornment={
                                     <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
                                         <IconButton

@@ -130,7 +130,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
 
     useEffect(() => {
         onClearError()
-    }, [email, password, confirmPassword])
+    }, [email, password, confirmPassword, onClearError])
         
     useEffect(() => {
         const { emailError, password, passwordMatch } = validation
@@ -167,11 +167,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     }
 
     const confirmChangePasswordHandler = () => {
-        if (password.trim() !== confirmPassword.trim()) {
-            setError("New password and Confirm password don't match!")
-        } else {
-            onChangePassword(password)
-        }
+        onChangePassword(password)
     }
 
     const confirmRestorePasswordHandler = () => {

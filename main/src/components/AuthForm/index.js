@@ -238,7 +238,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
 
                     {currentUser && currentUser.oneTimePassword && !currentUser.isConfirmed && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
                         <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
-                        <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
+                        <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
                     </Stack>}
 
                     <Stack sx={{ gap: { xs: 2, md: 0 } }}>

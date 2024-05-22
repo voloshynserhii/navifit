@@ -22,7 +22,7 @@ const AppReducer = (state, action) => {
         ...state,
         userData: action?.userData || action?.payload,
       };
-    case 'SIGN_UP':
+    // case 'SIGN_UP':
     case 'LOG_IN':
       return {
         ...state,

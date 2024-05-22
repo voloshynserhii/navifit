@@ -15,9 +15,9 @@ export default function SignUpPage() {
   const [error, setError] = useState()
   const [userMessage, setUserMessage] = useState()
 
-  const authenticate = (user, type = 'LOG_IN') => {
+  const authenticate = (user) => {
     localStorageSet('loggedUser', JSON.stringify(user))
-    dispatch({ type })
+    dispatch({ type: 'LOG_IN' })
     dispatch({
       type: 'CURRENT_USER',
       payload: user,
@@ -26,14 +26,13 @@ export default function SignUpPage() {
   }
 
   const handleAuthorize = ({ email, password }) => {
-    const type = 'LOG_IN'
     setLoading(true)
 
-    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type }).then(({ user, message }) => {
+    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type: 'LOG_IN' }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {
-        authenticate(user, type)
+        authenticate(user)
       }
       setLoading(false)
     }).catch(() => {
@@ -88,6 +87,7 @@ export default function SignUpPage() {
         onSubmit={handleAuthorize} 
         onChangePassword={handleChangePassword} 
         onRestorePassword={handleRestorePassword} 
+        onClearError={() => setError(null)}
       />
     </main>
   );

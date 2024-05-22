@@ -23,6 +23,7 @@ const UserSchema = new Schema(
     oneTimePassword: { type: String, trim: true },
     lastLogin: Object,
     isDraftUser: { type: Boolean, default: true },
+    isConfirmed: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
 
     deleted: { type: Boolean, default: false },

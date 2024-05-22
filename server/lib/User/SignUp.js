@@ -10,11 +10,25 @@ const Functions = require('../../util/Functions')
  * @param res
  */
 module.exports = async (req, res) => {
-    const { email, password, type = 'LOG_IN', isAdmin = false } = req.body
-
+    const { email, password, confirmPassword, type = 'LOG_IN', isAdmin = false } = req.body
+console.log(req.body)
+    const isSignUp = type === 'SIGN_UP'
+    
     if (!Functions.isString(email) || !Functions.isEmail(email)) {
         return res.json({
             message: 'Enter valid email!'
+        })
+    }
+    
+    if (Functions.isEmpty(password)) {
+        return res.json({
+            message: 'Password is missing!'
+        })
+    }
+    
+    if (isSignUp && Functions.isEmpty(confirmPassword)) {
+        return res.json({
+            message: 'Confirm password is missing!'
         })
     }
 
@@ -30,9 +44,15 @@ module.exports = async (req, res) => {
     db.user
         .findOne(query)
         .then(async (user) => {
-            if (!user) {
+            if (!isSignUp && !user) {
                 return res.json({
                     message: 'User not found!'
+                })
+            }
+            
+            if (isSignUp && user) {
+                return res.json({
+                    message: 'User with this email already exists! Please log in!'
                 })
             }
 
@@ -47,6 +67,12 @@ module.exports = async (req, res) => {
             }
             
             if (type === 'LOG_IN') {
+                if (!user.isConfirmed) {
+                    return res.json({
+                        message: 'Email is not verified!'
+                    })
+                }
+                
                 if (!user.authenticate(password)) {
                     return res.json({
                         message: 'Email or password is incorrect!'
@@ -59,9 +85,16 @@ module.exports = async (req, res) => {
                 return res.json({ user })
             } 
             
-            if (type === 'SIGN_UP') {
+            if (isSignUp) {
+                if (password.trim() !== confirmPassword.trim()) {
+                    return res.json({
+                        message: "Password and confirm password didn't match!"
+                    })
+                }
+                
                 user.password = password
                 user.isDraftUser = false
+                user.oneTimePassword = Functions.generateHash()
                 
                 return user.save().then(() => {
                     user.salt = null
@@ -69,27 +102,26 @@ module.exports = async (req, res) => {
                     
                     res.json({ user })
                     
-                    // const mailOptions = {
-                    //     from: config.mailer.email,
-                    //     to: user.email,
-                    //     subject: 'From Navifit: You requested to reset a password!',
-                    //     html: `<div>
-                    //       <h2>Reset your password</h2>
-                    //       <h4>We’ve received a request to reset the password for the NaviFIt account. No changes have been made to your account yet!</h4>
-                    //       <p>
-                    //         You can reset your password by clicking the link below:
-                    //       </p>
-                    //       <p>https://navifit.vercel.app/restore/${user.oneTimePassword}</p>
-                    //     </div>`
-                    //   }
+                    const mailOptions = {
+                        from: config.mailer.email,
+                        to: user.email,
+                        subject: 'From Navifit: Confirm your Email!',
+                        html: `<div>
+                          <h2>Confirm your Email!</h2>
+                          <p>
+                            You can confirm your email by clicking on the link below:
+                          </p>
+                          <p>https://navifit.vercel.app/confirm/${user.oneTimePassword}</p>
+                        </div>`
+                      }
                       
-                    //   transporter.sendMail(mailOptions, (err, info) => {
-                    //     if (err) {
-                    //         console.log(err);
-                    //     } else {
-                    //         console.log('Email sent', info)
-                    //     }
-                    //   })
+                      transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('Email sent', info)
+                        }
+                      })
                 })
             }
         })

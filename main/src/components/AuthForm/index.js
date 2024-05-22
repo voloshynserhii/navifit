@@ -95,16 +95,16 @@ const defaultValidationValue = {
     passwordMatch: true
 }
 
-export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onSubmit, onChangePassword, onRestorePassword }) {
+export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError, onSubmit, onChangePassword, onRestorePassword }) {
     useBackground()
     const router = useRouter()
-    const [error, setError] = useState(serverError)
     const [validation, setValidation] = useState(defaultValidationValue)
     const [email, setEmail] = useState(currentUser.email)
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [resetPassword, setResetPassword] = useState(false)
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [formIsValid, setFormIsValid] = useState(false)
 
     let header = title
     let subHeader = subTitle
@@ -129,12 +129,26 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     }
 
     useEffect(() => {
-        if (error) setError(null)
+        onClearError()
     }, [email, password, confirmPassword])
-
+        
     useEffect(() => {
-        setError(serverError)
-    }, [serverError])
+        const { emailError, password, passwordMatch } = validation
+        
+        if (!emailError && password.chars && password.digit && password.letter) {
+            if (signup) {
+                if (passwordMatch) {
+                    setFormIsValid(true)
+                } else {
+                    setFormIsValid(false)
+                }
+            } else {
+                setFormIsValid(true)
+            }
+        } else {
+            setFormIsValid(false)
+        }
+    }, [validation])
 
     const handleClickShowPassword = () => setShowPassword((show) => !show)
 
@@ -148,7 +162,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
         } else if (changePassword) {
             confirmChangePasswordHandler()
         } else {
-            onSubmit({ email, password })
+            onSubmit({ email, password, confirmPassword })
         }
     }
 
@@ -208,7 +222,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             </Box>
         )
     }
-
+    
     return (
         <Container>
             <DemoPaper>
@@ -225,6 +239,12 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                 </Stack>
 
                 <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
+                    
+                    {currentUser && currentUser.oneTimePassword && !currentUser.isConfirmed && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                        <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
+                        <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
+                    </Stack>}
+                    
                     <Stack sx={{ gap: { xs: 2, md: 0 } }}>
 
                         {!changePassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
@@ -232,12 +252,12 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                             <CustomInput
                                 autoFocus
                                 value={email || ''}
-                                error={!!error || (email && !!validation.emailError)}
+                                error={!!serverError || (email && !!validation.emailError)}
                                 type='email'
                                 label="Email"
                                 name="email"
                                 disabled={!!currentUser.email}
-                                onChange={e => setEmail(e.target.value)}
+                                onChange={e => setEmail(e.target.value?.trim())}
                                 onBlur={(e) => !isEmail(e.target.value) ? validateFields('emailError', true) : validateFields('emailError', false)}
                                 endAdornment={
                                     <InputAdornment position="end">
@@ -252,7 +272,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                             <CustomLabel>{changePassword ? "New Password" : "Password"}</CustomLabel>
                             <CustomInput
                                 value={password || ''}
-                                error={!!error}
+                                error={!!serverError}
                                 type={showPassword ? 'text' : 'password'}
                                 onChange={e => {
                                     setPassword(e.target.value?.trim())
@@ -288,7 +308,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                 <CustomLabel>Confirm Password</CustomLabel>
                                 <CustomInput
                                     value={confirmPassword || ''}
-                                    error={!!error}
+                                    error={!!serverError}
                                     type={showPassword ? 'text' : 'password'}
                                     onBlur={() => validateFields('passwordMatch', confirmPassword)}
                                     onChange={e => setConfirmPassword(e.target.value?.trim())}
@@ -313,20 +333,18 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
 
                     <Stack sx={{ position: 'relative', marginLeft: 1 }}>
 
-                        {!resetPassword && !changePassword && !signup && (
-                            <Stack direction='row' justifyContent='space-between' sx={{ marginBottom: 2 }}>
-                                <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='secondary.red' onClick={() => setResetPassword(true)}>
-                                    {error ? error : ''}
-                                </Typography>
-                                <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => setResetPassword(true)}>
-                                    Zapomniales hasla?
-                                </Typography>
-                            </Stack>
-                        )}
+                        <Stack direction='row' justifyContent='space-between' sx={{ marginBottom: 2 }}>
+                            <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='secondary.red'>
+                                {serverError ? serverError : ''}
+                            </Typography>
+                            {!resetPassword && !changePassword && !signup && (<Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => setResetPassword(true)}>
+                                Zapomniales hasla?
+                            </Typography>)}
+                        </Stack>
 
                         <MainButton
                             variant="contained"
-                            disabled={!email || !password}
+                            disabled={!formIsValid}
                             onClick={onClickMainButton}
                         >
                             {mainButtonTitle}

@@ -132,7 +132,6 @@ export default function SwipeableTemporaryDrawer() {
     // const onSwitchDarkMode = useEventSwitchDarkMode();
 
     const toggleDrawer = (anchor, open) => (event) => {
-        console.log(anchor, open)
         if (
             event &&
             event.type === 'keydown' &&

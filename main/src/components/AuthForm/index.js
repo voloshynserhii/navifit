@@ -140,7 +140,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
 
     useEffect(() => {
         onClearError()
-    }, [email, password, confirmPassword, onClearError])
+    }, [email, password, confirmPassword])
 
     useEffect(() => {
         const { emailError, password, passwordMatch } = validation
@@ -228,7 +228,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             </Box>
         )
     }
-
+console.log(serverError)
     return (
         <Container>
             <DemoPaper>

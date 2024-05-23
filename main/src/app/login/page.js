@@ -14,7 +14,7 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
   const [userMessage, setUserMessage] = useState()
-
+console.log(error)
   const authenticate = (user) => {
     localStorageSet('loggedUser', JSON.stringify(user))
     dispatch({ type: 'LOG_IN' })

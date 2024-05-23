@@ -12,6 +12,11 @@ let defaultConfig = {
   server: {
     port: process.env.PORT || 8080,
     env: process.env.NODE_ENV,
+    url: process.env.SERVER_URI,
+  },
+  
+  portal: {
+    url: process.env.PORTAL_URI,
   },
   
   mailer: {

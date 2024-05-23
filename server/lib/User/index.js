@@ -10,4 +10,5 @@ module.exports = {
   Remove: require('./Remove'),
   RestorePassword: require('./RestorePassword'),
   ResetPassword: require('./ResetPassword'),
+  Confirm: require('./Confirm'),
 }

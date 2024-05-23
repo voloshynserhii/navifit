@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Alert, Box, Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
@@ -95,9 +95,13 @@ const defaultValidationValue = {
     passwordMatch: true
 }
 
-export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError, onSubmit, onChangePassword, onRestorePassword }) {
+export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
     useBackground()
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const userId = searchParams.get('user')
+    const confirmed = searchParams.get('confirmed')
+    
     const [validation, setValidation] = useState(defaultValidationValue)
     const [email, setEmail] = useState(currentUser.email)
     const [password, setPassword] = useState('')
@@ -127,6 +131,12 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
         mainButtonTitle = 'Zresetuj hasło'
         helperButtonsText = []
     }
+    
+    useEffect(() => {
+        if (userId && confirmed === 'true') {
+            onGetConfirmedUser(userId) 
+        }
+    }, [userId, confirmed])
 
     useEffect(() => {
         onClearError()
@@ -240,6 +250,11 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                         <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
                         <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
                     </Stack>}
+                    
+                    {userId && currentUser && currentUser.isConfirmed && !resetPassword  && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                        <Typography variant='medium14' component='p' color='black'>Twoje konto zostało aktywowane</Typography>
+                        <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Możesz zalogować się za pomocą swojego adresu e-mail i hasła</Typography>
+                    </Stack>}
 
                     <Stack sx={{ gap: { xs: 2, md: 0 } }}>
 
@@ -252,7 +267,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                 type='email'
                                 label="Email"
                                 name="email"
-                                disabled={!!currentUser.email}
+                                // disabled={!!currentUser.email && resetPassword}
                                 onChange={e => setEmail(e.target.value?.trim())}
                                 onBlur={(e) => !isEmail(e.target.value) ? validateFields('emailError', true) : validateFields('emailError', false)}
                                 endAdornment={

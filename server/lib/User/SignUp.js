@@ -111,7 +111,7 @@ console.log(req.body)
                           <p>
                             You can confirm your email by clicking on the link below:
                           </p>
-                          <p>https://navifit.vercel.app/confirm/${user.oneTimePassword}</p>
+                          <p>${config.server.url}/api/user/confirm?user=${user.email}&key=${user.oneTimePassword}</p>
                         </div>`
                       }
                       

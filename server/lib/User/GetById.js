@@ -16,6 +16,12 @@ module.exports = async(req, res) => {
     }
     
     const user = await db.user.findById(id).lean().exec()
+    
+    if (!user) {
+        return res.send({
+            message: 'User not found!'
+        });
+    }
 
     res.json({ user })
 }

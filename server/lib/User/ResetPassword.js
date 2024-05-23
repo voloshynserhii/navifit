@@ -46,7 +46,7 @@ module.exports = function (req, res, next) {
           subject: 'From Navifit: You changed your password!',
           html:`<div>
             <h4>You successfully changed your password!</h4>
-            <p>Now you can login with your new password https://navifit.vercel.app/signup</p>
+            <p>Now you can login with your new password ${config.portal.url}/signup</p>
           </div>`
         }
         

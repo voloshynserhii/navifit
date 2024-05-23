@@ -72,22 +72,41 @@ export default function SignUpPage() {
     })
   }
 
+  const handleGetConfirmedUser = async (id) => {
+    api.user.getUser(process.env.NEXT_PUBLIC_DB_HOST, { id }).then(({ message, user }) => {
+      if (message) {
+        setError(message)
+      } else {
+        dispatch({
+          type: 'CURRENT_USER',
+          payload: user,
+        });
+      }
+
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
+    })
+  }
+
+
   return (
     <main>
-      <AuthForm 
-        title='Zaloguj się' 
+      <AuthForm
+        title='Zaloguj się'
         subTitle='Wpisz adres e-mail, na który jesteś zarejestrowana 
-        w aplikacji NAVIFIT' 
+        w aplikacji NAVIFIT'
         agreeText='Logowanie oznacza zgodę na nasze Warunki korzystania z usługi, 
         Polityka prywatności'
-        loading={loading} 
-        currentUser={currentUser} 
-        error={error} 
-        message={userMessage} 
-        onSubmit={handleAuthorize} 
-        onChangePassword={handleChangePassword} 
-        onRestorePassword={handleRestorePassword} 
+        loading={loading}
+        currentUser={currentUser}
+        error={error}
+        message={userMessage}
+        onSubmit={handleAuthorize}
+        onChangePassword={handleChangePassword}
+        onRestorePassword={handleRestorePassword}
         onClearError={() => setError(null)}
+        onGetConfirmedUser={handleGetConfirmedUser}
       />
     </main>
   );

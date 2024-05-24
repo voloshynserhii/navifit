@@ -5,7 +5,7 @@ import { Alert, Box, Button, Container, FormControl, IconButton, InputLabel, Inp
 import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { useBackground } from '@src/hooks/event'
-import { email as emailIcon, passwordHidden, passwordVisisble } from '@src/utils/icons'
+import { email as emailIcon, passwordHidden, passwordVisisble, OK } from '@src/utils/icons'
 import { isEmail } from '@src/utils/functions'
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
@@ -101,7 +101,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     const searchParams = useSearchParams()
     const userId = searchParams.get('user')
     const confirmed = searchParams.get('confirmed')
-    
+
     const [validation, setValidation] = useState(defaultValidationValue)
     const [email, setEmail] = useState(currentUser.email)
     const [password, setPassword] = useState('')
@@ -131,10 +131,10 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
         mainButtonTitle = 'Zresetuj hasło'
         helperButtonsText = []
     }
-    
+
     useEffect(() => {
         if (userId && confirmed === 'true') {
-            onGetConfirmedUser(userId) 
+            onGetConfirmedUser(userId)
         }
     }, [userId, confirmed])
 
@@ -228,7 +228,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             </Box>
         )
     }
-console.log(serverError)
+
     return (
         <Container>
             <DemoPaper>
@@ -250,11 +250,16 @@ console.log(serverError)
                         <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
                         <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
                     </Stack>}
-                    
-                    {userId && currentUser && currentUser.isConfirmed && !resetPassword  && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
-                        <Typography variant='medium14' component='p' color='black'>Twoje konto zostało aktywowane</Typography>
-                        <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Możesz zalogować się za pomocą swojego adresu e-mail i hasła</Typography>
-                    </Stack>}
+
+                    {userId && currentUser && currentUser.isConfirmed && !resetPassword && (
+                        <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                            <Stack direction='row' justifyContent='center' gap={1}>
+                                {OK}
+                                <Typography variant='medium14' component='p' color='black'>Twoje konto zostało aktywowane</Typography>
+                            </Stack>
+                            <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Możesz zalogować się za pomocą swojego adresu e-mail i hasła</Typography>
+                        </Stack>
+                    )}
 
                     <Stack sx={{ gap: { xs: 2, md: 0 } }}>
 

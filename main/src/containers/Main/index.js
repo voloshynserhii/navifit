@@ -10,7 +10,7 @@ const mainStep = steps[0]
 
 export default function Main({ onChooseOption }) {
   const theme = useTheme();
-  axios.post('/api/checkout', { amount: 2 }) //remove
+  // axios.post('/api/checkout', { amount: 2 })
   return (
     <StepContainer currentStep={mainStep} totalSteps={totalSteps}>
       <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 60px' }, backgroundColor: { xs: theme.palette.secondary.light } }}>

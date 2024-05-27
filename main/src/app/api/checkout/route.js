@@ -18,7 +18,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-const merchantId = 442323; // you will get it once registered with P24
+const merchantId = '285086_1111'; // you will get it once registered with P24
 const posId = process.env.PRZELEWY24_POS_ID || '285086_1111';
 const crcKey = process.env.PRZELEWY24_CRC_KEY || '852e8a65fa8e5104';
 const apiKey = process.env.PRZELEWY24_API_KEY || '1eee9dbc54f07a9f49f179c7936e5d09';

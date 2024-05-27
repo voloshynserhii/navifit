@@ -73,7 +73,7 @@ const Checkout = () => {
       )}
 
       {plans.length && plans.sort((a, b) => a.duration - b.duration).map(({ _id, price, promoPrice, duration }) => (
-        <Card key={_id} sx={{ width: '40%' }} onClick={() => setPaymentModalOpen(true)}>
+        <Card key={_id} sx={{ width: '40%' }}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="secondary.black" gutterBottom>
               {duration} months
@@ -81,6 +81,7 @@ const Checkout = () => {
             <Typography sx={{ fontSize: 14 }} color="secondary.black" gutterBottom>
               {price} zl <span style={{ textDecoration: 'line-through' }}>{promoPrice} zl</span>
             </Typography>
+            <Button onClick={() => setPaymentModalOpen(true)}>Choose</Button>
           </CardContent>
         </Card>
       ))}

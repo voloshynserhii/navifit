@@ -6,6 +6,7 @@ import Steps from '../containers/Steps'
 import { useAppStore } from '../store'
 import { localStorageGet } from '../utils/localStorage';
 import { useBackground } from '@src/hooks/event'
+import api from '../utils/api'
 
 export default function Home() {
   useBackground()
@@ -14,6 +15,9 @@ export default function Home() {
   const [optionChosen, setOptionChosen] = useState()
 
   useEffect(() => {
+    //remove on production
+    api.server.wakeUp(process.env.NEXT_PUBLIC_DB_HOST)
+    
     const user = localStorageGet('loggedUser')
 
     if (user) {

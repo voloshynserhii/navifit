@@ -55,6 +55,9 @@ const requests = {
 };
 
 export default {
+  server: {
+    wakeUp: (url) => requests.get({ url: `${url}/api/plans` }),
+  },
   user: {
     sendAnswers: (url, body) => requests.post({ url: `${url}/api/user/answer`, body }),
     signUp: (url, body) => requests.post({ url: `${url}/api/user/signup`, body }),

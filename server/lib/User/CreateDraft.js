@@ -40,20 +40,20 @@ module.exports = async (req, res) => {
     .save()
     .then(() => {
       
-      const mailOptions = {
-        from: config.mailer.email,
-        to: email,
-        subject: 'Welcome to Navifit!',
-        html:'<div>You are registered in Navifit!!! Please, confirm your registration</div>'
-      }
+      // const mailOptions = {
+      //   from: config.mailer.email,
+      //   to: email,
+      //   subject: 'Welcome to Navifit!',
+      //   html:'<div>You are registered in Navifit!!! Please, confirm your registration</div>'
+      // }
       
-      transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Email sent', info)
-        }
-      })
+      // transporter.sendMail(mailOptions, (err, info) => {
+      //   if (err) {
+      //       console.log(err);
+      //   } else {
+      //       console.log('Email sent', info)
+      //   }
+      // })
     
       return res.json({ user: newUser })
     })

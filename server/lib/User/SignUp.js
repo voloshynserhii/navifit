@@ -51,9 +51,10 @@ module.exports = async (req, res) => {
         }
 
         if (!user) {
-            user = await db.user.create({ email, password })
+            user = await db.user.create({ email })
         }
 
+        user.password = password
         user.isDraftUser = false
         user.oneTimePassword = Functions.generateHash()
 

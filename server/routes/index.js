@@ -12,6 +12,7 @@ const router = express.Router()
 */
 router.post('/api/user/new', User.Create)
 router.post('/api/user/answer', User.CreateDraft)
+router.post('/api/user/login', User.LogIn)
 router.post('/api/user/signup', User.SignUp)
 router.post('/api/user/restore', User.RestorePassword)
 router.get('/api/user/confirm', User.Confirm)

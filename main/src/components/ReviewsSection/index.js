@@ -42,10 +42,10 @@ const Review = ({ className, review, index, onSwipe }) => {
 const reviews = [
     {
         avatar: undefined,
-        fullName: 'Name Surname1',
+        fullName: 'Monika Kurzętkowska',
         rating: 5,
         lastRating: '1 week ago',
-        text: 'Feedback text could be really looooooooooooooooooooong Feedback text could be really looooooooooooooooooooong Feedback text could be really looooooooooooooooooooong!'
+        text: 'Polecam. Dania są proste do przygotowania, zakupy w każdym sklepie. Polecam!'
     },
     {
         avatar: undefined,

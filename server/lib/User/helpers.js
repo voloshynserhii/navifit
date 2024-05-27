@@ -1,11 +1,16 @@
 const dayjs = require('dayjs')
 
 const countUserData = (userData) => {
-    const { gender, weight, height, age, training, desiredWeight, desiredDate } = userData
-
+    const { gender, weight, height, age, training, desiredWeight } = userData
+    let { desiredDate } = userData
+    
     const totalKalToBurn = (weight - desiredWeight) * 7700
     
     const today = dayjs()
+    
+    if (!desiredDate) {
+      desiredDate = dayjs().add(12, 'M')
+    }
     
     const daysNeeded = dayjs(desiredDate).diff(today, 'days')
     const dailyDeficit = totalKalToBurn / daysNeeded

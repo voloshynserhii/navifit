@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const handleAuthorize = ({ email, password, confirmPassword }) => {
     setLoading(true)
     
-    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, confirmPassword, type: 'SIGN_UP' }).then(({ user, message }) => {
+    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, confirmPassword }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {
@@ -24,6 +24,7 @@ export default function SignUpPage() {
           type: 'CURRENT_USER',
           payload: user,
         });
+        // router.push(`/account/plan/${user._id}`)
         router.push('/login')
       }
       setLoading(false)

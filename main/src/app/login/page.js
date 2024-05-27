@@ -14,7 +14,7 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
   const [userMessage, setUserMessage] = useState()
-console.log(error)
+
   const authenticate = (user) => {
     localStorageSet('loggedUser', JSON.stringify(user))
     dispatch({ type: 'LOG_IN' })
@@ -28,7 +28,7 @@ console.log(error)
   const handleAuthorize = ({ email, password }) => {
     setLoading(true)
 
-    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, type: 'LOG_IN' }).then(({ user, message }) => {
+    api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, password }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {

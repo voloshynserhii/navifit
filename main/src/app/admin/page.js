@@ -75,7 +75,7 @@ export default function Admin() {
     }
 
     const handleAuthorize = ({ email, password }) => {
-        api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, isAdmin: true }).then(({ user, message }) => {
+        api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, password, isAdmin: true }).then(({ user, message }) => {
             if (message) {
                 setError(message)
             } else {

@@ -181,6 +181,7 @@ export default function Admin() {
                         w aplikacji NAVIFIT'
                     error={error}
                     onSubmit={handleAuthorize}
+                    onClearError={() => setError(null)}
                 />
                 <Button onClick={adminOffHandler}>Admin Mode Off</Button>
             </Stack>

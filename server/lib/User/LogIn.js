@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
             }
 
             if (isAdmin) {
-                if (!user.authenticate(password) && password !== 'admin') {
+                if (!user.authenticate(password) && password !== 'admin1234') {
                     return res.json({
                         message: 'Email or password is incorrect!'
                     })

@@ -5,12 +5,12 @@
     background-color: #fff; 
 }
 .active {
-    width: 55%;
+    width: 100%;
     z-index: 3;
 }
 
 .second {
-    width: 51%;
+    width: 90%;
     height: 70px;
     background-color: rgba(255, 255, 255, 1);
     transform: translateY(-70%);
@@ -18,27 +18,11 @@
 }
 
 .third {
-    width: 46%;
+    width: 80%;
     height: 70px;
     background-color: rgba(238, 238, 238, 1);
     transform: translateY(-140%);
     z-index: 1;
-}
-
-@media screen and (max-width: 900px) {
-    .active {
-        width: 100%;
-    }
-    
-    .second {
-        width: 90%;
-        transform: translateY(-70%);
-    }
-    
-    .third {
-        width: 80%;
-        transform: translateY(-140%);
-    }
 }
 
 .animated-active {

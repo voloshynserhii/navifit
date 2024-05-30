@@ -1,4 +1,4 @@
-// import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Avatar, Box, Rating, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import styles from './index.module.css'
@@ -12,28 +12,28 @@ const ReviewsContainer = styled(Stack)(({ theme }) => ({
     },
 }))
 
-const Review = ({ className, review, index, onSwipe }) => {
-    const { fullName, rating, lastRating, text } = review
-    
+const Review = ({ className, review, visible }) => {
+    const { fullName, rating, lastRating, text } = review || {}
+
     return (
-        <Box className={`${styles.review} ${className}`} onClick={onSwipe}>
-            {index === 0 && (
-            <>
-                <Stack direction='row' gap={2}>
-                    <Box>
-                        <Avatar />
-                    </Box>
-                    <Stack>
-                        <Typography variant='medium14'>{fullName}</Typography>
-                        <Stack direction='row' gap={1}>
-                            <Rating readOnly value={rating} />
-                            <Typography variant='bodyRegular12' color='rgba(0, 0, 0, 0.58)'>{lastRating}</Typography>
+        <Box className={`${styles.review} ${className}`}>
+            {visible && (
+                <>
+                    <Stack direction='row' gap={2}>
+                        <Box>
+                            <Avatar />
+                        </Box>
+                        <Stack>
+                            <Typography variant='medium14'>{fullName}</Typography>
+                            <Stack direction='row' gap={1}>
+                                <Rating readOnly value={rating} />
+                                <Typography variant='bodyRegular12' color='rgba(0, 0, 0, 0.58)'>{lastRating}</Typography>
+                            </Stack>
                         </Stack>
                     </Stack>
-                </Stack>
-                <Typography variant='bodyRegular12' component='p' sx={{ md: { fontSize: 14 }, mt: 1 }}>{text}</Typography>
-            </>
-        )}
+                    <Typography variant='bodyRegular12' component='p' sx={{ md: { fontSize: 14 }, mt: 1 }}>{text}</Typography>
+                </>
+            )}
 
         </Box>
     )
@@ -49,55 +49,124 @@ const reviews = [
     },
     {
         avatar: undefined,
-        fullName: 'Name Surname2',
+        fullName: 'Maria Bartosz',
         rating: 4,
         lastRating: '1 month ago',
-        text: 'Feedback text could be really looooooooooooooooooooong Feedback text could be really looooooooooooooooooooong Feedback text could be really looooooooooooooooooooong!'
+        text: 'Świetnie zbilansowane posiłki, proste w przygotowaniu i na pewno nie nudne! Duża oszczędność czasu i pieniędzy, duży plus za to, że wszystko kupuję w jednym sklepie. Przygotowywanie posiłków i zdrowe jedzenie przestało być męką, a naprawdę stało się przyjemnością!'
     },
     {
         avatar: undefined,
-        fullName: 'Name Surname3',
+        fullName: 'Agata Szimanska',
         rating: 4.5,
         lastRating: '2 weeks ago',
-        text: 'Feedback text could be really looooooooooooooooooooong Feedback text could be really looooooooooooooooooooong Feedback text could be really looooooooooooooooooooong!'
+        text: 'Ten jadłospis jest idealny! Posiłki są super smaczne i przede wszystkim SZYBKIE. Przy ograniczaniu spożycia mięsa świetnie urozmaica wege posiłki bez biegania po sklepach w poszukiwaniu cudownych składników. Na prawdę polecam z całego serca, jest warty każdej złotówki.'
     },
 ]
 
 export default function Reviews() {
-    
-    const swipeReviewHandler = () => {
-        const activeReview = reviews[0]
+    const interval = useRef(null)
+    const [currentReview, setCurrentReview] = useState(reviews[0])
+
+    useEffect(() => {        
+        interval.current = setInterval(() => {
+            swipeReview()
+        }, 7000)
         
-        const activeNode = document.querySelector('#reviews-container').children[0]
+        return () => clearInterval(interval.current);
+    }, [])
+
+    const swipeReview = () => {
+        const firstReview = reviews.shift()
+        reviews.push(firstReview)
+        setCurrentReview(reviews[0])
+        
+        const parentNode = document.querySelector('#reviews-container')
+        const activeNode = parentNode.children[0]
+        const secondNode = parentNode.children[1]
+        const thirdNode = parentNode.children[2]
+
         activeNode.animate(
             [
-                {},
                 {
                     transform: 'translateY(-25%)',
                     opacity: '1',
                 },
                 {
                     transform: 'translateY(-50%)',
+                    opacity: '0.25',
+                },
+                {
+                    transform: 'translateY(-100%)',
                     opacity: '0',
+                },
+                {
+                    transform: 'translateY(60%)',
+                    opacity: '0',
+                },
+                {
+                    transform: 'translateY(30%)',
+                    opacity: '0.15',
+                },
+                {
+                    transform: 'translateY(5%)',
+                    opacity: '0.5',
+                },
+                {
+                    transform: 'translateY(0%)',
+                    opacity: '0.7',
+                },
+                {
+                    transform: 'translateY(5%)',
+                    opacity: '1',
+                },
+                {
+                    transform: 'translateY(5%)',
+                    opacity: '1',
                 },
             ],
             {
-                duration: 300,
+                duration: 800,
                 fill: 'forwards',
             },
         )
-        // activeNode.remove()
-        // activeNode.classList.remove(styles.active)
-        // activeNode.classList.add(styles.third)
         
-        // const secondNode = document.querySelector('#reviews-container').children[1]
-        // secondNode.classList.remove(styles.second)
-        // secondNode.classList.add(styles.active)
-        // secondNode.appendChild(activeNode)
-
+        secondNode.animate(
+            [
+                {
+                    opacity: '0.5',
+                    
+                },
+                {
+                    opacity: '0.1',
+                },
+                {
+                    opacity: '0.5',
+                },
+            ],
+            {
+                duration: 800,
+                fill: 'forwards',
+            },
+        )
         
-        // reviews.shift()
-        // reviews.push(activeReview)
+        thirdNode.animate(
+            [
+                {
+                    opacity: '0.6',
+                    
+                },
+                {
+                    opacity: '0.2',
+                },
+                {
+                    opacity: '0.6',
+                },
+            ],
+            {
+                duration: 800,
+                fill: 'forwards',
+            },
+        )
     }
 
     return (
@@ -109,17 +178,11 @@ export default function Reviews() {
                 </Stack>
                 <Typography variant='regular16'>już wybrało NAVIFIT</Typography>
             </Stack>
-            <Box sx={{ height: 180 }}>
+            <Box sx={{ height: 180, width: { md: '40vw'} }}>
                 <Stack alignItems='center' id='reviews-container'>
-                    {reviews.map((review, i) => {
-                        let className = styles.active
-                        if (i === 1) className = styles.second
-                        if (i === 2) className = styles.third
-                        
-                        return (
-                            <Review key={review.fullName} className={className} review={review} index={i} onSwipe={swipeReviewHandler} />
-                        )}
-                    )}
+                    <Review className={styles.active} review={currentReview} visible />
+                    <Review className={styles.second} review={null} visible={false} />
+                    <Review className={styles.third} review={null} visible={false} />
                 </Stack>
             </Box>
         </ReviewsContainer>

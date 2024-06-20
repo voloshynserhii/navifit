@@ -10,14 +10,14 @@ const StyledButton = styled(Button)(({ theme }) => ({
   lineHeight: '30px',
   borderRadius: 32,
   textTransform: 'capitalize',
-  padding: '14px 20px 14px 40px',
+  padding: '14px 50px 14px 40px',
   width: 180,
   height: 52,
   fontFamily: 'unset',
   boxShadow: 'none',
   [theme.breakpoints.down("md")]: {
-    width: 'calc(100% - 16px)',
-    padding: '14px 15% 14px 0',
+    width: '100%',
+    padding: '14px 5% 14px 0',
   },
   '&:hover': {
     opacity: '0.9',
@@ -25,7 +25,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const StyledArrowIcon = styled(ArrowForwardIosRoundedIcon)(({ theme }) => ({
-  marginLeft: 3,
+  position: "absolute",
+  right: 20,
+  bottom: 16,
   [theme.breakpoints.down("sm")]: {
     position: "absolute",
     right: 30,

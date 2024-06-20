@@ -9,7 +9,7 @@ const OptionContainer = styled(Paper)(({ theme, selected, gridview }) => ({
     borderRadius: !gridview ? 10 : 80,
     width: !gridview ? 'auto' : 'fit-content',
     minWidth: 80,
-    borderWidth: selected ? 2 : 1,
+    borderWidth: 1,
     borderStyle: 'solid',
     borderColor: selected ? theme.palette.primary.main : theme.palette.primary.lightGrey,
     cursor: 'pointer',

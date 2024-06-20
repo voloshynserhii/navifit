@@ -10,7 +10,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
-    padding: '32px 60px 125px',
+    padding: '32px 60px',
     boxShadow: 'none',
     [theme.breakpoints.down("md")]: {
         padding: '56px 12px 30px',
@@ -52,7 +52,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                         >
                             Twój profil dobrego samopoczucia
                         </Typography>
-                        <Grid container spacing={1} sx={{ width: { xs: '100%', md: '50%' }}}>
+                        <Grid container spacing={1} sx={{ width: { xs: '100%', md: '50%' } }}>
                             {Object.keys(userInfo).map(name => {
                                 let value = 'test'
 
@@ -89,7 +89,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                             })}
 
                             <Grid item xs={12} sx={{ padding: 1.5, marginTop: 7.5, paddingBottom: 2 }}>
-                                <BMI BMI={showWarning.BMI}/>
+                                <BMI BMI={showWarning.BMI} />
                             </Grid>
 
                             <Grid item xs={12} sx={{ padding: 1.5 }}>
@@ -97,14 +97,14 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                             </Grid>
                         </Grid>
                     </Stack>
+                    <Stack direction='row' justifyContent='end' sx={{ width: '100%', mt: 3 }}>
+                        <Button
+                            type='primary'
+                            title='Dalej'
+                            onClick={onStepAhead}
+                        />
+                    </Stack>
                 </Grid>
-                <Stack
-                    alignItems='center'
-                    justifyContent='center'
-                    sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 0, md: 60 }, width: { xs: '100%', md: 'auto' } }}
-                >
-                    <Button type='primary' title='Dalej' onClick={onStepAhead} />
-                </Stack>
             </DemoPaper>
         </Container>
     )

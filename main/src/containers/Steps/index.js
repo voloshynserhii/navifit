@@ -15,17 +15,15 @@ import { useAppStore } from '../../store';
 import { steps, filterIngredients, getWarning, getBMIInfo } from '../../utils/Plans'
 
 const totalSteps = steps.length
-const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+const skipSteps = [5, 20, 24, 25]
 
 const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(15)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
-    const [btnVisible, setButtonVisisble] = useState(false)
-
     const [, dispatch] = useAppStore();
 
     const currentStep = steps[step - 1]
@@ -39,7 +37,6 @@ const Steps = ({ option = {}, onGetBack }) => {
         if (step === 2) return onGetBack()
 
         setStep(state => state - 1)
-        setButtonVisisble(true)
         clearTimeout()
     }
 
@@ -51,9 +48,6 @@ const Steps = ({ option = {}, onGetBack }) => {
             setTimeout(
                 () => {
                     setStep(state => state + 1)
-                    if (Object.keys(answers).length < step) {
-                        setButtonVisisble(false)
-                    }
                 },
                 500
             );
@@ -61,7 +55,7 @@ const Steps = ({ option = {}, onGetBack }) => {
         }
     }
 
-    if (currentStep.options && !list.length) stepAheadHandler()
+    // if (currentStep.options && !list.length) setStep(state => state + 1)
 
     const selectOptionHandler = (val, key) => {
         if (!key) {
@@ -117,7 +111,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
     return (
-        <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: 0 } }}>
+        <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: '5%' } }}>
             {/* <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: 175, weight: 72 })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> */}
             {step === 21 ? <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> : (
                 <>
@@ -128,17 +122,17 @@ const Steps = ({ option = {}, onGetBack }) => {
                         showWarning={getWarning(currentStep, answers)}
                         onStepBack={stepBackHandler}
                     >
-                        <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
+                        <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 12px 32px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
                             <Stack
                                 justifyContent='center'
-                                sx={{ height: { md: '70vh' } }}
+                                sx={{ minHeight: { md: '60vh' } }}
                             >
                                 {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
-                                
+
                                 {step === steps.length && <LastStep answers={answers} />}
-                                
+
                                 {currentStep.long ? (
-                                    <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' }, maxHeight: { xs: '32vh', md: 'unset' }, overflow: 'auto' }}>
+                                    <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' } }}>
                                         {list.map(option => (
                                             <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                         ))}
@@ -175,17 +169,20 @@ const Steps = ({ option = {}, onGetBack }) => {
                                     </Stack>
                                 )}
                             </Stack>
+                            {step <= totalSteps && (
+                                <Stack direction='row' justifyContent='end' sx={{ mt: 3 }}>
+                                    <Button
+                                        type='primary'
+                                        title='Dalej'
+                                        disabled={(btnDisabled || inputError || !answers[currentStep.value]) && !skipSteps.includes(step)}
+                                        onClick={stepAheadHandler}
+                                    />
+                                </Stack>
+                            )}
+
                         </Grid>
+
                     </StepContainer>
-                    {((answers[currentStep.value] && btnVisible) || optionsWithNextBtn.includes(step)) && step <= totalSteps && !btnDisabled && !inputError && (
-                        <Stack
-                            alignItems='center'
-                            justifyContent='center'
-                            sx={{ position: { xs: 'fixed', md: 'absolute' }, bottom: { xs: 40, md: 32 }, right: { xs: 0, md: 60 }, width: { xs: '100%', md: 'auto' } }}
-                        >
-                            <Button type='primary' title='Dalej' onClick={stepAheadHandler} />
-                        </Stack>
-                    )}
                 </>
             )}
         </Stack>

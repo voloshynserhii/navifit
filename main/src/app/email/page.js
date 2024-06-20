@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Paper, Container, Stack, Alert, CircularProgress, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { isEmail } from '@src/utils/functions'
 import api from '../../utils/api'
 import Button from '../../components/AppButton'
 import { useAppStore } from '../../store';
@@ -79,7 +80,7 @@ export default function EmailPage() {
         <DemoPaper sx={{ minHeight: { md: '80vh' } }}>
           <Stack alignItems='center' justifyContent='center' sx={{ maxWidth: { xs: '100%', md: '50%' } }}>
             <Stack alignItems='center' mb={4}>
-              <Typography variant="h2">
+              <Typography variant="h2" sx={{ width: '100%' }}>
                 Wpisz swój adres e-mail,
               </Typography>
               <Typography variant="h2" color='primary'>
@@ -95,13 +96,18 @@ export default function EmailPage() {
                 Navifit nie sprzedaje ani nie wypożycza nikomu Twoich danych osobowych. Prześlemy Ci kopię wyników, abyś miał do nich wygodny dostęp.
               </Typography>
             </Stack>
+            
+            <Button 
+              title="Dalej" 
+              type="primary" 
+              sx={{ display: 'flex', width: '100%', mt: 4 }} 
+              disabled={!isEmail(email)}
+              onClick={sendEmailHandler} 
+            />
           </Stack>
-
-          <Button title="Dalej" type="primary" sx={{ display: { xs: 'none', md: 'flex' }, position: { md: 'absolute' }, bottom: { md: 32 }, right: { md: 60 } }} onClick={sendEmailHandler} />
 
         </DemoPaper>
       </Container>
-      <Button title="Dalej" type="primary" sx={{ display: { xs: 'flex', md: 'none' }, position: 'absolute', bottom: 40 }} onClick={sendEmailHandler} />
     </main>
   )
 }

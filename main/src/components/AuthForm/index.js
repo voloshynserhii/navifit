@@ -44,6 +44,7 @@ const MainButton = styled(Button)(({ theme }) => ({
     fontWeight: 500,
     marginTop: 10,
     fontFamily: 'unset',
+    textTransform: 'none',
     '&:hover': {
         boxShadow: 'none',
     }
@@ -145,6 +146,11 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     useEffect(() => {
         const { emailError, password, passwordMatch } = validation
 
+        if (!signup && !resetPassword && !changePassword && password && email) {
+            setFormIsValid(true)
+            return
+        }
+            
         if (!emailError && password.chars && password.digit && password.letter) {
             if (signup) {
                 if (passwordMatch) {
@@ -349,7 +355,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
 
                     <Stack sx={{ position: 'relative', marginLeft: 1 }}>
 
-                        <Stack direction='row' justifyContent='space-between' sx={{ marginBottom: 2 }}>
+                        <Stack direction='row' justifyContent='space-between' sx={{ marginBottom: 2, marginTop: 1 }}>
                             <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='secondary.red'>
                                 {serverError ? serverError : ''}
                             </Typography>

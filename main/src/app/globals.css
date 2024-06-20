@@ -34,7 +34,7 @@ body {
   color: rgb(var(--mainText-rgb));
   background-color: unset !important;
   padding-bottom: 50px;
-  /* min-height: 100vh; */
+  min-height: 100vh;
 }
 
 main {

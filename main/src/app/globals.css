@@ -28,13 +28,13 @@ body {
 }
 html {
   background: linear-gradient(168.43deg, #FFFFFF -6.5%, #D9E6FF 101.21%);
+  min-height: 100vh;
 }
 
 body {
   color: rgb(var(--mainText-rgb));
   background-color: unset !important;
   padding-bottom: 50px;
-  min-height: 100vh;
 }
 
 main {

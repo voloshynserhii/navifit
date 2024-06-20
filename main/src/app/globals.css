@@ -28,7 +28,7 @@ body {
   color: rgb(var(--mainText-rgb));
   background: linear-gradient(168.43deg, #FFFFFF -6.5%, #D9E6FF 101.21%);
   padding-bottom: 10vh;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 main {

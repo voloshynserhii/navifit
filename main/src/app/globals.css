@@ -26,6 +26,8 @@ body {
 
 body {
   color: rgb(var(--mainText-rgb));
+  background: linear-gradient(168.43deg, #FFFFFF -6.5%, #D9E6FF 101.21%);
+  ;
 }
 
 main {
@@ -38,13 +40,13 @@ main {
   height: calc(100vh - 72px);
 }
 
-#mainBg {
+#mainBg1 {
   width: 100vw;
   height: 100vh;
   position: fixed;
 }
 /* class to add to body in quiz */
-.bg {
+.bg1 {
   background: rgba(0, 0, 0, .5);
   background-image: url('../../public/images/backgroundsDesktop/5.jpg');
   background-blend-mode: darken;

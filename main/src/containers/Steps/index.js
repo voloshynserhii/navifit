@@ -111,7 +111,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
     return (
-        <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' }, paddingBottom: { xs: 8, md: '5%' } }}>
+        <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' } }}>
             {/* <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: 175, weight: 72 })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> */}
             {step === 21 ? <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> : (
                 <>
@@ -138,7 +138,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                         ))}
                                         <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
                                     </Grid>) : (
-                                    <Stack sx={{ maxHeight: { xs: '50vh', md: 'unset' }, overflow: 'auto' }}>
+                                    <Stack>
                                         {list.map(option => (
                                             <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                                         ))}

@@ -81,6 +81,7 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
             <FormControl sx={{ m: 1, width: '360px' }} variant="filled">
                 <StyledInput
+                    type='number'
                     value={current}
                     error={error}
                     endAdornment={<Typography disabletypography="true" sx={{ fontWeight: 600, fontSize: { xs: '30px', md: '40px' }, color: error ? 'primary.error' : 'primary.main', position: 'absolute', right: { xs: 50, sm: 70 }, top: 30 }} position="end">{unit}</Typography>}

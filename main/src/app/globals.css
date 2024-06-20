@@ -26,12 +26,15 @@ body {
   padding: 0px;
   overflow-x: hidden;
 }
+html {
+  background: linear-gradient(168.43deg, #FFFFFF -6.5%, #D9E6FF 101.21%);
+}
 
 body {
   color: rgb(var(--mainText-rgb));
-  background: linear-gradient(168.43deg, #FFFFFF -6.5%, #D9E6FF 101.21%);
+  background-color: unset !important;
   padding-bottom: 50px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }
 
 main {

@@ -87,6 +87,7 @@ export default function InputAdornments({ value, currentStep, placeholder, min, 
                     inputProps={{
                         'aria-label': placeholder,
                         'type': 'number',
+                        'pattern': '[0-9]*'
                     }}
                     onChange={handleChange}
                 />

@@ -17,7 +17,7 @@ const Pointer = styled(Box)(({ theme, left }) => ({
     borderRadius: '70px',
     boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.25)',
     background: 'rgba(255, 255, 255, 1)',
-    animation: `myEffect 3000ms linear`,
+    animation: `myEffect 1500ms ease-in-out`,
     "@keyframes myEffect": {
         "0%": {
             left: '0%',

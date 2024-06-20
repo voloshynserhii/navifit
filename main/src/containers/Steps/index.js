@@ -122,7 +122,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                         showWarning={getWarning(currentStep, answers)}
                         onStepBack={stepBackHandler}
                     >
-                        <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 12px 32px', md: '2rem 40px 2rem 60px' }, backgroundColor: { xs: 'secondary.light' } }}>
+                        <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 12px 32px', md: '2rem 40px 2rem 60px' }, backgroundColor: step === 5 ? '#FFFFFF' : 'secondary.light' }}>
                             <Stack
                                 justifyContent='center'
                                 sx={{ minHeight: { md: '60vh' } }}

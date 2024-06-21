@@ -207,3 +207,69 @@ a {
 .MuiDateCalendar-viewTransitionContainer {
   /* display: none !important; */
 }
+
+/* custom datepicker */
+.react-datepicker {
+  height: 300px;
+  max-width: 410px;
+  border: none !important;
+  border-radius: 25px !important;
+  padding: 14px !important;
+}
+.react-datepicker__month-container {
+  float: none !important;
+}
+
+.react-datepicker__navigation--next {
+  top: 10px !important;
+}
+.react-datepicker__navigation--previous {
+  left: 84% !important;
+  top: 10px !important;
+}
+
+.react-datepicker__header { 
+  background-color: #fff !important;
+  border-top-left-radius: 25px !important;
+  border-top-right-radius: 25px !important;
+  border-bottom: none !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.react-datepicker__header__dropdown {
+  position: absolute !important;
+  top: 4%;
+  left: 30%;
+}
+
+/* .react-datepicker__month-read-view--selected-month {
+  display: none;
+} */
+
+h2.react-datepicker__current-month {
+  margin-top: -4px !important;
+  margin-left: 13px !important;
+  width: fit-content !important;
+}
+.react-datepicker__day-name {
+  width: 13% !important;
+}
+.react-datepicker__day {
+  width: 13% !important;
+}
+
+.upper-datepicker {
+  width: 100%;
+  max-width: 410px;
+  padding: 16px 20px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(189, 189, 189, 1);
+  background-color: #FFFFFF;
+  margin-bottom: 16px;
+}
+.react-datepicker__calendar-icon {
+  right: 25px;
+  top: 4px;
+}

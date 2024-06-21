@@ -5,6 +5,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import Calendar from '../Icons/Calendar';
 
 export default function DatePickerValue({ onGetDateValue }) {
@@ -29,6 +30,16 @@ export default function DatePickerValue({ onGetDateValue }) {
                         openPickerIcon: Calendar
                     }}
                 />
+                {/* <StaticDatePicker
+                    sx={{ width: '100%' }}
+
+                    minDate={dayjs(new Date()).add(1, 'month')}
+                    value={value}
+                    onAccept={pickDateHandler}
+                    slots={{
+                        openPickerIcon: Calendar
+                    }}
+                /> */}
             </DemoContainer>
         </LocalizationProvider>
     );

@@ -21,7 +21,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(22)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
     const [, dispatch] = useAppStore();

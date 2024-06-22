@@ -8,8 +8,8 @@ import { calendar } from '@src/utils/icons'
 import "react-datepicker/dist/react-datepicker.css";
 
 const ReactDatePicker = ({ selectedValue, onGetDateValue }) => {
-    const [value, setValue] = useState(new Date(selectedValue) || addDays(new Date(), 30));
-
+    const [value, setValue] = useState(selectedValue ? new Date(selectedValue) : addDays(new Date(), 30));
+console.log(value)
     const pickDateHandler = (val) => {
         setValue(val);
         onGetDateValue(dayjs(val).format('YYYY-MM-DD'));

@@ -3,7 +3,6 @@ import { Box, Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import Loader from '../Loader'
 import Button from '@src/components/AppButton'
-import MuiDatePicker from '@src/components/MuiDatePicker'
 import DatePicker from '@src/components/ReactDatePicker'
 import StepContainer from '@src/components/StepContainer'
 import InfoStep from '@src/components/InfoStep'
@@ -166,7 +165,10 @@ const Steps = ({ option = {}, onGetBack }) => {
 
                                 {currentStep?.value && currentStep.typeDate && (
                                     <Stack sx={{ position: 'relative', alignItems: 'center' }}>
-                                        <DatePicker onGetDateValue={date => selectOptionHandler(date)} />
+                                        <DatePicker 
+                                            selectedValue={answers.desiredDate} 
+                                            onGetDateValue={date => selectOptionHandler(date)} 
+                                        />
                                     </Stack>
                                 )}
                             </Stack>

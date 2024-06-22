@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import dayjs from 'dayjs';
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import DatePicker from "react-datepicker";
 import { addDays } from "date-fns";
 import { calendar } from '@src/utils/icons'
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const ReactDatePicker = ({ onGetDateValue }) => {
-    const [value, setValue] = useState(addDays(new Date(), 30));
+const ReactDatePicker = ({ selectedValue, onGetDateValue }) => {
+    const [value, setValue] = useState(new Date(selectedValue) || addDays(new Date(), 30));
 
     const pickDateHandler = (val) => {
         setValue(val);
@@ -17,7 +17,7 @@ const ReactDatePicker = ({ onGetDateValue }) => {
   
   return (
     <Stack sx={{ width: '100%', maxWidth: 410 }}>
-        <Typography>Data</Typography>
+        <Typography variant='body14'>Data</Typography>
         <DatePicker 
             className='upper-datepicker'
             showIcon 

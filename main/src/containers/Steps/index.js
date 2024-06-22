@@ -16,12 +16,13 @@ import { steps, filterIngredients, getWarning, getBMIInfo } from '../../utils/Pl
 
 const totalSteps = steps.length
 const skipSteps = [5, 20, 24, 25]
+const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 
 const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(24)
     const [answers, setAnswers] = useState(option)
     const [inputError, setInputError] = useState(false)
     const [, dispatch] = useAppStore();
@@ -33,11 +34,16 @@ const Steps = ({ option = {}, onGetBack }) => {
         list = filterIngredients(answers['alergy'], list)
     }
 
-    const stepBackHandler = () => {
+    const scrollToTop = () => {
+        document.querySelector('body').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    const stepBackHandler = () => {        
         if (step === 2) return onGetBack()
 
         setStep(state => state - 1)
         clearTimeout()
+        scrollToTop()
     }
 
     const stepAheadHandler = () => {
@@ -48,10 +54,10 @@ const Steps = ({ option = {}, onGetBack }) => {
             setTimeout(
                 () => {
                     setStep(state => state + 1)
+                    scrollToTop()
                 },
                 500
             );
-
         }
     }
 
@@ -89,7 +95,6 @@ const Steps = ({ option = {}, onGetBack }) => {
                     }))
                 }
             }
-
         }
     }
 
@@ -98,7 +103,7 @@ const Steps = ({ option = {}, onGetBack }) => {
             type: 'USER_DATA',
             payload: answers,
         });
-
+        scrollToTop()
         router.push('/email', { scroll: false })
     }
 
@@ -122,10 +127,10 @@ const Steps = ({ option = {}, onGetBack }) => {
                         showWarning={getWarning(currentStep, answers)}
                         onStepBack={stepBackHandler}
                     >
-                        <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 12px 32px', md: '2rem 40px 2rem 60px' }, backgroundColor: step === 5 ? '#FFFFFF' : 'secondary.light' }}>
+                        <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 12px 32px', md: '2rem 40px 2rem 60px' }, backgroundColor: '#FFFFFF' }}>
                             <Stack
                                 justifyContent='center'
-                                sx={{ minHeight: { md: '60vh' } }}
+                                sx={{ minHeight: { md: '75vh' } }}
                             >
                                 {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
 
@@ -167,12 +172,17 @@ const Steps = ({ option = {}, onGetBack }) => {
                                     <Stack sx={{ position: 'relative', alignItems: 'center' }}>
                                         <DatePicker 
                                             selectedValue={answers.desiredDate} 
-                                            onGetDateValue={date => selectOptionHandler(date)} 
+                                            onGetDateValue={date => 
+                                                setAnswers(prev => ({
+                                                    ...prev,
+                                                    [currentStep.value]: date
+                                                }))
+                                            } 
                                         />
                                     </Stack>
                                 )}
                             </Stack>
-                            {step <= totalSteps && (
+                            {step <= totalSteps && optionsWithNextBtn.includes(step) && (
                                 <Stack direction='row' justifyContent='end' sx={{ mt: 3 }}>
                                     <Button
                                         type='primary'

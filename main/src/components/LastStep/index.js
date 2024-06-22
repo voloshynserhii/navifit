@@ -38,7 +38,7 @@ export default function LastStep({ answers = {} }) {
     const diff = countEndMonth({ weight, desiredWeight })
     const startDate = moment(new Date())
     const endDate = moment(new Date()).add(diff, 'M').format('DD MMMM YYYY')
-
+    
     return (
         <DemoPaper>
             <Stack justifyContent='center' alignItems='center'>

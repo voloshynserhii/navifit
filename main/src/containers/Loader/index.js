@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Container, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import AppLoader from '@src/components/AppLoader'
@@ -9,7 +10,6 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     overflow: 'hidden',
     padding: '58px 60px',
     boxShadow: 'none',
-    backgroundColor: theme.palette.secondary.light,
     marginBottom: 48,
     [theme.breakpoints.down("md")]: {
         padding: '56px 12px 30px',
@@ -17,7 +17,10 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
 }))
 
 export default function Loader({ onFinishLoad }) {
-
+    useEffect(() => {
+        document.querySelector('body').scrollTo({ top: 0, behavior: 'smooth' });
+    }, [])
+    
     return (
         <Container>
             <DemoPaper sx={{ minHeight: { md: '60vh' } }}>

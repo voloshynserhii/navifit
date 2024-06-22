@@ -147,6 +147,9 @@ a {
   }
 } */
 @media screen and (max-width: 899px) {
+  body {
+    padding-bottom: 20vh;
+  }
   main {
     padding: 0;
   }

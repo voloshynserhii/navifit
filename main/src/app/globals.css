@@ -25,6 +25,7 @@ body {
   margin: 0px;
   padding: 0px;
   overflow-x: hidden;
+  /* min-height: fit-content; */
 }
 html {
   background: linear-gradient(168.43deg, #FFFFFF -6.5%, #D9E6FF 101.21%);
@@ -44,14 +45,15 @@ main {
   align-items: center;
   /* padding: 1rem 0 2rem 0; */
   width: 100%;
+  /* min-height: 100vh; */
   /* height: calc(100vh - 72px); */
 }
 
-#mainBg1 {
+/* #mainBg1 {
   width: 100vw;
   height: 100vh;
   position: fixed;
-}
+} */
 /* class to add to body in quiz */
 .bg1 {
   background: rgba(0, 0, 0, .5);
@@ -69,7 +71,7 @@ main {
   animation-fill-mode: forwards;
 }
 
-@keyframes backgroundChange {
+/* @keyframes backgroundChange {
   0% {
     background: rgba(0, 0, 0, .9);
     background-image: url('../../public/images/bg.png');
@@ -118,7 +120,7 @@ main {
     background-repeat: no-repeat;
     background-size: cover;
   }
-}
+} */
 
 .colored-title {
   display: inline;

@@ -1,16 +1,19 @@
 'use client'
-import { Stack, Grid, useTheme } from '@mui/material'
+import { useEffect } from 'react'
+import { Stack, Grid } from '@mui/material'
 import StepContainer from '../../components/StepContainer'
 import Option from '../../components/Option'
 import UserPermission from '../../components/UserPermission'
 import { steps } from '../../utils/Plans'
-import axios from 'axios' //remove
 const totalSteps = steps.length
 const mainStep = steps[0]
 
 export default function Main({ onChooseOption }) {
-  const theme = useTheme();
-  // axios.post('/api/checkout', { amount: 2 })
+
+  useEffect(() => {
+    document.querySelector('body').scrollTo({ top: 0, behavior: 'smooth' });
+  }, [])
+  
   return (
     <StepContainer currentStep={mainStep} totalSteps={totalSteps}>
       <Grid item xs={12} md={6} sx={{ padding: { xs: '2rem 14px', md: '2rem 60px' }, backgroundColor: '#FFFFFF' }}>

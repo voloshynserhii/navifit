@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import Loader from '../Loader'
@@ -34,16 +34,15 @@ const Steps = ({ option = {}, onGetBack }) => {
         list = filterIngredients(answers['alergy'], list)
     }
 
-    const scrollToTop = () => {
+    useEffect(() => {
         document.querySelector('body').scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
-    const stepBackHandler = () => {        
+    }, [step])
+
+    const stepBackHandler = () => {
         if (step === 2) return onGetBack()
 
         setStep(state => state - 1)
         clearTimeout()
-        scrollToTop()
     }
 
     const stepAheadHandler = () => {
@@ -54,7 +53,6 @@ const Steps = ({ option = {}, onGetBack }) => {
             setTimeout(
                 () => {
                     setStep(state => state + 1)
-                    scrollToTop()
                 },
                 500
             );
@@ -103,7 +101,7 @@ const Steps = ({ option = {}, onGetBack }) => {
             type: 'USER_DATA',
             payload: answers,
         });
-        scrollToTop()
+
         router.push('/email', { scroll: false })
     }
 
@@ -170,14 +168,14 @@ const Steps = ({ option = {}, onGetBack }) => {
 
                                 {currentStep?.value && currentStep.typeDate && (
                                     <Stack sx={{ position: 'relative', alignItems: 'center' }}>
-                                        <DatePicker 
-                                            selectedValue={answers.desiredDate} 
-                                            onGetDateValue={date => 
+                                        <DatePicker
+                                            selectedValue={answers.desiredDate}
+                                            onGetDateValue={date =>
                                                 setAnswers(prev => ({
                                                     ...prev,
                                                     [currentStep.value]: date
                                                 }))
-                                            } 
+                                            }
                                         />
                                     </Stack>
                                 )}

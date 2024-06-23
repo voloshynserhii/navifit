@@ -28,11 +28,11 @@ const Pointer = styled(Box)(({ theme, left }) => ({
     },
 }));
 
-const BMIInfo = styled(Box)(({ theme }) => ({
+const BMIInfo = styled(Box)(({ theme, position }) => ({
     width: 'max-content',
     background: theme.palette.secondary.gray,
     padding: `${theme.spacing(0.75)} ${theme.spacing(1.5)}`,
-    transform: 'translate(-43%, -60px)',
+    transform: `translate(${position > 41 ? '-68%' : '-43%'}, -60px)`,//
     borderRadius: 6
 }));
 
@@ -52,10 +52,12 @@ const countPointerPosition = (BMI) => {
 }
 
 export default function InfoStep({ BMI }) {
+    const position = countPointerPosition(BMI)
+    
     return (
         <BMIContainer>
-            <Pointer left={`${countPointerPosition(BMI)}%`}>
-                <BMIInfo>
+            <Pointer left={`${position}%`}>
+                <BMIInfo position={BMI}>
                     <Typography variant='medium14'>Twój - {BMI}</Typography>
                 </BMIInfo>
                 <Connector />

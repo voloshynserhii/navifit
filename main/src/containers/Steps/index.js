@@ -35,7 +35,7 @@ const Steps = ({ option = {}, onGetBack }) => {
     }
 
     useEffect(() => {
-        document.querySelector('body').scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelector('body').scrollTo({ top: -75, behavior: 'smooth' });
     }, [step])
 
     const stepBackHandler = () => {

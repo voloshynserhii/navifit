@@ -18,7 +18,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
   overflow: 'hidden',
   padding: '58px 60px',
   boxShadow: 'none',
-  backgroundColor: theme.palette.secondary.light,
+  // backgroundColor: theme.palette.secondary.light,
   marginBottom: 48,
   [theme.breakpoints.down("md")]: {
     padding: '56px 12px 30px',

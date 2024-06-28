@@ -43,7 +43,8 @@ module.exports = async (req, res) => {
 
         let user = await db.user.findOne(query)
 
-        if (user?.isDraftUser && user.userData && !user.currentPlan) {
+        if (!!user && user.isDraftUser && user.userData && !user.currentPlan) {
+            console.log('GENERATING_USER_PLAN')
             const month = await generatePlan(user.userData)
 
             user.currentPlan = month

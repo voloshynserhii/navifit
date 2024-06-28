@@ -130,9 +130,10 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                     <Typography sx={{ lineHeight: '23px' }}>{verticalNumber}</Typography><Divider sx={{ width: '80%', borderStyle: 'dashed' }} />
                 </Row>
             ))}
-            {desiredDate && <DesiredWeightInfo sx={{ left: `${position}%` }}>{desiredWeight}kg
+            {/* // TO DO: remake */}
+            {/* {desiredDate && <DesiredWeightInfo sx={{ left: `${position}%` }}>{desiredWeight}kg
                 <Divider sx={{ width: 125, borderWidth: 1, borderStyle: 'dashed', position: 'absolute', transform: 'rotate(-90deg)', top: 98, left: '-43%', borderColor: 'secondary.greyDarken2' }} />
-            </DesiredWeightInfo>}
+            </DesiredWeightInfo>} */}
 
             <div
                 className={endWeight < startWeight ? styles.graphic : styles.graphicBack}

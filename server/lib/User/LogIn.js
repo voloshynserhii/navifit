@@ -54,11 +54,11 @@ module.exports = async (req, res) => {
                     })
                 }
                 
-                // if (!user.isConfirmed) {
-                //     return res.json({
-                //         message: 'Email is not verified!'
-                //     })
-                // }
+                if (!!user.oneTimePassword && !user.isConfirmed) {
+                    return res.json({
+                        message: 'Email is not verified!'
+                    })
+                }
                 
                 user.salt = null
                 user.hashedPassword = null

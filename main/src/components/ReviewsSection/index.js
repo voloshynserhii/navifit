@@ -66,6 +66,7 @@ const reviews = [
 export default function Reviews() {
     const interval = useRef(null)
     const [currentReview, setCurrentReview] = useState(reviews[0])
+    const [height, setHeight] = useState(180)
 
     useEffect(() => {        
         interval.current = setInterval(() => {
@@ -168,6 +169,13 @@ export default function Reviews() {
             },
         )
     }
+    
+    useEffect(() => {
+        const reviewsContainer = document.querySelector('#reviews-container')
+        const countedHeight = 30 + reviewsContainer?.firstChild?.clientHeight
+        
+        setHeight(countedHeight)
+    }, [currentReview])
 
     return (
         <ReviewsContainer>
@@ -178,7 +186,7 @@ export default function Reviews() {
                 </Stack>
                 <Typography variant='regular16'>już wybrało NAVIFIT</Typography>
             </Stack>
-            <Box sx={{ height: 180, width: { md: '40vw'} }}>
+            <Box sx={{ height: height, width: { md: '40vw'} }}>
                 <Stack alignItems='center' id='reviews-container'>
                     <Review className={styles.active} review={currentReview} visible />
                     <Review className={styles.second} review={null} visible={false} />

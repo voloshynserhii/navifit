@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Alert, Box, Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import { useBackground } from '@src/hooks/event'
 import { email as emailIcon, passwordHidden, passwordVisisble, OK } from '@src/utils/icons'
 import { isEmail } from '@src/utils/functions'
 
@@ -97,7 +96,6 @@ const defaultValidationValue = {
 }
 
 export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
-    useBackground()
     const router = useRouter()
     const searchParams = useSearchParams()
     const userId = searchParams.get('user')

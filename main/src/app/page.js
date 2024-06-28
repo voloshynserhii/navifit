@@ -5,11 +5,9 @@ import Main from '../containers/Main'
 import Steps from '../containers/Steps'
 import { useAppStore } from '../store'
 import { localStorageGet } from '../utils/localStorage';
-import { useBackground } from '@src/hooks/event'
 import api from '../utils/api'
 
 export default function Home() {
-  useBackground()
   const router = useRouter()
   const [_, dispatch] = useAppStore()
   const [optionChosen, setOptionChosen] = useState()

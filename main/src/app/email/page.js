@@ -7,7 +7,6 @@ import { isEmail } from '@src/utils/functions'
 import api from '../../utils/api'
 import Button from '../../components/AppButton'
 import { useAppStore } from '../../store';
-import { useBackground } from '../../hooks'
 import { protection } from '../../utils/icons'
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
@@ -32,7 +31,6 @@ const EmailInput = styled(TextField)(({ theme }) => ({
 }))
 
 export default function EmailPage() {
-  useBackground();
   const router = useRouter();
   const [state, dispatch] = useAppStore();
   const [email, setEmail] = useState('');

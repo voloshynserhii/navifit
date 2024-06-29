@@ -36,7 +36,7 @@ const values = ['bodyType', 'dayType', 'training', 'weight', 'height']
 export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, showWarning, onStepBack, onStepAhead }) {
     const { bodyType = '1', dayType = '3', training = '2', weight = '72', height = '175' } = answers || {}
     const stepsForInfo = steps.filter(step => values.includes(step.value))
-
+    
     return (
         <Container>
             <DemoPaper sx={{ minHeight: { md: '60vh' }, marginBottom: 10 }}>
@@ -53,7 +53,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
                             Twój profil dobrego samopoczucia
                         </Typography>
                         <Grid container spacing={1} sx={{ width: { xs: '100%', md: '50%' } }}>
-                            {Object.keys(userInfo).map(name => {
+                            {Object.keys(userInfo).map((name, i) => {                                
                                 let value = 'test'
 
                                 if (name === 'bodyType') {
@@ -83,7 +83,7 @@ export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, sh
 
                                 return (
                                     <Grid item key={name} xs={6} sx={{ padding: { md: 1.5 } }}>
-                                        <AnswerInfo item={item} />
+                                        <AnswerInfo item={item} blockNumber={i} />
                                     </Grid>
                                 )
                             })}

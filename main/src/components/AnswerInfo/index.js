@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import { fireGrey, arrows, bodyType } from "../../utils/icons"
@@ -23,11 +24,23 @@ const getIcon = (name) => {
     }
 }
 
-export default function AnswerInfo({ item = {} }) {
+export default function AnswerInfo({ item = {}, blockNumber }) {
+    const [blockHeight, setBlockHeight] = useState()
+    
     const { name, title, value } = item;
+    
+    useEffect(() => {
+        if (blockNumber === 1) {
+            const block = document.querySelector('#answer-0')
+
+            if (block) {
+                setBlockHeight(block?.clientHeight)
+            }
+        }
+    }, [blockNumber])
 
     return (
-        <InfoContainer gap={1}>
+        <InfoContainer id={`answer-${blockNumber}`} gap={1} sx={{ height: `${blockHeight}px` || 'fit-content'}}>
             <Stack direction='row' justifyContent='space-between'>
                 <Stack gap={1}>
                     <Typography variant='h3semi'>{value}</Typography>

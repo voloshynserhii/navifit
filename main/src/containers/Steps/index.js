@@ -28,9 +28,9 @@ const Steps = ({ option = {}, onGetBack }) => {
     const [, dispatch] = useAppStore();
 
     const currentStep = steps[step - 1]
-    let list = currentStep.options || []
+    let list = currentStep?.options || []
 
-    if (answers['alergy'] && Object.keys(answers['alergy'])?.length && currentStep.filtered) {
+    if (answers['alergy'] && Object.keys(answers['alergy'])?.length && currentStep?.filtered) {
         list = filterIngredients(answers['alergy'], list)
     }
 
@@ -116,9 +116,9 @@ const Steps = ({ option = {}, onGetBack }) => {
 
     let btnDisabled = false
 
-    if (currentStep.long && !answers[currentStep.value]) btnDisabled = true
+    if (currentStep?.long && !answers[currentStep?.value]) btnDisabled = true
 
-    if (currentStep.typeNumber && !answers[currentStep.value]) btnDisabled = true
+    if (currentStep?.typeNumber && !answers[currentStep?.value]) btnDisabled = true
 
     if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
@@ -139,11 +139,11 @@ const Steps = ({ option = {}, onGetBack }) => {
                                 justifyContent='center'
                                 sx={{ minHeight: { md: '75vh' } }}
                             >
-                                {currentStep.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
+                                {currentStep?.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
 
                                 {step === steps.length && <LastStep answers={answers} />}
 
-                                {currentStep.long ? (
+                                {currentStep?.long ? (
                                     <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' } }}>
                                         {list.map(option => (
                                             <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
@@ -157,7 +157,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                     </Stack>
                                 )}
 
-                                {currentStep?.value && currentStep.typeNumber && (
+                                {currentStep?.value && currentStep?.typeNumber && (
                                     <InputNumber
                                         value={answers[currentStep.value]}
                                         currentStep={currentStep.value}
@@ -175,7 +175,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                     />
                                 )}
 
-                                {currentStep?.value && currentStep.typeDate && (
+                                {currentStep?.value && currentStep?.typeDate && (
                                     <Stack sx={{ position: 'relative', alignItems: 'center' }}>
                                         <DatePicker
                                             selectedValue={answers.desiredDate}

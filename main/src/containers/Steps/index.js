@@ -37,6 +37,17 @@ const Steps = ({ option = {}, onGetBack }) => {
     useEffect(() => {
         document.querySelector('body').scrollTo({ top: -75, behavior: 'smooth' });
     }, [step])
+    
+    useEffect(() => {
+        if ((step === steps.length || step === steps.length - 1) && answers.weight === answers.desiredWeight) {
+            setStep(state => state + 1)
+            setLoading(true)
+        }
+    }, [step, answers.weight, answers.desiredWeight])
+
+    useEffect(() => {
+        if (step === 18 && !list.length) setStep(state => state + 1)
+    }, [step, list])
 
     const stepBackHandler = () => {
         if (step === 2) return onGetBack()
@@ -54,12 +65,10 @@ const Steps = ({ option = {}, onGetBack }) => {
                 () => {
                     setStep(state => state + 1)
                 },
-                500
+                300
             );
         }
     }
-
-    // if (currentStep.options && !list.length) setStep(state => state + 1)
 
     const selectOptionHandler = (val, key) => {
         if (!key) {

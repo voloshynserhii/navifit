@@ -9,6 +9,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
+    boxShadow: 'unset !important'
 }));
 
 const getFormattedQuestion = (question) => {

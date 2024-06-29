@@ -11,7 +11,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
     padding: '32px 60px',
-    boxShadow: 'none',
+    boxShadow: 'unset !important',
     [theme.breakpoints.down("md")]: {
         padding: '56px 12px 30px',
     },

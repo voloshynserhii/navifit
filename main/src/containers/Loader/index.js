@@ -9,7 +9,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     borderRadius: theme.spacing(4),
     overflow: 'hidden',
     padding: '58px 60px',
-    boxShadow: 'none',
+    boxShadow: 'unset !important',
     marginBottom: 48,
     [theme.breakpoints.down("md")]: {
         padding: '56px 12px 30px',

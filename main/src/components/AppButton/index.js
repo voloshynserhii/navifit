@@ -14,7 +14,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   width: 180,
   height: 52,
   fontFamily: 'unset',
-  boxShadow: 'none',
+  boxShadow: 'unset !important',
   [theme.breakpoints.down("md")]: {
     width: '100%',
     padding: '14px 5% 14px 0',

@@ -140,8 +140,8 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
                 id='graphic'
                 style={{
                     position: 'absolute',
-                    left: endWeight < startWeight ? '14%' : '17%',
-                    top: endWeight < startWeight ? '38%' : '42%',
+                    left: endWeight < startWeight ? '18%' : '17%',
+                    top: endWeight < startWeight ? '39%' : '42%',
                     width: '70%'
                 }}
             >
@@ -177,7 +177,7 @@ export default function Graphic({ startWeight, endWeight, desiredDate, startDate
             </div>
             <Stack direction='row' justifyContent='space-between' sx={{ width: '90%', paddingLeft: '10%' }}>
                 {months.map((month, i) => (
-                    <Typography key={month + i}>{month}</Typography>
+                    <Typography key={month + i}>{month.slice(0, 3)}</Typography>
                 ))}
             </Stack>
         </Box >

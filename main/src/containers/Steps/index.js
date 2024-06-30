@@ -21,6 +21,7 @@ const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
 const Steps = ({ option = {}, onGetBack }) => {
     const router = useRouter()
 
+    const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
     const [step, setStep] = useState(2)
     const [answers, setAnswers] = useState(option)
@@ -57,13 +58,16 @@ const Steps = ({ option = {}, onGetBack }) => {
     }
 
     const stepAheadHandler = () => {
+        clearTimeout()
+        setDisabled(true)
+        
         if (step === totalSteps) {
             setLoading(true)
-            clearTimeout()
         } else {
             setTimeout(
                 () => {
                     setStep(state => state + 1)
+                    setDisabled(false)
                 },
                 300
             );
@@ -194,7 +198,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                     <Button
                                         type='primary'
                                         title='Dalej'
-                                        disabled={(btnDisabled || inputError || !answers[currentStep.value]) && !skipSteps.includes(step)}
+                                        disabled={disabled || ((btnDisabled || inputError || !answers[currentStep.value]) && !skipSteps.includes(step))}
                                         onClick={stepAheadHandler}
                                     />
                                 </Stack>

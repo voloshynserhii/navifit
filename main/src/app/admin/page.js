@@ -174,7 +174,7 @@ export default function Admin() {
 
     if (!isLoggedIn) return (
         <main>
-            <Stack sx={{ gap: 5, padding: 20 }}>
+            <Stack sx={{ gap: 5, padding: 5 }}>
                 <AuthForm
                     title='Zaloguj się'
                     subTitle='Wpisz adres e-mail, na który jesteś zarejestrowana 

@@ -1,8 +1,6 @@
 const Functions = require('../../util/Functions')
 const db = require('../../db')
-const config = require('../../config')
 const { countUserData } = require('./helpers')
-const { transporter } = require('../../util/mailer')
 
 /**
  * Post User Data

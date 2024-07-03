@@ -2,7 +2,7 @@ const Functions = require('../../util/Functions')
 const db = require('../../db')
 const config = require('../../config')
 const { transporter } = require('../../util/mailer')
-const { getResetPassword } = require('./components')
+const { getRestorePasswordComponent } = require('./components/restorePassword')
 
 /**
  * Restore password
@@ -41,19 +41,12 @@ module.exports = async(req, res) => {
     await user.save()
 
     res.json({})
-    
+
     const mailOptions = {
       from: config.mailer.email,
       to: user.email,
       subject: 'From Navifit: You requested to reset a password!',
-      html: `<div>
-        <h2>Reset your password</h2>
-        <h4>We’ve received a request to reset the password for the NaviFIt account. No changes have been made to your account yet!</h4>
-        <p>
-          You can reset your password by clicking the link below:
-        </p>
-        <p>https://navifit.vercel.app/restore/${user.oneTimePassword}</p>
-      </div>`
+      html: getRestorePasswordComponent(user.oneTimePassword)
     }
     
     transporter.sendMail(mailOptions, (err, info) => {
@@ -64,6 +57,6 @@ module.exports = async(req, res) => {
       }
     })
   } catch (err) {
-    res.sendDbError(err)
+    console.log(err)
   }
 }

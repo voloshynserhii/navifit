@@ -2,6 +2,7 @@ const Functions = require('../../util/Functions')
 const db = require('../../db')
 const config = require('../../config')
 const { transporter } = require('../../util/mailer')
+const { getResetPasswordComponent } = require('./components/resetPassword')
 
 /**
  * Reset Password
@@ -44,10 +45,7 @@ module.exports = function (req, res, next) {
           from: config.mailer.email,
           to: user.email,
           subject: 'From Navifit: You changed your password!',
-          html:`<div>
-            <h4>You successfully changed your password!</h4>
-            <p>Now you can login with your new password ${config.portal.url}/signup</p>
-          </div>`
+          html: getResetPasswordComponent(config.portal.url)
         }
         
         transporter.sendMail(mailOptions, (err, info) => {
@@ -59,5 +57,5 @@ module.exports = function (req, res, next) {
         })
       })
     })
-    .catch((err) => res.sendDbError(err))
+    .catch((err) => console.log(err))
 }

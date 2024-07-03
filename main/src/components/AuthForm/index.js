@@ -95,7 +95,7 @@ const defaultValidationValue = {
     passwordMatch: true
 }
 
-export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
+export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError = () => {}, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const userId = searchParams.get('user')

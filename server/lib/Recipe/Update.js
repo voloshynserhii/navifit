@@ -2,13 +2,27 @@ const Functions = require('../../util/Functions')
 const db = require('../../db')
 
 /**
- * Post User Data
+ * Update Recipe
  * @param req
  * @param res
  */
 module.exports = async (req, res) => {
-  const data = req.body
-  const id = data?._id
+  const { 
+    _id: id, 
+    ingredientValues = [], 
+    name, 
+    description, 
+    calories, 
+    cookingTime, 
+    fats, 
+    proteins, 
+    carbs,
+    ingredients,
+    mainImage,
+    images,
+    videos
+  } = req.body || {}
+console.log(req.body)
 
   if (Functions.isNull(id) || !Functions.isId(id)) {
     return res.send({
@@ -19,21 +33,29 @@ module.exports = async (req, res) => {
   try {
     const recipe = await db.recipe.findById(id)
 
-    recipe.name = data.name
-    recipe.description = data.description
-    recipe.calories = +data.calories
-    recipe.cookingTime = +data.cookingTime
-    recipe.fats = data.fats
-    recipe.proteins = data.proteins
-    recipe.carbs = data.carbs
-    recipe.ingredients = data.ingredients
-    recipe.mainImage = data.mainImage
-    recipe.images = data.images
-    recipe.videos = data.videos
+    recipe.name = name
+    recipe.description = description
+    recipe.calories = +calories
+    recipe.cookingTime = +cookingTime
+    recipe.fats = fats
+    recipe.proteins = proteins
+    recipe.carbs = carbs
+    recipe.ingredients = ingredients
+    recipe.mainImage = mainImage
+    recipe.images = images
+    recipe.videos = videos
     
     await recipe.save()
     
     res.json({ recipe })
+    
+    if (ingredientValues.length) {
+      for (const ingredientValue of ingredientValues) {
+        const newIngredient = new db.ingredient(ingredientValue)
+
+        await newIngredient.save()
+      }
+    }
   } catch (err) {
     console.log(err)
   }

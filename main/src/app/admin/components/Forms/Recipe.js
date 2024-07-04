@@ -1,19 +1,24 @@
 import { Fragment, useState } from 'react';
 import Image from 'next/image'
-import { Grid, Button, InputAdornment, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Grid, Button, FormControl, InputAdornment, InputLabel, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Autocomplete from '../../../../components/Autocomplete'
 import { ingredients } from '../../../../utils/Plans'
 import { getTitle } from '../../helpers'
 
+const defaultIngredient = {
+    title: '',
+    weight: '',
+    unit: '',
+    kcal: ''
+}
 export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
-    const [recipe, setRecipe] = useState(item || {})
-    const [newIngredientTitle, setNewIngredientTitle] = useState('')
-    const [newIngredientWeight, setNewIngredientWeight] = useState('')
+    const [recipe, setRecipe] = useState(item || { ingredients: [], ingredientsValue: [] })
+    const [newIngredient, setNewIngredient] = useState(defaultIngredient)
     const [mainImageLink, setMainImageLink] = useState('')
     const [newImageLink, setNewImageLink] = useState('')
 
-    const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mainImage, images = [], videos } = recipe
+    const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mainImage, images = [], videos, ingredientValues = [] } = recipe
     const ingredientTitles = recipeIngredients?.map(obj => Object.keys(obj))
 
     const editFormHandler = (e) => {
@@ -44,7 +49,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
         if (!images.includes(newImageLink)) {
             setRecipe(prev => ({ ...prev, images: prev.images?.length ? [...prev.images, newImageLink] : [newImageLink] }))
         }
-        
+
         setNewImageLink('')
     }
 
@@ -64,26 +69,32 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     }
 
     const addIngredientHandler = () => {
-        setRecipe(prev => ({ ...prev, ingredients: [...prev.ingredients, { [newIngredientTitle]: newIngredientWeight }] }))
+        setRecipe(prev => ({ ...prev, ingredients: [...prev.ingredients, { [newIngredient.title]: newIngredient.weight }], ingredientValues: [...prev.ingredientValues, { title: newIngredient.title, unit: newIngredient.unit || 'gram', value: newIngredient.kcal }] }))
 
-        setNewIngredientTitle('')
-        setNewIngredientWeight('')
+        setNewIngredient(defaultIngredient)
     }
 
     const editIngredientHandler = key => {
         const ingredient = recipeIngredients.find(ingredient => ingredient[key])
+        const ingredientValue = ingredientValues.find(iv => iv.title === key[0])
 
-        setNewIngredientTitle(key)
-        setNewIngredientWeight(ingredient[key])
+        setNewIngredient({
+            title: key[0],
+            weight: ingredient[key[0]],
+            unit: ingredientValue?.unit,
+            kcal: ingredientValue?.value
+        })
 
         const filteredIngredients = recipeIngredients.filter(ingredient => !ingredient[key])
-        setRecipe(prev => ({ ...prev, ingredients: filteredIngredients }))
+        const filteredIngredientValues = ingredientValues.filter(ingredientValue => ingredientValue.title !== key[0])
+        setRecipe(prev => ({ ...prev, ingredients: filteredIngredients, ingredientValues: filteredIngredientValues }))
     }
 
     const removeIngredientHandler = key => {
         const filteredIngredients = recipeIngredients.filter(ingredient => !ingredient[key])
+        const filteredIngredientValues = ingredientValues.filter(ingredientValue => ingredientValue.title !== key[0])
 
-        setRecipe(prev => ({ ...prev, ingredients: filteredIngredients }))
+        setRecipe(prev => ({ ...prev, ingredients: filteredIngredients, ingredientValues: filteredIngredientValues }))
     }
 
     const selectEssentialIngredientsHandler = selected => {
@@ -197,13 +208,14 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 <Grid item xs={12}>
                     <Grid item xs={12} sm={9} md={6}>
                         <Typography variant='h5' sx={{ marginBottom: 2 }}>Ingredients:</Typography>
+                        
                         {ingredientTitles?.map((key, i) => (
                             <Stack key={key} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
                                 <Stack direction='row' justifyContent='space-between' sx={{ width: '80%' }}>
                                     <Typography >{key}: </Typography>
                                     <Typography >{recipeIngredients[i][key]}</Typography>
                                 </Stack>
-                                {!newIngredientTitle && (
+                                {!newIngredient.title && (
                                     <Stack direction='row'>
                                         <Button onClick={() => editIngredientHandler(key)}>Edit</Button>
                                         <Button onClick={() => removeIngredientHandler(key)}>Remove</Button>
@@ -215,35 +227,56 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         <Stack sx={{ marginTop: 2 }}>
                             <Stack direction='row' gap={2}>
                                 <TextField
-                                    value={newIngredientTitle}
+                                    value={newIngredient.title}
                                     label="Title"
                                     name="title"
                                     fullWidth
                                     InputProps={{
-                                        endAdornment: newIngredientTitle ? <InputAdornment position="start">
-                                            <IconButton onClick={() => setNewIngredientTitle('')}>
+                                        endAdornment: newIngredient.title ? <InputAdornment position="start">
+                                            <IconButton onClick={() => setNewIngredient(prev => ({ ...prev, title: '' }))}>
                                                 <CloseIcon />
                                             </IconButton>
                                         </InputAdornment> : <></>,
                                     }}
-                                    onChange={(e) => setNewIngredientTitle(e.target.value)}
+                                    onChange={(e) => setNewIngredient(prev => ({ ...prev, title: e.target.value }))}
                                 />
                                 <TextField
-                                    value={newIngredientWeight}
+                                    value={newIngredient.weight}
                                     label="Weight"
                                     name="weight"
                                     fullWidth
                                     InputProps={{
-                                        endAdornment: newIngredientWeight ? <InputAdornment position="start">
-                                            <IconButton onClick={() => setNewIngredientWeight('')}>
+                                        endAdornment: newIngredient.weight ? <InputAdornment position="start">
+                                            <IconButton onClick={() => setNewIngredient(prev => ({ ...prev, weight: '' }))}>
                                                 <CloseIcon />
                                             </IconButton>
                                         </InputAdornment> : <></>,
                                     }}
-                                    onChange={(e) => setNewIngredientWeight(e.target.value)}
+                                    onChange={(e) => setNewIngredient(prev => ({ ...prev, weight: e.target.value }))}
                                 />
-                                <Button disabled={!newIngredientTitle || !newIngredientWeight} onClick={addIngredientHandler}>+ Add</Button>
                             </Stack>
+                            <Stack direction='row' gap={2} mt={2}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="unit">KCal Unit</InputLabel>
+                                    <Select
+                                        labelId="unit"
+                                        value={newIngredient.unit || 'gram'}
+                                        label="KCal Unit"
+                                        onChange={(e) => setNewIngredient(prev => ({ ...prev, unit: e.target.value }))}
+                                    >
+                                        <MenuItem value={'gram'}>100g</MenuItem>
+                                        <MenuItem value={'item'}>1 item</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <TextField
+                                    value={newIngredient.kcal || ''}
+                                    label="KCal value"
+                                    name="kcal"
+                                    fullWidth
+                                    onChange={(e) => setNewIngredient(prev => ({ ...prev, kcal: e.target.value }))}
+                                />
+                            </Stack>
+                            <Button disabled={!newIngredient.title || !newIngredient.weight} onClick={addIngredientHandler}>+ Add</Button>
                         </Stack>
                     </Grid>
                 </Grid>

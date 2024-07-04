@@ -124,7 +124,7 @@ export default function UsersTable({ data = [], onEditModeOn }) {
               <TableCell align="right">{row.userData?.BMR}</TableCell>
               <TableCell align="right">{row.userData?.BMI}</TableCell>
               <TableCell align="right">{row.userData?.personalDailyKCalNeeded}</TableCell>
-              <TableCell align="right">{row.userData?.weight - row.userData?.desiredWeight}</TableCell>
+              <TableCell align="right">{row.userData ? row.userData?.weight - row.userData?.desiredWeight : ''}</TableCell>
               <TableCell align="right">{row.userData?.desiredDate}</TableCell>
               <TableCell align="right" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
                 <Tooltip title="Reset password">

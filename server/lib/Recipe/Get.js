@@ -32,9 +32,13 @@ module.exports = async(req, res) => {
             }]
         }
         
-        const data = await db.recipe.find(query).sort({ updatedAt: -1 }).limit(limit).lean().exec()
+        const list = await db.recipe.find(query).sort({ updatedAt: -1 }).limit(limit).lean().exec()
         
-        res.json({ data })
+        for (const recipe of list) {
+            recipe.ingredientValues = []
+        }
+        
+        res.json({ data: list })
     } catch (err) {
         console.log(err)
     }

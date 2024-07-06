@@ -1,10 +1,14 @@
-import { Fragment, useState } from 'react';
-import Image from 'next/image'
+import { Fragment, useState, useEffect } from 'react';
 import { Grid, Button, FormControl, InputAdornment, InputLabel, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import CloseIcon from '@mui/icons-material/Close';
 import Autocomplete from '../../../../components/Autocomplete'
+import AppUploadButton from '../../../../components/AppUploadButton'
 import { ingredients } from '../../../../utils/Plans'
 import { getTitle } from '../../helpers'
+import '../../../../../firebase/config'
+
+const storage = getStorage();
 
 const defaultIngredient = {
     title: '',
@@ -13,13 +17,57 @@ const defaultIngredient = {
     kcal: ''
 }
 export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
+
     const [recipe, setRecipe] = useState(item || { ingredients: [], ingredientsValue: [] })
     const [newIngredient, setNewIngredient] = useState(defaultIngredient)
+    const [imageFiles, setImageFiles] = useState([])
     const [mainImageLink, setMainImageLink] = useState('')
     const [newImageLink, setNewImageLink] = useState('')
 
     const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mainImage, images = [], videos, ingredientValues = [] } = recipe
     const ingredientTitles = recipeIngredients?.map(obj => Object.keys(obj))
+
+    const listRef = ref(storage, name);
+
+    const getFiles = async () => {
+        const res = await listAll(listRef)
+
+        if (res) {
+            const arr = []
+
+            for (const itemRef of res.items) {
+                const url = await getDownloadURL(ref(storage, itemRef._location.path));
+
+                if (url) {
+                    arr.push({ url, path: itemRef._location.path })
+                }
+            }
+
+            setImageFiles(arr)
+        }
+    }
+
+    useEffect(() => {
+        getFiles();
+    }, [])
+
+    const onUploadFile = (file) => {
+        const storageRef = ref(storage, `${name}/${file.name}`);
+
+        uploadBytes(storageRef, file).then(() => {
+            getFiles();
+        });
+    }
+
+    const onRemoveFile = (path) => {
+        const fileRef = ref(storage, path);
+
+        deleteObject(fileRef).then(() => {
+            getFiles();
+        }).catch(() => {
+            console.log('File was not deleted!')
+        });
+    }
 
     const editFormHandler = (e) => {
         const { name, value } = e.target
@@ -28,44 +76,6 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
             ...prev,
             [name]: value
         }))
-    }
-
-    const addMainImageHandler = () => {
-        setRecipe(prev => ({ ...prev, mainImage: mainImageLink }))
-        setMainImageLink('')
-    }
-
-    const editMainImageHandler = () => {
-        setRecipe(prev => ({ ...prev, mainImage: '' }))
-        setMainImageLink(mainImage)
-    }
-
-    const removeMainImageHandler = () => {
-        setRecipe(prev => ({ ...prev, mainImage: '' }))
-        setMainImageLink('')
-    }
-
-    const addNewImageHandler = () => {
-        if (!images.includes(newImageLink)) {
-            setRecipe(prev => ({ ...prev, images: prev.images?.length ? [...prev.images, newImageLink] : [newImageLink] }))
-        }
-
-        setNewImageLink('')
-    }
-
-    const editImageHandler = (image) => {
-        const key = images.find(link => link === image)
-
-        setNewImageLink(key)
-
-        const filteredImages = images.filter(link => link !== image)
-        setRecipe(prev => ({ ...prev, images: filteredImages }))
-    }
-
-    const removeImageHandler = (image) => {
-        const filteredImages = images.filter(link => link !== image)
-
-        setRecipe(prev => ({ ...prev, images: filteredImages }))
     }
 
     const addIngredientHandler = () => {
@@ -125,6 +135,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
             <Typography variant="h2" gutterBottom>
                 {item ? 'Edit Recipe' : 'Create New Recipe'}
             </Typography>
+            
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
@@ -137,6 +148,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={12}>
                     <TextField
                         value={description || ''}
@@ -149,6 +161,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={4} sm={2} md={1}>
                     <TextField
                         value={fats || ''}
@@ -160,6 +173,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={4} sm={2} md={1}>
                     <TextField
                         value={carbs || ''}
@@ -171,6 +185,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={4} sm={2} md={1}>
                     <TextField
                         value={proteins || ''}
@@ -182,6 +197,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={6} sm={3} md={2}>
                     <TextField
                         value={cookingTime || ''}
@@ -192,6 +208,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={6} sm={3} md={2}>
                     <TextField
                         value={calories || ''}
@@ -202,19 +219,23 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
+                
                 <Grid item xs={12} md={5}>
                     <Autocomplete data={preparedIngredients} selected={essentialIngredientIds || []} onSelect={selectEssentialIngredientsHandler} />
                 </Grid>
+                
                 <Grid item xs={12}>
                     <Grid item xs={12} sm={9} md={6}>
                         <Typography variant='h5' sx={{ marginBottom: 2 }}>Ingredients:</Typography>
-                        
+
                         {ingredientTitles?.map((key, i) => (
                             <Stack key={key} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
+                                
                                 <Stack direction='row' justifyContent='space-between' sx={{ width: '80%' }}>
                                     <Typography >{key}: </Typography>
                                     <Typography >{recipeIngredients[i][key]}</Typography>
                                 </Stack>
+                                
                                 {!newIngredient.title && (
                                     <Stack direction='row'>
                                         <Button onClick={() => editIngredientHandler(key)}>Edit</Button>
@@ -240,6 +261,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     }}
                                     onChange={(e) => setNewIngredient(prev => ({ ...prev, title: e.target.value }))}
                                 />
+                                
                                 <TextField
                                     value={newIngredient.weight}
                                     label="Weight"
@@ -255,6 +277,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     onChange={(e) => setNewIngredient(prev => ({ ...prev, weight: e.target.value }))}
                                 />
                             </Stack>
+                            
                             <Stack direction='row' gap={2} mt={2}>
                                 <FormControl fullWidth>
                                     <InputLabel id="unit">KCal Unit</InputLabel>
@@ -276,83 +299,34 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     onChange={(e) => setNewIngredient(prev => ({ ...prev, kcal: e.target.value }))}
                                 />
                             </Stack>
+                            
                             <Button disabled={!newIngredient.title || !newIngredient.weight} onClick={addIngredientHandler}>+ Add</Button>
                         </Stack>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={9} md={6}>
-                    <Typography variant='h5' sx={{ marginBottom: 2 }}>Main image:</Typography>
-                    {mainImage && (
-                        <Stack>
-                            <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
-                                <Typography>{mainImage}</Typography>
-                                <Stack direction='row'>
-                                    <Button onClick={editMainImageHandler}>Edit</Button>
-                                    <Button onClick={removeMainImageHandler}>Remove</Button>
-                                </Stack>
-                            </Stack>
-                            <img width={100} height={100} src={mainImage} alt={mainImage} />
-                        </Stack>
-                    )}
-                    {!mainImage && <Stack sx={{ marginTop: 2 }}>
-                        <Stack direction='row' gap={2}>
-                            <TextField
-                                value={mainImageLink}
-                                label="Add new image link for the main picture"
-                                name="link"
-                                fullWidth
-                                InputProps={{
-                                    endAdornment: mainImageLink ? <InputAdornment position="start">
-                                        <IconButton onClick={() => setMainImageLink('')}>
-                                            <CloseIcon />
-                                        </IconButton>
-                                    </InputAdornment> : <></>,
-                                }}
-                                onChange={(e) => setMainImageLink(e.target.value)}
-                            />
-                            <Button sx={{ width: 125 }} disabled={!mainImageLink} onClick={addMainImageHandler}>+ Add Link</Button>
-                        </Stack>
-                    </Stack>}
-                </Grid>
+                
                 <Grid item xs={12}>
                     <Grid item xs={12} sm={9} md={6}>
                         <Typography variant='h5' sx={{ marginBottom: 2 }}>Images:</Typography>
-                        {images?.map((imageLink, i) => (
-                            <Stack key={imageLink + i}>
-                                <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
-                                    <Stack direction='row' justifyContent='space-between'>
-                                        <Typography>{imageLink}</Typography>
-                                    </Stack>
-                                    {!newImageLink && (
-                                        <Stack direction='row'>
-                                            <Button onClick={() => editImageHandler(imageLink)}>Edit</Button>
-                                            <Button onClick={() => removeImageHandler(imageLink)}>Remove</Button>
-                                        </Stack>
-                                    )}
-                                </Stack>
-                                <img width={100} height={100} src={imageLink} alt={imageLink} />
+
+                        {imageFiles?.map(({ url, path }) => {
+                            return <Stack key={url} direction="row" sx={{ position: 'relative' }}>
+                                <img src={url} width="100%" alt="image" loading="lazy" />
+                                <IconButton
+                                    onClick={() => onRemoveFile(path)}
+                                    edge="end"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
                             </Stack>
-                        ))}
+                        })}
+
                         <Stack sx={{ marginTop: 2 }}>
-                            <Stack direction='row' gap={2}>
-                                <TextField
-                                    value={newImageLink}
-                                    label="Add new image link"
-                                    fullWidth
-                                    InputProps={{
-                                        endAdornment: newImageLink ? <InputAdornment position="start">
-                                            <IconButton onClick={() => setNewImageLink('')}>
-                                                <CloseIcon />
-                                            </IconButton>
-                                        </InputAdornment> : <></>,
-                                    }}
-                                    onChange={(e) => setNewImageLink(e.target.value)}
-                                />
-                                <Button sx={{ width: 125 }} disabled={!newImageLink} onClick={addNewImageHandler}>+ Add Link</Button>
-                            </Stack>
+                            <AppUploadButton onUpload={onUploadFile} />
                         </Stack>
                     </Grid>
                 </Grid>
+                
                 <Grid item xs={12}>
                     <Button sx={{ marginRight: 5 }} onClick={onCancel}>Cancel</Button>
                     <Button sx={{ color: 'white' }} variant='contained' disabled={disabled} onClick={confirmHandler}>Save</Button>

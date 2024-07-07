@@ -15,7 +15,7 @@ const RecipeSchema = new Schema(
     cookingTimeId: { type: Number },
     essentialIngredientIds: [{ type: String, trim: true }],
     mainImage: { type: String, trim: true },
-    images: [{ type: String, trim: true }],
+    mealType: { type: String, trim: true, enum: ['breakfast', 'branch', 'lunch', 'dinner'] },
     videos: [{ type: String, trim: true }],
     deleted: { type: Boolean, default: false },
   },

@@ -19,10 +19,9 @@ module.exports = async (req, res) => {
     carbs,
     ingredients,
     mainImage,
-    images,
-    videos
+    videos,
+    mealType
   } = req.body || {}
-console.log(req.body)
 
   if (Functions.isNull(id) || !Functions.isId(id)) {
     return res.send({
@@ -42,8 +41,8 @@ console.log(req.body)
     recipe.carbs = carbs
     recipe.ingredients = ingredients
     recipe.mainImage = mainImage
-    recipe.images = images
     recipe.videos = videos
+    recipe.mealType = mealType
     
     await recipe.save()
     
@@ -51,9 +50,17 @@ console.log(req.body)
     
     if (ingredientValues.length) {
       for (const ingredientValue of ingredientValues) {
-        const newIngredient = new db.ingredient(ingredientValue)
+        const existingIngredient = await db.ingredient.findOne({ title: ingredientValue.title })
+        
+        if (!existingIngredient || existingIngredient.unit !== ingredientValue.unit) {
+          const newIngredient = new db.ingredient(ingredientValue)
 
-        await newIngredient.save()
+          await newIngredient.save()
+        } else if (existingIngredient.value !== ingredientValue.value) {
+          existingIngredient.value = ingredientValue.value
+          
+          await existingIngredient.save()
+        }
       }
     }
   } catch (err) {

@@ -1,7 +1,8 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Grid, Button, FormControl, InputAdornment, InputLabel, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Grid, Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputAdornment, InputLabel, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check';
 import Autocomplete from '../../../../components/Autocomplete'
 import AppUploadButton from '../../../../components/AppUploadButton'
 import { ingredients } from '../../../../utils/Plans'
@@ -17,17 +18,15 @@ const defaultIngredient = {
     kcal: ''
 }
 export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
-
     const [recipe, setRecipe] = useState(item || { ingredients: [], ingredientsValue: [] })
     const [newIngredient, setNewIngredient] = useState(defaultIngredient)
     const [imageFiles, setImageFiles] = useState([])
-    const [mainImageLink, setMainImageLink] = useState('')
-    const [newImageLink, setNewImageLink] = useState('')
 
-    const { name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mainImage, images = [], videos, ingredientValues = [] } = recipe
+    const { _id, name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mealType, mainImage, videos, ingredientValues = [] } = recipe
+
     const ingredientTitles = recipeIngredients?.map(obj => Object.keys(obj))
 
-    const listRef = ref(storage, name);
+    const listRef = ref(storage, _id);
 
     const getFiles = async () => {
         const res = await listAll(listRef)
@@ -52,7 +51,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     }, [])
 
     const onUploadFile = (file) => {
-        const storageRef = ref(storage, `${name}/${file.name}`);
+        const storageRef = ref(storage, `${_id}/${file.name}`);
 
         uploadBytes(storageRef, file).then(() => {
             getFiles();
@@ -126,7 +125,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
         return undefined
     }
 
-    const disabled = !name || !description || !fats || !carbs || !proteins || !cookingTime || !calories
+    const disabled = !name || !description || !fats || !carbs || !proteins || !cookingTime || !calories || !mealType
 
     const preparedIngredients = [...ingredients.vegetables, ...ingredients.grains, ...ingredients.desiredProducts, ...ingredients.meat].map(item => ({ ...item, title: getTitle(item.title) }))
 
@@ -135,7 +134,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
             <Typography variant="h2" gutterBottom>
                 {item ? 'Edit Recipe' : 'Create New Recipe'}
             </Typography>
-            
+
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
@@ -148,7 +147,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={12}>
                     <TextField
                         value={description || ''}
@@ -161,7 +160,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={4} sm={2} md={1}>
                     <TextField
                         value={fats || ''}
@@ -173,7 +172,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={4} sm={2} md={1}>
                     <TextField
                         value={carbs || ''}
@@ -185,7 +184,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={4} sm={2} md={1}>
                     <TextField
                         value={proteins || ''}
@@ -197,7 +196,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={6} sm={3} md={2}>
                     <TextField
                         value={cookingTime || ''}
@@ -208,7 +207,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={6} sm={3} md={2}>
                     <TextField
                         value={calories || ''}
@@ -219,23 +218,68 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                         onChange={editFormHandler}
                     />
                 </Grid>
-                
+
                 <Grid item xs={12} md={5}>
                     <Autocomplete data={preparedIngredients} selected={essentialIngredientIds || []} onSelect={selectEssentialIngredientsHandler} />
                 </Grid>
-                
+
+                <Grid item xs={12}>
+                    <Typography variant='h5' sx={{ marginBottom: 2 }}>Recommended for:</Typography>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox
+                                checked={mealType === 'breakfast'}
+                                onChange={() => setRecipe((prev) => ({
+                                    ...prev,
+                                    mealType: 'breakfast'
+                                }))}
+                            />}
+                            label="Breakfast"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox
+                                checked={mealType === 'branch'}
+                                onChange={() => setRecipe((prev) => ({
+                                    ...prev,
+                                    mealType: 'branch'
+                                }))}
+                            />}
+                            label="Branch" />
+                        <FormControlLabel 
+                            control={<Checkbox 
+                                checked={mealType === 'lunch'} 
+                                onChange={() => setRecipe((prev) => ({
+                                    ...prev,
+                                    mealType: 'lunch'
+                                }))}
+                            />} 
+                            label="Lunch" 
+                        />
+                        <FormControlLabel 
+                            control={<Checkbox 
+                                checked={mealType === 'dinner'} 
+                                onChange={() => setRecipe((prev) => ({
+                                    ...prev,
+                                    mealType: 'dinner'
+                                }))}
+                            />} 
+                            label="Dinner" 
+                        />
+                    </FormGroup>
+                </Grid>
+
                 <Grid item xs={12}>
                     <Grid item xs={12} sm={9} md={6}>
                         <Typography variant='h5' sx={{ marginBottom: 2 }}>Ingredients:</Typography>
 
                         {ingredientTitles?.map((key, i) => (
                             <Stack key={key} direction='row' justifyContent='space-between' alignItems='center' sx={{ height: 24, width: '100%' }}>
-                                
+
                                 <Stack direction='row' justifyContent='space-between' sx={{ width: '80%' }}>
                                     <Typography >{key}: </Typography>
                                     <Typography >{recipeIngredients[i][key]}</Typography>
                                 </Stack>
-                                
+
                                 {!newIngredient.title && (
                                     <Stack direction='row'>
                                         <Button onClick={() => editIngredientHandler(key)}>Edit</Button>
@@ -261,7 +305,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     }}
                                     onChange={(e) => setNewIngredient(prev => ({ ...prev, title: e.target.value }))}
                                 />
-                                
+
                                 <TextField
                                     value={newIngredient.weight}
                                     label="Weight"
@@ -277,7 +321,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     onChange={(e) => setNewIngredient(prev => ({ ...prev, weight: e.target.value }))}
                                 />
                             </Stack>
-                            
+
                             <Stack direction='row' gap={2} mt={2}>
                                 <FormControl fullWidth>
                                     <InputLabel id="unit">KCal Unit</InputLabel>
@@ -299,25 +343,36 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     onChange={(e) => setNewIngredient(prev => ({ ...prev, kcal: e.target.value }))}
                                 />
                             </Stack>
-                            
+
                             <Button disabled={!newIngredient.title || !newIngredient.weight} onClick={addIngredientHandler}>+ Add</Button>
                         </Stack>
                     </Grid>
                 </Grid>
-                
-                <Grid item xs={12}>
+
+                {_id && <Grid item xs={12}>
                     <Grid item xs={12} sm={9} md={6}>
                         <Typography variant='h5' sx={{ marginBottom: 2 }}>Images:</Typography>
 
                         {imageFiles?.map(({ url, path }) => {
                             return <Stack key={url} direction="row" sx={{ position: 'relative' }}>
                                 <img src={url} width="100%" alt="image" loading="lazy" />
-                                <IconButton
-                                    onClick={() => onRemoveFile(path)}
-                                    edge="end"
-                                >
-                                    <CloseIcon />
-                                </IconButton>
+                                <Stack>
+                                    <Button
+                                        sx={{ color: 'red' }}
+                                        onClick={() => onRemoveFile(path)}
+                                        edge="end"
+                                    >
+                                        delete
+                                        <CloseIcon />
+                                    </Button>
+                                    {mainImage !== path ? <Button
+                                        onClick={() => setRecipe(prev => ({ ...prev, mainImage: path }))}
+                                        edge="end"
+                                    >
+                                        set as primary picture
+                                        <CheckIcon />
+                                    </Button> : <Typography>Main Image</Typography>}
+                                </Stack>
                             </Stack>
                         })}
 
@@ -325,8 +380,8 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                             <AppUploadButton onUpload={onUploadFile} />
                         </Stack>
                     </Grid>
-                </Grid>
-                
+                </Grid>}
+
                 <Grid item xs={12}>
                     <Button sx={{ marginRight: 5 }} onClick={onCancel}>Cancel</Button>
                     <Button sx={{ color: 'white' }} variant='contained' disabled={disabled} onClick={confirmHandler}>Save</Button>

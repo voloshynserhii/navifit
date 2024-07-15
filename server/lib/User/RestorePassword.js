@@ -41,12 +41,14 @@ module.exports = async(req, res) => {
     await user.save()
 
     res.json({})
-
+    
+    const url = `${config.portal.url}/restore/${user.oneTimePassword}`
+    
     const mailOptions = {
       from: config.mailer.email,
       to: user.email,
       subject: 'From Navifit: You requested to reset a password!',
-      html: getRestorePasswordComponent(user.oneTimePassword)
+      html: getRestorePasswordComponent(url)
     }
     
     transporter.sendMail(mailOptions, (err, info) => {

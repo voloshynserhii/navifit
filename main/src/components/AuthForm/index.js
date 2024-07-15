@@ -95,7 +95,7 @@ const defaultValidationValue = {
     passwordMatch: true
 }
 
-export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError = () => {}, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
+export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError = () => { }, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const userId = searchParams.get('user')
@@ -148,7 +148,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
             setFormIsValid(true)
             return
         }
-            
+
         if (!emailError && password.chars && password.digit && password.letter) {
             if (signup) {
                 if (passwordMatch) {
@@ -222,21 +222,13 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
         }
     }
 
-    if (message) {
-        return (
-            <Box sx={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Alert sx={{ zIndex: 1301, marginBottom: 5 }} variant="filled" severity="success">{message}</Alert>
-                <Button variant="filled" onClick={() => router.push('/login')}>
-                    Go to login page
-                </Button>
-            </Box>
-        )
-    }
-
     return (
         <Container>
             <DemoPaper>
-                {resetPassword && (<StyledIconButton onClick={() => setResetPassword(false)}>
+                {resetPassword && (<StyledIconButton onClick={() => {
+                    setResetPassword(false)
+                    onClearError()
+                }}>
                     <ArrowBackIosRoundedIcon />
                 </StyledIconButton>)}
 
@@ -249,7 +241,10 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                 </Stack>
 
                 <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
-
+                    {message && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                        <Typography variant='medium14' component='p' color='black'>{message} </Typography>
+                    </Stack>}
+                    
                     {currentUser && currentUser.oneTimePassword && !currentUser.isConfirmed && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
                         <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
                         <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>

@@ -41,11 +41,13 @@ module.exports = function (req, res, next) {
       user.save().then(() => {
         res.json({})
         
+        const url = `${config.portal.url}/signup`
+        
         const mailOptions = {
           from: config.mailer.email,
           to: user.email,
           subject: 'From Navifit: You changed your password!',
-          html: getResetPasswordComponent(config.portal.url)
+          html: getResetPasswordComponent(url)
         }
         
         transporter.sendMail(mailOptions, (err, info) => {

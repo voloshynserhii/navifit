@@ -105,7 +105,10 @@ export default function SignUpPage() {
         onSubmit={handleAuthorize}
         onChangePassword={handleChangePassword}
         onRestorePassword={handleRestorePassword}
-        onClearError={() => setError(null)}
+        onClearError={() => {
+          setError(null)
+          setUserMessage('')
+        }}
         onGetConfirmedUser={handleGetConfirmedUser}
       />
     </main>

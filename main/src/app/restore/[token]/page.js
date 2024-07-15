@@ -1,12 +1,11 @@
 'use client'
 import { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import AuthForm from '../../../components/AuthForm'
 import api from '../../../utils/api'
 
 
 export default function RestorePasswordPage() {
-  const router = useRouter()
   const [error, setError] = useState()
   const [loading, setLoading] = useState(false)
   const [userMessage, setUserMessage] = useState()
@@ -37,6 +36,7 @@ export default function RestorePasswordPage() {
         changePassword 
         loading={loading} 
         message={userMessage} 
+        onClearError={() => setUserMessage('')}
         error={error} 
         onChangePassword={handleChangePassword} 
       />

@@ -5,6 +5,7 @@ const config = require('../../config')
 const { transporter } = require('../../util/mailer')
 const Functions = require('../../util/Functions')
 const { generatePlan } = require('../../util/PlansUtil')
+const { getConfirmRegistrationComponent } = require('./components/confirmRegistration')
 
 /**
  * Sign Up User
@@ -61,17 +62,13 @@ module.exports = async (req, res) => {
 
         await user.save()
 
+        const url = `${config.server.url}/api/user/confirm?user=${user.email}&key=${user.oneTimePassword}`
+
         const mailOptions = {
             from: config.mailer.email,
             to: user.email,
             subject: 'From Navifit: Confirm your Email!',
-            html: `<div>
-                <h2>Confirm your Email!</h2>
-                <p>
-                You can confirm your email by clicking on the link below:
-                </p>
-                <p>${config.server.url}/api/user/confirm?user=${user.email}&key=${user.oneTimePassword}</p>
-            </div>`
+            html: getConfirmRegistrationComponent(url)
         }
 
         transporter.sendMail(mailOptions, (err, info) => {

@@ -1,9 +1,10 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Alert, Box, Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
+import { Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+import LoginType from './LoginType'
 import { email as emailIcon, passwordHidden, passwordVisisble, OK } from '@src/utils/icons'
 import { isEmail } from '@src/utils/functions'
 
@@ -95,12 +96,13 @@ const defaultValidationValue = {
     passwordMatch: true
 }
 
-export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError = () => { }, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser }) {
+export default function AuthForm({ title = '', subTitle = '', agreeText = '', signup = false, changePassword, currentUser = {}, error: serverError, message, onClearError = () => { }, onSubmit, onChangePassword, onRestorePassword, onGetConfirmedUser, onGoogleLogin }) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const userId = searchParams.get('user')
     const confirmed = searchParams.get('confirmed')
 
+    const [loginType, setLoginType] = useState()
     const [validation, setValidation] = useState(defaultValidationValue)
     const [email, setEmail] = useState(currentUser.email)
     const [password, setPassword] = useState('')
@@ -109,6 +111,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     const [confirmPassword, setConfirmPassword] = useState('')
     const [formIsValid, setFormIsValid] = useState(false)
 
+    let login = true
     let header = title
     let subHeader = subTitle
     let mainButtonTitle = 'Zaloguj się'
@@ -117,6 +120,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     if (signup) {
         mainButtonTitle = 'Załóż konto'
         helperButtonsText = ['Masz konta NAVIFIT?', 'Zaloguj się']
+        login = false
     }
 
     if (resetPassword) {
@@ -124,11 +128,13 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
         subHeader = 'Wpisz adres e-mail, na który jesteś zarejestrowana w aplikacji NAVIFIT'
         mainButtonTitle = 'Wyślij hasło'
         helperButtonsText = ['Masz pytanie?', 'Skontaktuj się z nami']
+        login = false
     }
 
     if (changePassword) {
         mainButtonTitle = 'Zresetuj hasło'
         helperButtonsText = []
+        login = false
     }
 
     useEffect(() => {
@@ -225,9 +231,10 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     return (
         <Container>
             <DemoPaper>
-                {resetPassword && (<StyledIconButton onClick={() => {
+                {resetPassword || (login && !!loginType) && (<StyledIconButton onClick={() => {
                     setResetPassword(false)
                     onClearError()
+                    setLoginType(undefined)
                 }}>
                     <ArrowBackIosRoundedIcon />
                 </StyledIconButton>)}
@@ -240,93 +247,65 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                     {!resetPassword && <Typography variant='bodyRegular12' color='secondary.greyDarken2' sx={{ textAlign: { xs: 'center', md: 'start' }, width: { md: '35%' }, position: 'absolute', bottom: 35 }}>{agreeText}</Typography>}
                 </Stack>
 
-                <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
-                    {message && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
-                        <Typography variant='medium14' component='p' color='black'>{message} </Typography>
-                    </Stack>}
-                    
-                    {currentUser && currentUser.oneTimePassword && !currentUser.isConfirmed && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
-                        <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
-                        <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
-                    </Stack>}
+                {login && !loginType ? (
+                    <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
+                        <LoginType onGoogleLogin={onGoogleLogin} onEmailLogin={() => setLoginType(true)} onSignUp={() => router.push(`/signup`)}/>
+                    </Stack>
+                ) : (
+                    <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
+                        {message && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                            <Typography variant='medium14' component='p' color='black'>{message} </Typography>
+                        </Stack>}
 
-                    {userId && currentUser && currentUser.isConfirmed && !resetPassword && (
-                        <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
-                            <Stack direction='row' justifyContent='center' gap={1}>
-                                {OK}
-                                <Typography variant='medium14' component='p' color='black'>Twoje konto zostało aktywowane</Typography>
+                        {currentUser && currentUser.oneTimePassword && !currentUser.isConfirmed && <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                            <Typography variant='medium14' component='p' color='black'>Aby aktywować konto odbierz e-mail potwierdzający rejestrację i kliknij w link w treści wiadomości. </Typography>
+                            <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Jeżeli nie dostałeś wiadomości, sprawdź czy nie znajduje się ona w folderze spam Twojej poczty lub wyślij ponownie link aktywacyjny.</Typography>
+                        </Stack>}
+
+                        {userId && currentUser && currentUser.isConfirmed && !resetPassword && (
+                            <Stack sx={{ padding: '12px 30px', borderRadius: 5, textAlign: 'center', backgroundColor: 'secondary.greyLighten5', mb: 1.5, gap: 1 }}>
+                                <Stack direction='row' justifyContent='center' gap={1}>
+                                    {OK}
+                                    <Typography variant='medium14' component='p' color='black'>Twoje konto zostało aktywowane</Typography>
+                                </Stack>
+                                <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Możesz zalogować się za pomocą swojego adresu e-mail i hasła</Typography>
                             </Stack>
-                            <Typography variant='bodyRegular12' component='p' color='secondary.greyDarken2'>Możesz zalogować się za pomocą swojego adresu e-mail i hasła</Typography>
-                        </Stack>
-                    )}
+                        )}
 
-                    <Stack sx={{ gap: { xs: 2, md: 0 } }}>
+                        <Stack sx={{ gap: { xs: 2, md: 0 } }}>
 
-                        {!changePassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
-                            <CustomLabel>E-mail</CustomLabel>
-                            <CustomInput
-                                autoFocus
-                                value={email || ''}
-                                error={!!serverError || (email && !!validation.emailError)}
-                                type='email'
-                                label="Email"
-                                name="email"
-                                // disabled={!!currentUser.email && resetPassword}
-                                onChange={e => setEmail(e.target.value?.trim())}
-                                onBlur={(e) => !isEmail(e.target.value) ? validateFields('emailError', true) : validateFields('emailError', false)}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        {emailIcon}
-                                    </InputAdornment>
-                                }
-                            />
-                            {email && validation.emailError && <Typography variant='bodyRegular12' color='secondary.red'>Invalid email format</Typography>}
-                        </FormControl>}
-
-                        {!resetPassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
-                            <CustomLabel>{changePassword ? "New Password" : "Password"}</CustomLabel>
-                            <CustomInput
-                                value={password || ''}
-                                error={!!serverError}
-                                type={showPassword ? 'text' : 'password'}
-                                onChange={e => {
-                                    setPassword(e.target.value?.trim())
-                                    validateFields('password', e.target.value?.trim())
-                                }}
-                                onBlur={() => confirmPassword ? validateFields('passwordMatch', confirmPassword) : () => { }}
-                                endAdornment={
-                                    <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showPassword ? passwordVisisble : passwordHidden}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label={changePassword ? "New Password" : "Password"}
-                            />
-                            {(signup || changePassword) && password && (
-                                <>
-                                    <Typography variant='bodyRegular12' color='primary.contrastText'>Make sure your password contains:</Typography>
-                                    <Typography variant='bodyRegular12' color={!validation.password.chars ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>Minimum 8 characters</Typography>
-                                    <Typography variant='bodyRegular12' color={!validation.password.digit ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>At least 1 digit</Typography>
-                                    <Typography variant='bodyRegular12' color={!validation.password.letter ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>At least 1 letter</Typography>
-                                </>
-                            )}
-                        </FormControl>}
-
-                        {(signup || changePassword) && (
-                            <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
-                                <CustomLabel>Confirm Password</CustomLabel>
+                            {!changePassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
+                                <CustomLabel>E-mail</CustomLabel>
                                 <CustomInput
-                                    value={confirmPassword || ''}
+                                    autoFocus
+                                    value={email || ''}
+                                    error={!!serverError || (email && !!validation.emailError)}
+                                    type='email'
+                                    label="Email"
+                                    name="email"
+                                    // disabled={!!currentUser.email && resetPassword}
+                                    onChange={e => setEmail(e.target.value?.trim())}
+                                    onBlur={(e) => !isEmail(e.target.value) ? validateFields('emailError', true) : validateFields('emailError', false)}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            {emailIcon}
+                                        </InputAdornment>
+                                    }
+                                />
+                                {email && validation.emailError && <Typography variant='bodyRegular12' color='secondary.red'>Invalid email format</Typography>}
+                            </FormControl>}
+
+                            {!resetPassword && <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
+                                <CustomLabel>{changePassword ? "New Password" : "Password"}</CustomLabel>
+                                <CustomInput
+                                    value={password || ''}
                                     error={!!serverError}
                                     type={showPassword ? 'text' : 'password'}
-                                    onBlur={() => validateFields('passwordMatch', confirmPassword)}
-                                    onChange={e => setConfirmPassword(e.target.value?.trim())}
+                                    onChange={e => {
+                                        setPassword(e.target.value?.trim())
+                                        validateFields('password', e.target.value?.trim())
+                                    }}
+                                    onBlur={() => confirmPassword ? validateFields('passwordMatch', confirmPassword) : () => { }}
                                     endAdornment={
                                         <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
                                             <IconButton
@@ -339,45 +318,79 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Confirm Password"
+                                    label={changePassword ? "New Password" : "Password"}
                                 />
-                                {confirmPassword && !validation.passwordMatch && <Typography variant='bodyRegular12' color='secondary.red'>Password didn’t match</Typography>}
-                            </FormControl>
-                        )}
-                    </Stack>
+                                {(signup || changePassword) && password && (
+                                    <>
+                                        <Typography variant='bodyRegular12' color='primary.contrastText'>Make sure your password contains:</Typography>
+                                        <Typography variant='bodyRegular12' color={!validation.password.chars ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>Minimum 8 characters</Typography>
+                                        <Typography variant='bodyRegular12' color={!validation.password.digit ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>At least 1 digit</Typography>
+                                        <Typography variant='bodyRegular12' color={!validation.password.letter ? 'secondary.greyDarken2' : 'secondary.greenDarken1'}>At least 1 letter</Typography>
+                                    </>
+                                )}
+                            </FormControl>}
 
-                    <Stack sx={{ position: 'relative', marginLeft: 1 }}>
-
-                        <Stack direction='row' justifyContent='space-between' sx={{ marginBottom: 2, marginTop: 1 }}>
-                            <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='secondary.red'>
-                                {serverError ? serverError : ''}
-                            </Typography>
-                            {!resetPassword && !changePassword && !signup && (<Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => setResetPassword(true)}>
-                                Zapomniales hasla?
-                            </Typography>)}
+                            {(signup || changePassword) && (
+                                <FormControl sx={{ m: { xs: 0, md: 1 }, width: '100%' }} variant="outlined">
+                                    <CustomLabel>Confirm Password</CustomLabel>
+                                    <CustomInput
+                                        value={confirmPassword || ''}
+                                        error={!!serverError}
+                                        type={showPassword ? 'text' : 'password'}
+                                        onBlur={() => validateFields('passwordMatch', confirmPassword)}
+                                        onChange={e => setConfirmPassword(e.target.value?.trim())}
+                                        endAdornment={
+                                            <InputAdornment position="end" sx={{ marginRight: 1.5 }}>
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? passwordVisisble : passwordHidden}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        label="Confirm Password"
+                                    />
+                                    {confirmPassword && !validation.passwordMatch && <Typography variant='bodyRegular12' color='secondary.red'>Password didn’t match</Typography>}
+                                </FormControl>
+                            )}
                         </Stack>
 
-                        <MainButton
-                            variant="contained"
-                            disabled={!formIsValid}
-                            onClick={onClickMainButton}
-                        >
-                            {mainButtonTitle}
-                        </MainButton>
+                        <Stack sx={{ position: 'relative', marginLeft: 1 }}>
 
-                        {helperButtonsText?.length ? <Stack direction='row' justifyContent='center' gap={1}
-                            sx={{ width: '100%', marginTop: 5 }}
-                        >
-                            <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='black'>
-                                {helperButtonsText[0]}
-                            </Typography>
-                            <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => router.push(`/${signup ? 'login' : resetPassword ? 'contact' : 'signup'}`)}>
-                                {helperButtonsText[1]}
-                            </Typography>
-                        </Stack> : <></>}
+                            <Stack direction='row' justifyContent='space-between' sx={{ marginBottom: 2, marginTop: 1 }}>
+                                <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='secondary.red'>
+                                    {serverError ? serverError : ''}
+                                </Typography>
+                                {!resetPassword && !changePassword && !signup && (<Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => setResetPassword(true)}>
+                                    Zapomniales hasla?
+                                </Typography>)}
+                            </Stack>
 
+                            <MainButton
+                                variant="contained"
+                                disabled={!formIsValid}
+                                onClick={onClickMainButton}
+                            >
+                                {mainButtonTitle}
+                            </MainButton>
+
+                            {helperButtonsText?.length ? <Stack direction='row' justifyContent='center' gap={1}
+                                sx={{ width: '100%', marginTop: 5 }}
+                            >
+                                <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' color='black'>
+                                    {helperButtonsText[0]}
+                                </Typography>
+                                <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={() => router.push(`/${signup ? 'login' : resetPassword ? 'contact' : 'signup'}`)}>
+                                    {helperButtonsText[1]}
+                                </Typography>
+                            </Stack> : <></>}
+                        </Stack>
                     </Stack>
-                </Stack>
+                )}
+
             </DemoPaper>
         </Container>
     );

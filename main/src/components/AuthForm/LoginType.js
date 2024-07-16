@@ -38,7 +38,7 @@ const MainButton = styled(Button)(({ theme }) => ({
 const LoginType = ({ onGoogleLogin, onEmailLogin, onSignUp }) => {
     return (
         <Stack sx={{ alignItems: 'center' }}>
-            <Stack sx={{ width: '80%' }}>
+            <Stack sx={{ width: { xs: '100%', md: '80%' } }}>
                 <GoogleButton
                     variant="contained"
                     startIcon={

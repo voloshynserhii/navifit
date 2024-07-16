@@ -21,7 +21,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     minHeight: '70vh',
     [theme.breakpoints.down("md")]: {
         flexDirection: 'column',
-        padding: '36px 12px 100px',
+        padding: '56px 12px 100px',
         minHeight: 'auto',
     },
 }))
@@ -32,6 +32,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.primary.contrastText,
     [theme.breakpoints.down("md")]: {
         top: 10,
+        left: 10
     },
 }))
 

@@ -1,17 +1,37 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 import Main from '../containers/Main'
 import Steps from '../containers/Steps'
 import { useAppStore } from '../store'
 import { localStorageGet } from '../utils/localStorage';
 import api from '../utils/api'
+import app from '../../firebase/config'
+
+const auth = getAuth(app);
 
 export default function Home() {
   const router = useRouter()
   const [_, dispatch] = useAppStore()
   const [optionChosen, setOptionChosen] = useState()
-
+  
+  const authWithGoogle = (email) => {
+    api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, isGoogleLogin: true }).then(({ user, message }) => {
+      if (user) {
+        authenticate(user)
+      }
+    })
+  }
+  
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authWithGoogle(user.email)
+      }
+    });
+  }, [])
+  
   useEffect(() => {
     //remove on production
     api.server.wakeUp(process.env.NEXT_PUBLIC_DB_HOST)

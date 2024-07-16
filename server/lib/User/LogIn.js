@@ -7,15 +7,15 @@ const Functions = require('../../util/Functions')
  * @param res
  */
 module.exports = async (req, res) => {
-    const { email, password, isAdmin = false } = req.body
-    
+    const { email, password, isAdmin = false, isGoogleLogin = false } = req.body
+
     if (!Functions.isString(email) || !Functions.isEmail(email)) {
         return res.json({
             message: 'Enter valid email!'
         })
     }
     
-    if (Functions.isEmpty(password)) {
+    if (!isGoogleLogin && Functions.isEmpty(password)) {
         return res.json({
             message: 'Password is missing!'
         })
@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
     db.user
         .findOne(query)
         .then(async (user) => {
-            if (!user) {
+            if (!isGoogleLogin && !user) {
                 return res.json({
                     message: 'User not found!'
                 })
@@ -47,6 +47,20 @@ module.exports = async (req, res) => {
                 }
 
                 return res.json({ user })
+            } else if (isGoogleLogin) {
+                if (!user) {
+                    const newUser = await db.user.create({ email })
+
+                    newUser.isDraftUser = false
+                    newUser.isConfirmed = true
+            
+                    await newUser.save()
+                    
+                    return res.json({ user: newUser })
+                } else {
+                    return res.json({ user })
+                }
+                
             } else {
                 if (!user.authenticate(password)) {
                     return res.json({

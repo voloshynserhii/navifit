@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
-import { getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "firebase/auth"
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 import { useAppStore } from '../../store'
 import AuthForm from '../../components/AuthForm'
 import api from '../../utils/api'
@@ -10,7 +10,6 @@ import app from '../../../firebase/config'
 
 const provider = new GoogleAuthProvider()
 const auth = getAuth(app);
-
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -29,6 +28,35 @@ export default function SignUpPage() {
     });
     router.push(`/account/plan/${user._id}`)
   }
+
+  const authWithGoogle = (email) => {
+    setLoading(true)
+
+    api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, isGoogleLogin: true }).then(({ user, message }) => {
+      if (message) {
+        setError(message)
+      } else if (user) {
+        authenticate(user)
+      }
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
+    })
+  }
+  
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authWithGoogle(user.email)
+      }
+    });
+  }, [])
+  
+  useEffect(() => {
+    if (auth.currentUser) {
+      authWithGoogle(auth.currentUser.email)
+    }
+  }, [auth.currentUser])
 
   const handleAuthorize = ({ email, password }) => {
     setLoading(true)
@@ -94,25 +122,20 @@ export default function SignUpPage() {
     })
   }
 
-  const handleGoogleLogin = () => {
-    signInWithRedirect(auth, provider)
-  }
-
-  useEffect(() => {
-    getRedirectResult(auth)
+  const handleGoogleLogin = async () => {
+    signInWithPopup(auth, provider)
       .then((result) => {
-        console.log('RESULT', result)
-        // This gives you a Google Access Token. You can use it to access Google APIs.
+        // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        console.log("CREDENTIAL", credential)
         const token = credential.accessToken;
-        
         // The signed-in user info.
-        // const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
+        const user = result.user;
+
+        if (user) {
+          authWithGoogle(user.email)
+        }
       }).catch((error) => {
-        console.log('ERROR', error)
+        console.log('ERRROR', error)
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -120,11 +143,9 @@ export default function SignUpPage() {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log("CREDENTIAL", credential)
         // ...
       });
-  }, [])
-
+  }
 
   return (
     <main>

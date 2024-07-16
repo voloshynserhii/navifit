@@ -1,14 +1,18 @@
 import { useState, useEffect, Fragment } from 'react';
+import { getAuth, signOut } from "firebase/auth"
 import { useRouter, usePathname } from 'next/navigation'
 import { Accordion, AccordionSummary, AccordionDetails, Box, Button, Divider, IconButton, List, ListItem, ListItemButton, Stack, SwipeableDrawer, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import app from '../../../firebase/config'
 import { useAppStore } from '../../store';
 import MenuIcon from '../Icons/Menu';
 import MenuButton from '../MenuButton';
 import { sklep, info, contact, conditions, about, user, logOut, menuBeforeIcon } from '../../utils/icons'
 import { localStorageGet } from '../../utils/localStorage';
 import styles from './index.module.css'
+
+const auth = getAuth(app);
 
 const userMenu = {
     title: 'Moje Konto',
@@ -261,6 +265,7 @@ export default function SwipeableTemporaryDrawer() {
                             <LogOutButton
                                 endIcon={<div style={{ position: 'absolute', right: 14, bottom: 3 }}>{logOut}</div>}
                                 onClick={() => {
+                                    signOut(auth)
                                     dispatch({ type: 'LOG_OUT' })
                                     router.push('/', { scroll: false })
                                     setState({ anchor: false })

@@ -16,22 +16,6 @@ export default function Home() {
   const [_, dispatch] = useAppStore()
   const [optionChosen, setOptionChosen] = useState()
   
-  const authWithGoogle = (email) => {
-    api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, isGoogleLogin: true }).then(({ user, message }) => {
-      if (user) {
-        authenticate(user)
-      }
-    })
-  }
-  
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        authWithGoogle(user.email)
-      }
-    });
-  }, [])
-  
   useEffect(() => {
     //remove on production
     api.server.wakeUp(process.env.NEXT_PUBLIC_DB_HOST)
@@ -47,6 +31,12 @@ export default function Home() {
       })
 
       router.push(`/account/plan/${user._id}`)
+    } else {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email: user.email, isGoogleLogin: true })
+        }
+      });
     }
   }, [])
   

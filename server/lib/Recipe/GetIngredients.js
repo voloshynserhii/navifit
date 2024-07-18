@@ -13,7 +13,7 @@ module.exports = async(req, res) => {
         }
         
         const list = await db.ingredient.find(query).lean().exec()
-        console.log(list)
+
         res.json({ data: list })
     } catch (err) {
         console.log(err)

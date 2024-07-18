@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
       for (const ingredientValue of ingredientValues) {
         const existingIngredient = await db.ingredient.findOne({ title: ingredientValue.title })
         
-        if (!existingIngredient || existingIngredient.unit !== ingredientValue.unit) {
+        if (!existingIngredient) {
           const newIngredient = new db.ingredient(ingredientValue)
 
           await newIngredient.save()

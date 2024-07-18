@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import LoginType from './LoginType'
+import ChooseTypeStep from './ChososeTypeStep'
 import { email as emailIcon, passwordHidden, passwordVisisble, OK } from '@src/utils/icons'
 import { isEmail } from '@src/utils/functions'
 
@@ -232,7 +232,7 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
     return (
         <Container>
             <DemoPaper>
-                {resetPassword || (login && !!loginType) && (<StyledIconButton onClick={() => {
+                {resetPassword || ((signup || login) && !!loginType) && (<StyledIconButton onClick={() => {
                     setResetPassword(false)
                     onClearError()
                     setLoginType(undefined)
@@ -248,9 +248,9 @@ export default function AuthForm({ title = '', subTitle = '', agreeText = '', si
                     {!resetPassword && <Typography variant='bodyRegular12' color='secondary.greyDarken2' sx={{ textAlign: { xs: 'center', md: 'start' }, width: { md: '35%' }, position: 'absolute', bottom: 35 }}>{agreeText}</Typography>}
                 </Stack>
 
-                {login && !loginType ? (
+                {(signup || login) && !loginType ? (
                     <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>
-                        <LoginType onGoogleLogin={onGoogleLogin} onEmailLogin={() => setLoginType(true)} onSignUp={() => router.push(`/signup`)}/>
+                        <ChooseTypeStep login={login} onGoogleLogin={onGoogleLogin} onChooseEmailType={() => setLoginType(true)} onChangeType={() => router.push(`${login ? '/signup': '/login'}`)}/>
                     </Stack>
                 ) : (
                     <Stack sx={{ width: { xs: '100%', md: '50%' }, paddingTop: { xs: 2, md: 10 } }}>

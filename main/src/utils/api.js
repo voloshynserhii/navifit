@@ -1,6 +1,7 @@
 import axios from 'axios';
 // import i18n from 'i18next';
 
+const url = process.env.NEXT_PUBLIC_DB_HOST
 const options = { withCredentials: true };
 
 axios.interceptors.request.use(conf => ({
@@ -89,4 +90,8 @@ export default {
     update: (url, body) => requests.put({ url: `${url}/recipes/${body._id}`, body }),
     remove: (url, id) => requests.delete({ url: `${url}/recipes/${id}` }),
   },
+  payment: {
+    auth: () => requests.get({ url: `${url}/payment/auth` }),
+    createTransaction: (body) => requests.post({ url: `${url}/payment/createTransaction`, body }),
+  }
 };

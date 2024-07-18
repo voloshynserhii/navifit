@@ -33,13 +33,21 @@ const Checkout = () => {
     })
   }, [])
 
-  const paymentHandler = () => {
-    dispatch({
-      type: 'CURRENT_USER',
-      payload: state.userData,
-    });
+  const paymentHandler = async () => {
+    const { data } = await api.payment.auth()
+    const { access_token } = data || {}
+    console.log(data)
+    if (access_token) {
+      console.log('Pay', access_token)
+      await api.payment.createTransaction({ access_token })
+    }
 
-    router.push('/signup', { scroll: false });
+    // dispatch({
+    //   type: 'CURRENT_USER',
+    //   payload: state.userData,
+    // });
+
+    // router.push('/signup', { scroll: false });
   }
 
   return (

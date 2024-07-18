@@ -23,6 +23,11 @@ let defaultConfig = {
     email: process.env.EMAIL_SENDER,
     password: process.env.EMAIL_PASSWORD,
   },
+  payment: {
+    uri: process.env.TPAY_URI,
+    client_id: process.env.TPAY_CLIENT_ID,
+    client_secret: process.env.TPAY_SECRET,
+  },
 
   /**
    * Setting MongoDB

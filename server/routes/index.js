@@ -4,6 +4,7 @@ const User = require('../lib/User')
 const Recipe = require('../lib/Recipe')
 const Plan = require('../lib/Plan')
 const Promo = require('../lib/Promocode')
+const Payment = require('../lib/Payment')
 
 const router = express.Router()
 
@@ -47,6 +48,12 @@ router.get('/recipes', Recipe.Get)
 router.post('/recipes', Recipe.Create)
 router.put('/recipes/:id', Recipe.Update)
 router.delete('/recipes/:id', Recipe.Remove)
+
+/**
+* Module Payments
+*/
+router.get('/payment/auth', Payment.Auth)
+router.post('/payment/createTransaction', Payment.CreateTransaction)
 
 /**
 * If not one router not found, send 404

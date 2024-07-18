@@ -35,7 +35,7 @@ const MainButton = styled(Button)(({ theme }) => ({
     }
 }))
 
-const LoginType = ({ onGoogleLogin, onEmailLogin, onSignUp }) => {
+const ChooseTypeStep = ({ login = false, onGoogleLogin, onChooseEmailType, onChangeType }) => {
     return (
         <Stack sx={{ alignItems: 'center' }}>
             <Stack sx={{ width: { xs: '100%', md: '80%' } }}>
@@ -48,21 +48,21 @@ const LoginType = ({ onGoogleLogin, onEmailLogin, onSignUp }) => {
                     }
                     onClick={onGoogleLogin}
                 >
-                    Zaloguj przez Google
+                    {login ? 'Zaloguj przez Google' : 'Zarejestruj się przez Google'}
                 </GoogleButton>
                     
                 <Divider sx={{ marginTop: 4, marginBottom: 4 }} variant="middle">lub</Divider>
                 
-                <MainButton variant="contained" onClick={onEmailLogin}>Kontynuuj z e-mailem</MainButton>
+                <MainButton variant="contained" onClick={onChooseEmailType}>Kontynuuj z e-mailem</MainButton>
                 
                 <Stack direction='row' justifyContent='center' gap={1}
                     sx={{ width: '100%', marginTop: 5 }}
                 >
                     <Typography variant='bodyRegular14' color='black'>
-                        Nie masz jeszcze konta NAVIFIT?
+                        {login ? 'Nie masz jeszcze konta NAVIFIT?': 'Masz konta NAVIFIT?'}
                     </Typography>
-                    <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={onSignUp}>
-                        Załóż konto
+                    <Typography sx={{ cursor: 'pointer' }} variant='bodyRegular14' onClick={onChangeType}>
+                        {login ? 'Załóż konto' : 'Zaloguj się'}
                     </Typography>
                 </Stack>
             </Stack>
@@ -70,4 +70,4 @@ const LoginType = ({ onGoogleLogin, onEmailLogin, onSignUp }) => {
     )
 }
 
-export default LoginType;
+export default ChooseTypeStep;

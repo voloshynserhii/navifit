@@ -1,13 +1,14 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Grid, Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputAdornment, InputLabel, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Grid, Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputAdornment, InputLabel, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-import Autocomplete from '../../../../components/Autocomplete'
+import CustomAutocomplete from '../../../../components/Autocomplete'
 import AppUploadButton from '../../../../components/AppUploadButton'
 import { ingredients } from '../../../../utils/Plans'
 import { getTitle } from '../../helpers'
 import '../../../../../firebase/config'
+import api from '../../../../utils/api'
 
 const storage = getStorage();
 
@@ -21,6 +22,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     const [recipe, setRecipe] = useState(item || { ingredients: [], ingredientsValue: [] })
     const [newIngredient, setNewIngredient] = useState(defaultIngredient)
     const [imageFiles, setImageFiles] = useState([])
+    const [ingredientsData, setIngredientsData] = useState([])
 
     const { _id, name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mealType, mainImage, videos, ingredientValues = [] } = recipe
 
@@ -46,8 +48,17 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
         }
     }
 
+    const getIngredients = async () => {
+        const { data } = await api.recipe.getIngredients()
+
+        if (data?.length) {
+            setIngredientsData(data)
+        }
+    }
+
     useEffect(() => {
         getFiles();
+        getIngredients();
     }, [])
 
     const onUploadFile = (file) => {
@@ -81,6 +92,19 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
         setRecipe(prev => ({ ...prev, ingredients: [...prev.ingredients, { [newIngredient.title]: newIngredient.weight }], ingredientValues: [...prev.ingredientValues, { title: newIngredient.title, unit: newIngredient.unit || 'gram', value: newIngredient.kcal }] }))
 
         setNewIngredient(defaultIngredient)
+    }
+
+    const selectIngredientFromList = (name) => {
+        const selectedIngredient = ingredientsData.find(i => i.title === name)
+
+        const ing = {
+            title: selectedIngredient.title,
+            weight: '',
+            unit: selectedIngredient.unit,
+            kcal: selectedIngredient.value
+
+        }
+        setNewIngredient(ing)
     }
 
     const editIngredientHandler = key => {
@@ -220,7 +244,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                 </Grid>
 
                 <Grid item xs={12} md={5}>
-                    <Autocomplete data={preparedIngredients} selected={essentialIngredientIds || []} onSelect={selectEssentialIngredientsHandler} />
+                    <CustomAutocomplete data={preparedIngredients} selected={essentialIngredientIds || []} onSelect={selectEssentialIngredientsHandler} />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -245,25 +269,25 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                 }))}
                             />}
                             label="Branch" />
-                        <FormControlLabel 
-                            control={<Checkbox 
-                                checked={mealType === 'lunch'} 
+                        <FormControlLabel
+                            control={<Checkbox
+                                checked={mealType === 'lunch'}
                                 onChange={() => setRecipe((prev) => ({
                                     ...prev,
                                     mealType: 'lunch'
                                 }))}
-                            />} 
-                            label="Lunch" 
+                            />}
+                            label="Lunch"
                         />
-                        <FormControlLabel 
-                            control={<Checkbox 
-                                checked={mealType === 'dinner'} 
+                        <FormControlLabel
+                            control={<Checkbox
+                                checked={mealType === 'dinner'}
                                 onChange={() => setRecipe((prev) => ({
                                     ...prev,
                                     mealType: 'dinner'
                                 }))}
-                            />} 
-                            label="Dinner" 
+                            />}
+                            label="Dinner"
                         />
                     </FormGroup>
                 </Grid>
@@ -280,7 +304,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     <Typography >{recipeIngredients[i][key]}</Typography>
                                 </Stack>
 
-                                {!newIngredient.title && (
+                                {!newIngredient?.title && (
                                     <Stack direction='row'>
                                         <Button onClick={() => editIngredientHandler(key)}>Edit</Button>
                                         <Button onClick={() => removeIngredientHandler(key)}>Remove</Button>
@@ -290,14 +314,28 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                             </Stack>
                         ))}
                         <Stack sx={{ marginTop: 2 }}>
+                            {ingredientsData.length && (
+                                <Stack>
+                                    <Autocomplete
+                                        sx={{ width: '100%', mb: 2 }}
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        options={ingredientsData}
+                                        getOptionLabel={(option) => option.title}
+                                        renderInput={(params) => <TextField {...params} label="Choose Ingredient" />}
+                                        onChange={e => selectIngredientFromList(e.target.textContent)}
+                                    />
+                                    <Typography sx={{ width: '100%', mb: 2 }}>or enter new data below</Typography>
+                                </Stack>
+                            )}
                             <Stack direction='row' gap={2}>
                                 <TextField
-                                    value={newIngredient.title}
+                                    value={newIngredient?.title}
                                     label="Title"
                                     name="title"
                                     fullWidth
                                     InputProps={{
-                                        endAdornment: newIngredient.title ? <InputAdornment position="start">
+                                        endAdornment: newIngredient?.title ? <InputAdornment position="start">
                                             <IconButton onClick={() => setNewIngredient(prev => ({ ...prev, title: '' }))}>
                                                 <CloseIcon />
                                             </IconButton>
@@ -307,12 +345,12 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                 />
 
                                 <TextField
-                                    value={newIngredient.weight}
+                                    value={newIngredient?.weight}
                                     label="Weight"
                                     name="weight"
                                     fullWidth
                                     InputProps={{
-                                        endAdornment: newIngredient.weight ? <InputAdornment position="start">
+                                        endAdornment: newIngredient?.weight ? <InputAdornment position="start">
                                             <IconButton onClick={() => setNewIngredient(prev => ({ ...prev, weight: '' }))}>
                                                 <CloseIcon />
                                             </IconButton>
@@ -327,7 +365,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     <InputLabel id="unit">KCal Unit</InputLabel>
                                     <Select
                                         labelId="unit"
-                                        value={newIngredient.unit || 'gram'}
+                                        value={newIngredient?.unit || 'gram'}
                                         label="KCal Unit"
                                         onChange={(e) => setNewIngredient(prev => ({ ...prev, unit: e.target.value }))}
                                     >
@@ -336,7 +374,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                     </Select>
                                 </FormControl>
                                 <TextField
-                                    value={newIngredient.kcal || ''}
+                                    value={newIngredient?.kcal || ''}
                                     label="KCal value"
                                     name="kcal"
                                     fullWidth
@@ -344,7 +382,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                                 />
                             </Stack>
 
-                            <Button disabled={!newIngredient.title || !newIngredient.weight} onClick={addIngredientHandler}>+ Add</Button>
+                            <Button disabled={!newIngredient?.title || !newIngredient?.weight} onClick={addIngredientHandler}>+ Add</Button>
                         </Stack>
                     </Grid>
                 </Grid>

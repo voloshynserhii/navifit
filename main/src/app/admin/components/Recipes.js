@@ -145,7 +145,7 @@ export default function ReactVirtualizedTable({ data = [], onEditModeOn }) {
   }
 
   const onUpdate = item => {
-    api.recipe.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ recipe }) => {
+    api.recipe.update(item).then(({ recipe }) => {
       const newList = [...list]
       const index = list.findIndex(item => item._id === recipe._id)
 
@@ -157,7 +157,7 @@ export default function ReactVirtualizedTable({ data = [], onEditModeOn }) {
   }
 
   const onRemoveRecipe = id => {
-    api.recipe.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+    api.recipe.remove(id).then(() => {
       const newList = list.filter(recipe => recipe._id !== id)
 
       setList(newList)

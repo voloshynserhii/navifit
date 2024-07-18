@@ -38,13 +38,13 @@ export default function DetailsModal({ selectedDish, week, day, userId, onChange
         setEditPlan(true)
         
         const { _id: recipeId, calories, essentialIngredientIds } = selectedDish || {}
-        const { data } = await api.recipe.getAll(process.env.NEXT_PUBLIC_DB_HOST, { recipeId, calories, essentialIngredientIds, limit: 20 })
+        const { data } = await api.recipe.getAll({ recipeId, calories, essentialIngredientIds, limit: 20 })
 
         if (data.length) setAvailableRecipes(data)
     }
 
     const handleReplaceRecipe = (newRecipeId) => {
-        api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: userId, newRecipeId, oldRecipeId: selectedDish._id, week, day }).then(({ currentUser }) => {
+        api.user.update({ _id: userId, newRecipeId, oldRecipeId: selectedDish._id, week, day }).then(({ currentUser }) => {
             handleClose()
             onChangeUserPlan(currentUser.currentPlan)
         })

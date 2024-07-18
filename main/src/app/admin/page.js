@@ -34,7 +34,7 @@ export default function Admin() {
     const [searchValue, setSearchValue] = useState()
 
     const getUsers = async () => {
-        const { data: newData } = await api.user.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10, role, sortBy: sortingOption !== 'no' ? sortingOption : undefined, sortingDirection })
+        const { data: newData } = await api.user.getUsers({ limit: 10, role, sortBy: sortingOption !== 'no' ? sortingOption : undefined, sortingDirection })
 
         if (newData) {
             !role ? setData(newData) : setAdmins(newData)
@@ -75,7 +75,7 @@ export default function Admin() {
     }
 
     const handleAuthorize = ({ email, password }) => {
-        api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, password, isAdmin: true }).then(({ user, message }) => {
+        api.user.logIn({ email, password, isAdmin: true }).then(({ user, message }) => {
             if (message) {
                 setError(message)
             } else {
@@ -97,27 +97,27 @@ export default function Admin() {
         setData(null)
 
         if (newValue === 0) {
-            const { data: newData } = await api.user.getUsers(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            const { data: newData } = await api.user.getUsers({ limit: 10 })
             setData(newData)
         }
 
         if (newValue === 1) {
-            const { data: newData } = await api.recipe.getAll(process.env.NEXT_PUBLIC_DB_HOST)
+            const { data: newData } = await api.recipe.getAll()
             setData(newData)
         }
 
         if (newValue === 2) {
-            const { data: newData } = await api.plan.getPlans(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            const { data: newData } = await api.plan.getPlans({ limit: 10 })
             setData(newData)
         }
         if (newValue === 4) {
-            const { data: newData } = await api.promo.get(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 })
+            const { data: newData } = await api.promo.get({ limit: 10 })
             setData(newData)
         }
     };
 
     const handleCreateUser = (newUser) => {
-        api.user.create(process.env.NEXT_PUBLIC_DB_HOST, newUser).then(({ user }) => {
+        api.user.create(newUser).then(({ user }) => {
             if (!user.isAdmin) {
                 setData(prev => ([...prev, user]))
             }
@@ -127,21 +127,21 @@ export default function Admin() {
     }
 
     const handleCreateRecipe = (recipe) => {
-        api.recipe.create(process.env.NEXT_PUBLIC_DB_HOST, recipe).then(({ newRecipe }) => {
+        api.recipe.create(recipe).then(({ newRecipe }) => {
             setData(prev => ([...prev, newRecipe]))
             setCreateMode(false)
         }).catch(err => console.log(err))
     }
 
     const handleCreatePlan = (newPlan) => {
-        api.plan.createPlan(process.env.NEXT_PUBLIC_DB_HOST, newPlan).then(({ plan }) => {
+        api.plan.createPlan(newPlan).then(({ plan }) => {
             setData(prev => ([...prev, plan]))
             setCreateMode(false)
         }).catch(err => console.log(err))
     }
 
     const handleCreatePromocode = (newPlan) => {
-        api.promo.create(process.env.NEXT_PUBLIC_DB_HOST, newPlan).then(({ promocode }) => {
+        api.promo.create(newPlan).then(({ promocode }) => {
             setData(prev => ([...prev, promocode]))
             setCreateMode(false)
         }).catch(err => console.log(err))
@@ -152,7 +152,7 @@ export default function Admin() {
     }
 
     const handleSearch = async () => {
-        const { data: newData } = await api.recipe.getAll(process.env.NEXT_PUBLIC_DB_HOST, { filters: { name: searchValue } })
+        const { data: newData } = await api.recipe.getAll({ filters: { name: searchValue } })
 
         if (newData) {
             setData(newData)

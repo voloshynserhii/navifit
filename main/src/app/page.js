@@ -18,7 +18,7 @@ export default function Home() {
   
   useEffect(() => {
     //remove on production
-    api.server.wakeUp(process.env.NEXT_PUBLIC_DB_HOST)
+    api.server.wakeUp()
     
     const user = localStorageGet('loggedUser')
 
@@ -34,7 +34,7 @@ export default function Home() {
     } else {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email: user.email, isGoogleLogin: true })
+          api.user.logIn({ email: user.email, isGoogleLogin: true })
         }
       });
     }

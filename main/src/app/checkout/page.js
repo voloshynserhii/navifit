@@ -28,7 +28,7 @@ const Checkout = () => {
   // }, [state.userData])
 
   useEffect(() => {
-    api.plan.getPlans(process.env.NEXT_PUBLIC_DB_HOST, { limit: 10 }).then(({ data }) => {
+    api.plan.getPlans({ limit: 10 }).then(({ data }) => {
       if (data.length) setPlans(data)
     })
   }, [])

@@ -16,7 +16,7 @@ export default function PlansTable({ data = [] }) {
   const onCancel = () => setEditPlan(undefined)
   
   const onUpdate = item => {    
-    api.plan.updatePlan(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ plan }) => {
+    api.plan.updatePlan(item).then(({ plan }) => {
       const newList = [...list]
       const index = list.findIndex(item => item._id === plan._id)
       
@@ -28,7 +28,7 @@ export default function PlansTable({ data = [] }) {
   }
   
   const onRemove = id => {
-    api.plan.removePlan(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+    api.plan.removePlan(id).then(() => {
       const newList = list.filter(plan => plan._id !== id)
       
       setList(newList)

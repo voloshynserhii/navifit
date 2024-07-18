@@ -48,7 +48,7 @@ export default function EmailPage() {
 
     setLoading(true)
 
-    api.user.sendAnswers(process.env.NEXT_PUBLIC_DB_HOST, data).then(({ user, message }) => {
+    api.user.sendAnswers(data).then(({ user, message }) => {
       if (!user && message) {
         setError(message)
         setLoading(false)

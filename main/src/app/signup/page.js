@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const handleAuthorize = ({ email, password, confirmPassword }) => {
     setLoading(true)
     
-    api.user.signUp(process.env.NEXT_PUBLIC_DB_HOST, { email, password, confirmPassword }).then(({ user, message }) => {
+    api.user.signUp({ email, password, confirmPassword }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {

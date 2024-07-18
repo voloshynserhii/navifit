@@ -32,7 +32,7 @@ export default function SignUpPage() {
   const authWithGoogle = (email) => {
     setLoading(true)
 
-    api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, isGoogleLogin: true }).then(({ user, message }) => {
+    api.user.logIn({ email, isGoogleLogin: true }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {
@@ -61,7 +61,7 @@ export default function SignUpPage() {
   const handleAuthorize = ({ email, password }) => {
     setLoading(true)
 
-    api.user.logIn(process.env.NEXT_PUBLIC_DB_HOST, { email, password }).then(({ user, message }) => {
+    api.user.logIn({ email, password }).then(({ user, message }) => {
       if (message) {
         setError(message)
       } else if (user) {
@@ -76,7 +76,7 @@ export default function SignUpPage() {
   const handleChangePassword = ({ email, oldPassword, newPassword }) => {
     setLoading(true)
 
-    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { email, oldPassword, password: newPassword }).then(({ currentUser, message }) => {
+    api.user.update({ email, oldPassword, password: newPassword }).then(({ currentUser, message }) => {
       if (message) {
         setError(message)
       } else if (currentUser) {
@@ -92,7 +92,7 @@ export default function SignUpPage() {
   const handleRestorePassword = ({ email }) => {
     setLoading(true)
 
-    api.user.restorePassword(process.env.NEXT_PUBLIC_DB_HOST, { email }).then(({ message }) => {
+    api.user.restorePassword({ email }).then(({ message }) => {
       if (message) {
         setError(message)
       } else {
@@ -106,7 +106,7 @@ export default function SignUpPage() {
   }
 
   const handleGetConfirmedUser = async (id) => {
-    api.user.getUser(process.env.NEXT_PUBLIC_DB_HOST, { id }).then(({ message, user }) => {
+    api.user.getUser({ id }).then(({ message, user }) => {
       if (message) {
         setError(message)
       } else {

@@ -48,6 +48,7 @@ router.get('/recipes', Recipe.Get)
 router.post('/recipes', Recipe.Create)
 router.put('/recipes/:id', Recipe.Update)
 router.delete('/recipes/:id', Recipe.Remove)
+router.get('/ingredients', Recipe.GetIngredients)
 
 /**
 * Module Payments

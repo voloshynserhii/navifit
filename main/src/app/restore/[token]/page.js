@@ -14,7 +14,7 @@ export default function RestorePasswordPage() {
   const handleChangePassword = (password) => {
     setLoading(true)
 
-    api.user.resetPassword(process.env.NEXT_PUBLIC_DB_HOST, { token, password }).then(({ message }) => {
+    api.user.resetPassword({ token, password }).then(({ message }) => {
       if (message) {
         setError(message)
       } else {

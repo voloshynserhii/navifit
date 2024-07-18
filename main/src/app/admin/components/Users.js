@@ -42,7 +42,7 @@ export default function UsersTable({ data = [], onEditModeOn }) {
   }
 
   const onUpdate = item => {
-    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ currentUser }) => {
+    api.user.update(item).then(({ currentUser }) => {
       loadData(currentUser)
     }).catch(err => console.log(err))
   }
@@ -57,21 +57,21 @@ export default function UsersTable({ data = [], onEditModeOn }) {
   }
 
   const onResetPassword = (newPassword) => {
-    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: resetPasswordId, password: newPassword }).then(({ currentUser }) => {
+    api.user.update({ _id: resetPasswordId, password: newPassword }).then(({ currentUser }) => {
       loadData(currentUser)
       setResetPasswordId(null)
     })
   }
 
   const onConfirmDelete = id => {
-    api.user.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+    api.user.remove(id).then(() => {
       setList(prev => prev.filter(user => user._id !== id))
       setDeleteAnchor(undefined)
     })
   }
 
   const onConfirmChangeActive = (id, isDraft) => {
-    api.user.update(process.env.NEXT_PUBLIC_DB_HOST, { _id: id, isDraft }).then(({ currentUser }) => {
+    api.user.update({ _id: id, isDraft }).then(({ currentUser }) => {
       loadData(currentUser)
       setActivateAnchor(undefined)
     })

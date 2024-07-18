@@ -25,7 +25,7 @@ const MyPlan = () => {
 
   const getUser = async () => {    
     if (isAdmin || currentUser) {
-      const { user } = await api.user.getUser(process.env.NEXT_PUBLIC_DB_HOST, { id })
+      const { user } = await api.user.getUser({ id })
 
       if (user.currentPlan) setPlan(user.currentPlan)
     } else {

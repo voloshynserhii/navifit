@@ -17,7 +17,7 @@ export default function PromocodesTable({ data = [] }) {
   const onCancel = () => setEdit(undefined)
   
   const onUpdate = item => {    
-    api.promo.update(process.env.NEXT_PUBLIC_DB_HOST, item).then(({ promocode }) => {
+    api.promo.update(item).then(({ promocode }) => {
       const newList = [...list]
       const index = list.findIndex(item => item._id === promocode._id)
       
@@ -29,7 +29,7 @@ export default function PromocodesTable({ data = [] }) {
   }
   
   const onRemove = id => {
-    api.promo.remove(process.env.NEXT_PUBLIC_DB_HOST, id).then(() => {
+    api.promo.remove(id).then(() => {
       const newList = list.filter(promocode => promocode._id !== id)
       
       setList(newList)

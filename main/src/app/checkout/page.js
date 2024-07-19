@@ -24,7 +24,6 @@ const Checkout = () => {
   const [state, dispatch] = useAppStore();
   const [chosenPlan, setChosenPlan] = useState(undefined)
   const [plans, setPlans] = useState([])
-  const [cardDetails, setCardDetails] = useState({})
 
   // useEffect(() => {
   //   if (!Object.keys(state.userData).length || !state.userData) router.push('/');
@@ -76,7 +75,7 @@ const Checkout = () => {
                 Payment Modal
               </Typography>
               <Stack gap={2}>
-                <TextField
+                {/* <TextField
                   value={cardDetails.cardOwner || ''}
                   multiline
                   label="Name on Card"
@@ -84,8 +83,8 @@ const Checkout = () => {
                   variant="outlined"
                   fullWidth
                   onChange={e => setCardDetails(prev => ({ ...prev, cardOwner: e.target.value }))}
-                />
-                <Button disabled={!cardDetails.cardOwner} onClick={paymentHandler}>{`Pay ${chosenPlan.price} zl`}</Button>
+                /> */}
+                <Button onClick={paymentHandler}>{`Pay ${chosenPlan.price} zl`}</Button>
               </Stack>
             </Box>
           </Fade>
@@ -96,11 +95,11 @@ const Checkout = () => {
         <Typography>Wybierz swój plan</Typography>
       )}
 
-      {plans.length && plans.sort((a, b) => a.duration - b.duration).map((plan) => (
+      {!!plans.length && plans.sort((a, b) => a.duration - b.duration).map((plan) => (
         <Card key={plan._id} sx={{ width: '40%', m: 2 }}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="secondary.black" gutterBottom>
-              {plan.chosenPlan} months
+              {plan.duration} months
             </Typography>
             <Typography sx={{ fontSize: 14 }} color="secondary.black" gutterBottom>
               {plan.price} zl <span style={{ textDecoration: 'line-through' }}>{plan.promoPrice} zl</span>

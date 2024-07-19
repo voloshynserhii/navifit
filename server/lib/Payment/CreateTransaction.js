@@ -18,6 +18,13 @@ module.exports = async (req, res) => {
     }
 
     try {
+        const channels = await axios.get(`${config.payment.uri}/transactions/channels`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+        })
+        console.log('Channels', channels.data.channels)
         const { data = {} } = await axios.post(`${config.payment.uri}/transactions`, {
             "amount": Number(chosenPlan.price.replace(',', '.')),
             "description": chosenPlan.title || `Order meal plan for ${chosenPlan.duration} months`,
@@ -25,7 +32,7 @@ module.exports = async (req, res) => {
             "lang": "en",
             "payer": {
               "email": "test@navifit.com",
-              "name": cardDetails.cardOwner,
+              "name": "test@navifit.com",
             },
             "callbacks": {
               "payerUrls": {
@@ -38,8 +45,9 @@ module.exports = async (req, res) => {
               }
             },
             "pay": {
-              "groupId": 150,
-              "method": "pay_by_link"
+              "channelId": 53
+              // "groupId": 150,
+              // "method": "pay_by_link"
             }
           }, {
             headers: {

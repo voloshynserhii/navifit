@@ -37,21 +37,22 @@ const Checkout = () => {
   }, [])
 
   const paymentHandler = async () => {
-    const { data } = await api.payment.auth()
-    const { access_token } = data || {}
+    // const { data } = await api.payment.auth()
+    // const { access_token } = data || {}
 
-    if (access_token) {
-      const response = await api.payment.createTransaction({ access_token, cardDetails, chosenPlan })
+    router.push('https://secure.sandbox.tpay.com/?kwota=39.99&crc=order_1&return_url=https://navifit.vercel.app/signup?email=test@navifit.com&online=1&opis=test&opis_sprzed=navifit&wyn_email=vosquery%40gmail.com&jezyk=PL&id=400580&md5sum=193475330af9031a5e43303c3d152879')
+    // if (access_token) {
+    //   const response = await api.payment.createTransaction({ access_token, cardDetails, chosenPlan })
       
-      if (response.transactionPaymentUrl) {
-        dispatch({
-          type: 'CURRENT_USER',
-          payload: state.userData,
-        });
+    //   if (response.transactionPaymentUrl) {
+    //     dispatch({
+    //       type: 'CURRENT_USER',
+    //       payload: state.userData,
+    //     });
         
-        router.push(`${response.transactionPaymentUrl}`, { scroll: false });
-      }
-    }
+    //     router.push(`${response.transactionPaymentUrl}`, { scroll: false });
+    //   }
+    // }
   }
 
   return (

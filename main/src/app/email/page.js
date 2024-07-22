@@ -36,9 +36,9 @@ export default function EmailPage() {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!Object.keys(state.userData).length || !state.userData) router.push('/');
-  }, [state.userData])
+  // useEffect(() => {
+  //   if (!Object.keys(state.userData).length || !state.userData) router.push('/');
+  // }, [state.userData])
 
   const sendEmailHandler = () => {
     const data = {

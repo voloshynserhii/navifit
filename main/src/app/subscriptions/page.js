@@ -10,9 +10,9 @@ const Subscriptions = () => {
   const [state] = useAppStore();
   const { userData: user = {}} = state;
   
-  useEffect(() => {
-    if (!Object.keys(user).length) router.push('/');
-  }, [state.userData])
+  // useEffect(() => {
+  //   if (!Object.keys(user).length) router.push('/');
+  // }, [state.userData])
 
   return (
     <main>

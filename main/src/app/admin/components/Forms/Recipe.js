@@ -24,7 +24,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     const [imageFiles, setImageFiles] = useState([])
     const [ingredientsData, setIngredientsData] = useState([])
 
-    const { _id, name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mealType, mainImage, videos, ingredientValues = [] } = recipe
+    const { _id, name, description, fats, carbs, proteins, cookingTime, calories, essentialIngredientIds, ingredients: recipeIngredients, mealType = [], mainImage, videos, ingredientValues = [] } = recipe
 
     const ingredientTitles = recipeIngredients?.map(obj => Object.keys(obj))
 
@@ -148,11 +148,30 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
 
         return undefined
     }
+    
+    const changeMealTypeHandler = (type) => {
+        const mealTypes = [...mealType]
+        if (!mealTypes.includes(type)) {
+            mealTypes.push(type)
+            
+            setRecipe((prev) => ({
+                ...prev,
+                mealType: mealTypes
+            }))
+        } else {
+            const filteredMealTypes = mealTypes.filter(item => item !== type)
+            
+            setRecipe((prev) => ({
+                ...prev,
+                mealType: filteredMealTypes
+            }))
+        }
+    }
 
-    const disabled = !name || !description || !fats || !carbs || !proteins || !cookingTime || !calories || !mealType
+    const disabled = !name || !description || !fats || !carbs || !proteins || !cookingTime || !calories || !mealType.length
 
     const preparedIngredients = [...ingredients.vegetables, ...ingredients.grains, ...ingredients.desiredProducts, ...ingredients.meat].map(item => ({ ...item, title: getTitle(item.title) }))
-
+console.log(mealType)
     return (
         <Fragment>
             <Typography variant="h2" gutterBottom>
@@ -252,40 +271,28 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
                     <FormGroup>
                         <FormControlLabel
                             control={<Checkbox
-                                checked={mealType === 'breakfast'}
-                                onChange={() => setRecipe((prev) => ({
-                                    ...prev,
-                                    mealType: 'breakfast'
-                                }))}
+                                checked={mealType.includes('breakfast')}
+                                onChange={() => changeMealTypeHandler('breakfast')}
                             />}
                             label="Breakfast"
                         />
                         <FormControlLabel
                             control={<Checkbox
-                                checked={mealType === 'branch'}
-                                onChange={() => setRecipe((prev) => ({
-                                    ...prev,
-                                    mealType: 'branch'
-                                }))}
+                                checked={mealType.includes('branch')}
+                                onChange={() => changeMealTypeHandler('branch')}
                             />}
                             label="Branch" />
                         <FormControlLabel
                             control={<Checkbox
-                                checked={mealType === 'lunch'}
-                                onChange={() => setRecipe((prev) => ({
-                                    ...prev,
-                                    mealType: 'lunch'
-                                }))}
+                                checked={mealType.includes('lunch')}
+                                onChange={() => changeMealTypeHandler('lunch')}
                             />}
                             label="Lunch"
                         />
                         <FormControlLabel
                             control={<Checkbox
-                                checked={mealType === 'dinner'}
-                                onChange={() => setRecipe((prev) => ({
-                                    ...prev,
-                                    mealType: 'dinner'
-                                }))}
+                                checked={mealType.includes('dinner')}
+                                onChange={() => changeMealTypeHandler('dinner')}
                             />}
                             label="Dinner"
                         />

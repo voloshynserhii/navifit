@@ -1,11 +1,11 @@
-import { StyleSheet, View, SafeAreaView } from 'react-native';
-// import Progress from '../Progress'
+import { StyleSheet, View, Pressable } from 'react-native';
+import { Center, VStack, Heading, Text, HStack } from 'native-base';
+
+import AppProgressBar from '@/components/AppProgressBar';
 // import UserPermission from '../UserPermission'
 // import InfoMessage from '../InfoMessage';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { DemoPaper } from '@/components/DemoPaper';
-import LinearBackground from '@/components/LinearBackground';
 
 const getFormattedQuestion = (question) => {
     let words = question.split(' ').map(word => ` ${word} `)
@@ -44,73 +44,54 @@ export default function StepContainer({ currentStep = {}, step = 1, totalSteps, 
     const icon = currentStep?.icon
 
     return (
-        <SafeAreaView style={styles.mainView}>
-            <LinearBackground />
-            <View>
-                <ThemedText>HEADER
-                </ThemedText>
-            </View>
+        <View style={styles.mainView}>
             <DemoPaper>
-
-                <ThemedText>
-                    Twój profil dobrego samopoczucia
-                </ThemedText>
-                
-                <ThemedText>
-                    Twój profil dobrego samopoczucia
-                </ThemedText>
-                <ThemedText>
-                    Twój profil dobrego samopoczucia
-                </ThemedText>
-                <ThemedText>
-                    Twój profil dobrego samopoczucia
-                </ThemedText>
-                <ThemedText>
-                    Twój profil dobrego samopoczucia
-                </ThemedText>
-
-
-                {/* <Grid container >
-                    <Grid item xs={12} md={6} sx={{ padding: { xs: '12px 12px 0 12px', md: '2rem 60px' } }}>
-                        <Progress step={step} totalSteps={totalSteps} onStepBack={onStepBack} />
-                        
-                        <Stack
-                            sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: '-24px', md: '50%' }, transform: { md: 'translateY(-50%)' }, maxWidth: { xs: '100%', md: '42%' } }}>
-                            <Typography
-                                component="span" sx={{ marginTop: 5 }}>
-                                {getFormattedQuestion(question).map(item => (
-                                    <Typography
-                                        key={item}
-                                        component="h2"
-                                        variant='h1'
-                                        sx={{ display: 'inline' }}
-                                    >
-                                        {item}
-                                    </Typography>
-                                ))}
-                            </Typography>
-
-                            {description && !styled
-                                && <Typography
-                                    variant="body16"
-                                    color='primary.contrastText'
-                                    sx={{ width: '95%', marginTop: 2.5, fontSize: { xs: 12, md: 16 }, lineHeight: { xs: '18px', md: 'inherit' } }}
-                                >
-                                    {description}
-                                </Typography>
-                            }
-
-                            {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />}
-                        </Stack>
-
-                        {step === 1 && <Stack sx={{ display: { xs: 'none', md: 'block' }, width: { xs: '100%', md: '40%' }, position: { xs: 'relative', md: 'absolute' }, bottom: { xs: 0, md: '10%' } }}>
-                            <UserPermission />
-                        </Stack>}
-                    </Grid>
+                <VStack>
+                    <AppProgressBar step={step + 1} totalSteps={totalSteps} onStepBack={onStepBack} />
+                    <VStack py={6} space={3} mb={3}>
+                        <Heading style={{
+                            fontFamily: 'Poppins_600Regular',
+                        }}>
+                            {question}
+                        </Heading>
+                        {description && !styled && <Text style={{
+                            fontFamily: 'Poppins_400Regular',
+                        }} fontSize="md" color="secondary.greyDarken2">
+                            {description}
+                        </Text>}
+                        {/* {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />} */}
+                    </VStack>
+                </VStack>
+                <VStack space={4}>
                     {children}
-                </Grid> */}
+                    <Center mt={3}>
+                        <Text
+                            fontSize='xs'
+                            style={{
+                                fontFamily: 'Poppins_400Regular',
+                            }}
+                        >
+                            Wybierając cel i kontynuując, wyrażasz zgodę na nasze
+                        </Text>
+                        <HStack alignItems='center'>
+                            <Pressable style={styles.link}>
+                                <Text style={{
+                                    fontFamily: 'Poppins_400Regular',
+                                }} fontSize='xs' color="#1565C0">Warunki korzystania </Text>
+                            </Pressable>
+                            <Text style={{
+                                fontFamily: 'Poppins_400Regular',
+                            }} fontSize='xs' color='secondary.brandBlack'> z usługi | </Text>
+                            <Pressable style={styles.link}>
+                                <Text style={{
+                                    fontFamily: 'Poppins_400Regular',
+                                }} fontSize='xs' color="#1565C0">Polityka prywatności</Text>
+                            </Pressable>
+                        </HStack>
+                    </Center>
+                </VStack>
             </DemoPaper>
-        </SafeAreaView>
+        </View>
     )
 }
 

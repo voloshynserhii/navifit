@@ -37,7 +37,7 @@ const getFormattedQuestion = (question) => {
     return words
 }
 
-export default function StepContainer({ currentStep = {}, step = 1, totalSteps, showWarning, children, onStepBack }) {
+export default function StepContainer({ currentStep = {}, step = 0, totalSteps, showWarning, children, onStepBack }) {
     const styled = currentStep?.isGraphic
     const question = currentStep?.title || ''
     const description = currentStep?.subTitle || ''
@@ -62,9 +62,9 @@ export default function StepContainer({ currentStep = {}, step = 1, totalSteps, 
                         {/* {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />} */}
                     </VStack>
                 </VStack>
-                <VStack space={4}>
+                <VStack space={4} mb={2}>
                     {children}
-                    <Center mt={3}>
+                    {step === 0 && <Center mt={3}>
                         <Text
                             fontSize='xs'
                             style={{
@@ -88,7 +88,7 @@ export default function StepContainer({ currentStep = {}, step = 1, totalSteps, 
                                 }} fontSize='xs' color="#1565C0">Polityka prywatności</Text>
                             </Pressable>
                         </HStack>
-                    </Center>
+                    </Center>}
                 </VStack>
             </DemoPaper>
         </View>

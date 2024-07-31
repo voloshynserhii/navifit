@@ -1,44 +1,39 @@
 import { useState, useEffect } from 'react'
-import { Box, Grid, Stack } from '@mui/material'
-import { useRouter } from 'next/navigation'
-import Loader from '../Loader'
-import Button from '@src/components/AppButton'
-import DatePicker from '@src/components/ReactDatePicker'
-import StepContainer from '@src/components/StepContainer'
-import InfoStep from '@src/components/InfoStep'
-import LastStep from '@src/components/LastStep'
-import Option from './Option'
-import InputNumber from '@src/components/InputNumber'
-import Graphic from '@src/components/Icons/Graphic'
+import { Box, Stack, VStack } from 'native-base'
+import { Pressable } from 'react-native'
+// import Loader from '../Loader'
+// import DatePicker from '@src/components/ReactDatePicker'
+// import StepContainer from '@src/components/StepContainer'
+// import InfoStep from '@src/components/InfoStep'
+// import LastStep from '@src/components/LastStep'
+// import InputNumber from '@src/components/InputNumber'
 
-import { useAppStore } from '../../store';
-import { steps, filterIngredients, getWarning, getBMIInfo } from '../../utils/Plans'
+import StepContainer from '@/components/StepContainer';
+import Option from './Option'
+import Button from '../AppButton'
+
+import Graphic from '@/assets/icons/graphic.svg'
+
+import { steps, filterIngredients, getWarning, getBMIInfo } from '@/assets/Plans'
 
 const totalSteps = steps.length
-const skipSteps = [5, 20, 24, 25]
-const optionsWithNextBtn = [5, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+const skipSteps = [4, 19, 23, 24]
+const optionsWithNextBtn = [4, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
-const Steps = ({ option = {}, onGetBack }) => {
-    const router = useRouter()
-
+const Steps = () => {
     const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(2)
-    const [answers, setAnswers] = useState(option)
+    const [step, setStep] = useState(0)
+    const [answers, setAnswers] = useState({})
     const [inputError, setInputError] = useState(false)
-    const [, dispatch] = useAppStore();
 
-    const currentStep = steps[step - 1]
+    const currentStep = steps[step]
     let list = currentStep?.options || []
 
     if (answers['alergy'] && Object.keys(answers['alergy'])?.length && currentStep?.filtered) {
         list = filterIngredients(answers['alergy'], list)
     }
 
-    useEffect(() => {
-        document.querySelector('body').scrollTo({ top: -75, behavior: 'smooth' });
-    }, [step])
-    
     useEffect(() => {
         if ((step === steps.length || step === steps.length - 1) && answers.weight === answers.desiredWeight) {
             setStep(state => state + 1)
@@ -51,16 +46,14 @@ const Steps = ({ option = {}, onGetBack }) => {
     }, [step, list])
 
     const stepBackHandler = () => {
-        if (step === 2) return onGetBack()
-
-        setStep(state => state - 1)
+        setStep(state => state !== 0 ? state - 1 : 0)
         clearTimeout()
     }
 
     const stepAheadHandler = () => {
         clearTimeout()
         setDisabled(true)
-        
+
         if (step === totalSteps) {
             setLoading(true)
         } else {
@@ -110,12 +103,12 @@ const Steps = ({ option = {}, onGetBack }) => {
     }
 
     const finishLoadingHandler = () => {
-        dispatch({
-            type: 'USER_DATA',
-            payload: answers,
-        });
+        // dispatch({
+        //     type: 'USER_DATA',
+        //     payload: answers,
+        // });
 
-        router.push('/email', { scroll: false })
+        // router.push('/email', { scroll: false })
     }
 
     let btnDisabled = false
@@ -124,43 +117,42 @@ const Steps = ({ option = {}, onGetBack }) => {
 
     if (currentStep?.typeNumber && !answers[currentStep?.value]) btnDisabled = true
 
-    if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
+    // if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
     return (
-        <Stack sx={{ width: '100%', maxWidth: 1200, position: { md: 'relative' } }}>
-            {/* <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: 175, weight: 72 })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> */}
-            {step === 21 ? <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> : (
-                <>
-                    <StepContainer
-                        currentStep={currentStep}
-                        step={step}
-                        totalSteps={totalSteps}
-                        showWarning={getWarning(currentStep, answers)}
-                        onStepBack={stepBackHandler}
-                    >
-                        <Grid item xs={12} md={6} sx={{ padding: { xs: '14px 12px 32px', md: '2rem 40px 2rem 60px' }, backgroundColor: '#FFFFFF' }}>
-                            <Stack
-                                justifyContent='center'
-                                sx={{ minHeight: { md: '75vh' } }}
-                            >
-                                {currentStep?.isGraphic && <Box sx={{ padding: { xs: 0, md: '0 35px 0 15px' } }}><Graphic /></Box>}
+        // <Box>
+        //     {/* <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: 175, weight: 72 })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> */}
+        //     {step === 21 ? <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> : (
+        <StepContainer
+            currentStep={currentStep}
+            step={step}
+            totalSteps={totalSteps}
+            showWarning={getWarning(currentStep, answers)}
+            onStepBack={stepBackHandler}
+        >
+            <VStack>
+                <Stack
+                    justifyContent='center'
+                >
 
-                                {step === steps.length && <LastStep answers={answers} />}
+                    {/* {step === steps.length && <LastStep answers={answers} />} */}
 
-                                {currentStep?.long ? (
-                                    <Grid container sx={{ paddingBottom: { xs: 1.5, md: 'initial' } }}>
-                                        {list.map(option => (
-                                            <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
-                                        ))}
-                                        <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
-                                    </Grid>) : (
-                                    <Stack>
-                                        {list.map(option => (
-                                            <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
-                                        ))}
-                                    </Stack>
-                                )}
+                    {currentStep?.isGraphic && <Box height={300}>{currentStep.image}</Box>}
 
+                    {currentStep?.long ? (
+                        <VStack>
+                            {list.map(option => (
+                                <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
+                            ))}
+                            <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
+                        </VStack>) : (
+                        <Stack>
+                            {list.map(option => (
+                                <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
+                            ))}
+                        </Stack>
+                    )}
+                    {/* 
                                 {currentStep?.value && currentStep?.typeNumber && (
                                     <InputNumber
                                         value={answers[currentStep.value]}
@@ -177,9 +169,9 @@ const Steps = ({ option = {}, onGetBack }) => {
                                         }
                                         onError={(val) => setInputError(val)}
                                     />
-                                )}
+                                )} */}
 
-                                {currentStep?.value && currentStep?.typeDate && (
+                    {/* {currentStep?.value && currentStep?.typeDate && (
                                     <Stack sx={{ position: 'relative', alignItems: 'center' }}>
                                         <DatePicker
                                             selectedValue={answers.desiredDate}
@@ -191,25 +183,21 @@ const Steps = ({ option = {}, onGetBack }) => {
                                             }
                                         />
                                     </Stack>
-                                )}
-                            </Stack>
-                            {step <= totalSteps && optionsWithNextBtn.includes(step) && (
-                                <Stack direction='row' justifyContent='end' sx={{ mt: 3 }}>
-                                    <Button
-                                        type='primary'
-                                        title='Dalej'
-                                        disabled={disabled || ((btnDisabled || inputError || !answers[currentStep.value]) && !skipSteps.includes(step))}
-                                        onClick={stepAheadHandler}
-                                    />
-                                </Stack>
-                            )}
+                                )} */}
+                </Stack>
+                {step <= totalSteps && optionsWithNextBtn.includes(step) && (
+                    <Button
+                        type='primary'
+                        title='Dalej'
+                        disabled={disabled || ((btnDisabled || inputError || !answers[currentStep.value]) && !skipSteps.includes(step))}
+                        onPress={stepAheadHandler}
+                    />
+                )}
 
-                        </Grid>
-
-                    </StepContainer>
-                </>
-            )}
-        </Stack>
+            </VStack>
+        </StepContainer>
+        //     )}
+        // </Box>
     )
 }
 

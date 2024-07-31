@@ -1,4 +1,5 @@
-import { lightning, BMI, OK, warning, body, dumbbells, fire, runningMan } from "./icons"
+import { BMI, OK, warning, body, dumbbells, fire, runningMan } from "./icons"
+import Graphic from './icons/graphic.svg'
 
 const steps = [
     {
@@ -87,7 +88,8 @@ const steps = [
         title: 'Zmiana zachowania a restrykcyjna dieta',
         subTitle: 'Pracujemy poprzez tworzenie nawyków, co zapewnia długotrwałe rezultaty',
         isGraphic: true,
-        icon: <div style={{ display: 'flex' }}>{lightning}</div>,
+        // icon: <Graphic />,
+        image: <Graphic />,
     },
     {
         title: 'Czy odczuwasz dolegliwości żołądkowe w ciągu dnia?',

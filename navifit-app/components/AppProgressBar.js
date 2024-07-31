@@ -7,7 +7,7 @@ export default function AppProgressBar({ step = 1, totalSteps = 25, onStepBack }
         <VStack space={2}>
             <VStack>
                 <Pressable style={styles.backButton} onPress={onStepBack}>
-                    {step >= 1 && <ChevronLeftIcon size="5" />}
+                    {step > 1 && <ChevronLeftIcon size="5" />}
                 </Pressable>
                 {totalSteps && <HStack space={1} justifyContent="flex-end">
                     <ThemedText>{step}</ThemedText><ThemedText>/</ThemedText><ThemedText>{totalSteps}</ThemedText>

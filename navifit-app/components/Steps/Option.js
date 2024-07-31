@@ -1,13 +1,12 @@
 import { Box, Stack, HStack, Pressable, Text } from 'native-base'
 import { StyleSheet } from 'react-native';
 
-export default function Option({ option, long = false, prevData, onSelect = () => {}, onCheck = () => {} }) {
+export default function Option({ option, long = false, prevData, onSelect = () => { }, onCheck = () => { } }) {
     const checked = prevData && prevData[option.value] ? prevData[option.value] : false;
 
     return (
-        <Pressable 
-            onPress={onSelect}
-        // onPress={() => !long ? onSelect(option.value) : onCheck(option.value)}
+        <Pressable
+            onPress={() => !long ? onSelect(option.value) : onCheck(option.value)}
         >
             <Box
                 style={{ ...styles.optionContainer }}
@@ -25,14 +24,17 @@ export default function Option({ option, long = false, prevData, onSelect = () =
                                 style={{
                                     fontFamily: 'Poppins_400Regular',
                                 }}
-                            >{option.title}</Text>
+                            >
+                                {option.title}
+                            </Text>
                         </HStack>
                     </Stack>
                 </HStack>
             </Box>
         </Pressable>
     )
-}
+};
+
 const styles = StyleSheet.create({
     optionContainer: {
         paddingVertical: 16,

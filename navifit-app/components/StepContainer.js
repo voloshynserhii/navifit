@@ -26,10 +26,10 @@ const getFormattedQuestion = (question) => {
         })
 
         words.splice(firstIndex, lastIndex - firstIndex)
-        words[firstIndex] = <ThemedText>{expression}</ThemedText>
+        words[firstIndex] = <Text highlight style={{ backgroundColor: '#CCFF33' }}>{expression}</Text>
     } else if (foundWord) {
         const i = words.findIndex(word => word.search('/%') > -1)
-        const newWord = <ThemedText>{foundWord.replace('/%', '').replace(' ', '')}</ThemedText>
+        const newWord = <Text highlight style={{ backgroundColor: '#CCFF33' }}>{foundWord.replace('/%', '').trim()}</Text>
 
         words[i] = newWord
     }
@@ -52,7 +52,13 @@ export default function StepContainer({ currentStep = {}, step = 0, totalSteps, 
                         <Heading style={{
                             fontFamily: 'Poppins_600Regular',
                         }}>
-                            {question}
+                            {getFormattedQuestion(question).map(item => (
+                                <Text
+                                    key={item}
+                                >
+                                    {item}
+                                </Text>
+                            ))}
                         </Heading>
                         {description && !styled && <Text style={{
                             fontFamily: 'Poppins_400Regular',

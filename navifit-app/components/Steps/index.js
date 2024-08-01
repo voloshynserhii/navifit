@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Box, Stack, VStack } from 'native-base'
-import { Pressable } from 'react-native'
+import { Box, Stack, VStack, HStack } from 'native-base'
+
 // import Loader from '../Loader'
 // import DatePicker from '@src/components/ReactDatePicker'
 // import StepContainer from '@src/components/StepContainer'
@@ -11,8 +11,6 @@ import { Pressable } from 'react-native'
 import StepContainer from '@/components/StepContainer';
 import Option from './Option'
 import Button from '../AppButton'
-
-import Graphic from '@/assets/icons/graphic.svg'
 
 import { steps, filterIngredients, getWarning, getBMIInfo } from '@/assets/Plans'
 
@@ -41,9 +39,9 @@ const Steps = () => {
         }
     }, [step, answers.weight, answers.desiredWeight])
 
-    useEffect(() => {
-        if (step === 18 && !list.length) setStep(state => state + 1)
-    }, [step, list])
+    // useEffect(() => {
+    //     if (step === 18 && !list.length) setStep(state => state + 1)
+    // }, [step, list])
 
     const stepBackHandler = () => {
         setStep(state => state !== 0 ? state - 1 : 0)
@@ -140,12 +138,12 @@ const Steps = () => {
                     {currentStep?.isGraphic && <Box height={300}>{currentStep.image}</Box>}
 
                     {currentStep?.long ? (
-                        <VStack>
+                        <HStack flexWrap='wrap' space={2}>
                             {list.map(option => (
                                 <Option key={option.title} option={option} long prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />
                             ))}
                             <Option option={{ title: 'Żadne z powyższych', value: 'none' }} long prevData={answers[currentStep.value]} onCheck={() => selectOptionHandler(true, 'none')} />
-                        </VStack>) : (
+                        </HStack>) : (
                         <Stack>
                             {list.map(option => (
                                 <Option key={option.title} option={option} prevData={answers[currentStep.value]} onSelect={(data) => selectOptionHandler(data)} onCheck={(val) => selectOptionHandler(val, option.value)} />

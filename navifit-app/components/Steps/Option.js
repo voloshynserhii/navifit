@@ -1,35 +1,31 @@
-import { Box, Stack, HStack, Pressable, Text } from 'native-base'
+import { Box, Pressable, Text } from 'native-base'
 import { StyleSheet } from 'react-native';
 
 export default function Option({ option, long = false, prevData, onSelect = () => { }, onCheck = () => { } }) {
     const checked = prevData && prevData[option.value] ? prevData[option.value] : false;
+    const selected = prevData && option.value === prevData || checked
 
     return (
         <Pressable
             onPress={() => !long ? onSelect(option.value) : onCheck(option.value)}
         >
             <Box
-                style={{ ...styles.optionContainer }}
-                borderColor="primary.lightGrey"
-                rounded="xl"
+                style={long ? { ...styles.optionContainer, ...styles.longContainer } : styles.optionContainer}
+                borderColor={selected ? "primary.main" : "primary.lightGrey"}
+                borderRadius={long ? "full" : "xl"}
                 borderWidth="1"
                 selected={prevData && option.value === prevData || checked}
                 gridview={long ? 1 : 0}
             >
-                <HStack alignItems='center' justifyContent='space-between'>
-                    <Stack sx={{ width: '100%' }}>
-                        <HStack alignItems='center'>
-                            <Text
-                                color='primary.contrastText'
-                                style={{
-                                    fontFamily: 'Poppins_400Regular',
-                                }}
-                            >
-                                {option.title}
-                            </Text>
-                        </HStack>
-                    </Stack>
-                </HStack>
+                <Text
+                    color='primary.contrastText'
+                    style={{
+                        fontFamily: 'Poppins_400Regular',
+                        width: 'fit-content'
+                    }}
+                >
+                    {option.title}
+                </Text>
             </Box>
         </Pressable>
     )
@@ -41,4 +37,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         marginVertical: 7,
     },
+    longContainer: {
+        alignSelf: 'center'
+    }
 });

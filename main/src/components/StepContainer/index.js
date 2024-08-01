@@ -34,7 +34,7 @@ const getFormattedQuestion = (question) => {
         words[firstIndex] = <Typography component="h2" variant='h1' className="colored-title">{expression}</Typography>
     } else if (foundWord) {
         const i = words.findIndex(word => word.search('/%') > -1)
-        const newWord = <Typography component="h2" variant='h1' className="colored-title">{foundWord.replace('/%', '').replace(' ', '')}</Typography>
+        const newWord = <Typography component="h2" variant='h1' className="colored-title">{foundWord.replace('/%', '').trim()}</Typography>
 
         words[i] = newWord
     }

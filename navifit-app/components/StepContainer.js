@@ -2,9 +2,7 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { Center, VStack, Heading, Text, HStack } from 'native-base';
 
 import AppProgressBar from '@/components/AppProgressBar';
-// import UserPermission from '../UserPermission'
-// import InfoMessage from '../InfoMessage';
-import { ThemedText } from '@/components/ThemedText';
+import InfoMessage from './InfoMessage';
 import { DemoPaper } from '@/components/DemoPaper';
 
 const getFormattedQuestion = (question) => {
@@ -37,7 +35,7 @@ const getFormattedQuestion = (question) => {
     return words
 }
 
-export default function StepContainer({ currentStep = {}, step = 0, totalSteps, showWarning, children, onStepBack }) {
+export default function StepContainer({ currentStep = {}, step = 0, totalSteps, showWarning, removeProgressBar, children, onStepBack }) {
     const styled = currentStep?.isGraphic
     const question = currentStep?.title || ''
     const description = currentStep?.subTitle || ''
@@ -47,7 +45,7 @@ export default function StepContainer({ currentStep = {}, step = 0, totalSteps, 
         <View style={styles.mainView}>
             <DemoPaper>
                 <VStack>
-                    <AppProgressBar step={step + 1} totalSteps={totalSteps} onStepBack={onStepBack} />
+                    <AppProgressBar step={step + 1} removeProgressBar={removeProgressBar} totalSteps={totalSteps} onStepBack={onStepBack} />
                     <VStack py={6} space={3} mb={3}>
                         <Heading style={{
                             fontFamily: 'Poppins_600Regular',
@@ -65,7 +63,7 @@ export default function StepContainer({ currentStep = {}, step = 0, totalSteps, 
                         }} fontSize="md" color="secondary.greyDarken2">
                             {description}
                         </Text>}
-                        {/* {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />} */}
+                        {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />}
                     </VStack>
                 </VStack>
                 <VStack space={4} mb={2}>

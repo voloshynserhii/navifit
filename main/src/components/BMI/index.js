@@ -51,7 +51,7 @@ const countPointerPosition = (BMI) => {
     return position > max ? max : position
 }
 
-export default function InfoStep({ BMI }) {
+export default function BMI({ BMI }) {
     const position = countPointerPosition(BMI)
     
     return (

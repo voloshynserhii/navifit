@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 export function DemoPaper({ style, ...otherProps }) {
     return <View style={[styles.paper, style]} {...otherProps} />;

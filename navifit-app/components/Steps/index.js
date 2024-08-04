@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, VStack, HStack } from 'native-base'
-
+import { ScrollView } from 'react-native'
 // import Loader from '../Loader'
-// import DatePicker from '@src/components/ReactDatePicker'
+import DatePicker from '../DatePicker'
 // import StepContainer from '@src/components/StepContainer'
-// import InfoStep from '@src/components/InfoStep'
-// import LastStep from '@src/components/LastStep'
-// import InputNumber from '@src/components/InputNumber'
+import InfoStep from './InfoStep'
+import LastStep from './LastStep'
+import InputNumber from '../InputNumber'
 
 import StepContainer from '@/components/StepContainer';
 import Option from './Option'
@@ -15,13 +15,13 @@ import Button from '../AppButton'
 import { steps, filterIngredients, getWarning, getBMIInfo } from '@/assets/Plans'
 
 const totalSteps = steps.length
-const skipSteps = [4, 19, 23, 24]
+const skipSteps = [4, 20, 23, 24]
 const optionsWithNextBtn = [4, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 const Steps = () => {
     const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(0)
+    const [step, setStep] = useState(23)
     const [answers, setAnswers] = useState({})
     const [inputError, setInputError] = useState(false)
 
@@ -32,12 +32,12 @@ const Steps = () => {
         list = filterIngredients(answers['alergy'], list)
     }
 
-    useEffect(() => {
-        if ((step === steps.length || step === steps.length - 1) && answers.weight === answers.desiredWeight) {
-            setStep(state => state + 1)
-            setLoading(true)
-        }
-    }, [step, answers.weight, answers.desiredWeight])
+    // useEffect(() => {
+    //     if ((step === steps.length || step === steps.length - 1) && answers.weight === answers.desiredWeight) {
+    //         setStep(state => state + 1)
+    //         setLoading(true)
+    //     }
+    // }, [step, answers.weight, answers.desiredWeight])
 
     // useEffect(() => {
     //     if (step === 18 && !list.length) setStep(state => state + 1)
@@ -118,22 +118,28 @@ const Steps = () => {
     // if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
 
     return (
-        // <Box>
-        //     {/* <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: 175, weight: 72 })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> */}
-        //     {step === 21 ? <InfoStep step={step} steps={steps} answers={answers} showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })} onStepBack={stepBackHandler} onStepAhead={stepAheadHandler} /> : (
         <StepContainer
             currentStep={currentStep}
             step={step}
             totalSteps={totalSteps}
             showWarning={getWarning(currentStep, answers)}
+            removeProgressBar={step === 20}
             onStepBack={stepBackHandler}
         >
             <VStack>
-                <Stack
+                <ScrollView
                     justifyContent='center'
                 >
+                    {step === 20 && (
+                        <InfoStep
+                            step={step}
+                            steps={steps}
+                            answers={answers}
+                            showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })}
+                        />
+                    )}
 
-                    {/* {step === steps.length && <LastStep answers={answers} />} */}
+                    {step === steps.length - 1 && <LastStep answers={answers} />}
 
                     {currentStep?.isGraphic && <Box height={300}>{currentStep.image}</Box>}
 
@@ -150,39 +156,39 @@ const Steps = () => {
                             ))}
                         </Stack>
                     )}
-                    {/* 
-                                {currentStep?.value && currentStep?.typeNumber && (
-                                    <InputNumber
-                                        value={answers[currentStep.value]}
-                                        currentStep={currentStep.value}
-                                        placeholder="(kg)"
-                                        min={currentStep?.min}
-                                        max={currentStep?.max}
-                                        unit={currentStep?.unit}
-                                        onChange={val =>
-                                            setAnswers(prev => ({
-                                                ...prev,
-                                                [currentStep.value]: val
-                                            }))
-                                        }
-                                        onError={(val) => setInputError(val)}
-                                    />
-                                )} */}
 
-                    {/* {currentStep?.value && currentStep?.typeDate && (
-                                    <Stack sx={{ position: 'relative', alignItems: 'center' }}>
-                                        <DatePicker
-                                            selectedValue={answers.desiredDate}
-                                            onGetDateValue={date =>
-                                                setAnswers(prev => ({
-                                                    ...prev,
-                                                    [currentStep.value]: date
-                                                }))
-                                            }
-                                        />
-                                    </Stack>
-                                )} */}
-                </Stack>
+                    {currentStep?.value && currentStep?.typeNumber && (
+                        <InputNumber
+                            value={answers[currentStep.value]}
+                            currentStep={currentStep.value}
+                            placeholder="(kg)"
+                            min={currentStep?.min}
+                            max={currentStep?.max}
+                            unit={currentStep?.unit}
+                            onChange={val =>
+                                setAnswers(prev => ({
+                                    ...prev,
+                                    [currentStep.value]: val
+                                }))
+                            }
+                            onError={(val) => setInputError(val)}
+                        />
+                    )}
+
+                    {currentStep?.value && currentStep?.typeDate && (
+                        <Stack style={{ position: 'relative', alignItems: 'center' }}>
+                            <DatePicker
+                                selectedValue={answers.desiredDate}
+                                onGetDateValue={date =>
+                                    setAnswers(prev => ({
+                                        ...prev,
+                                        [currentStep.value]: date
+                                    }))
+                                }
+                            />
+                        </Stack>
+                    )}
+                </ScrollView>
                 {step <= totalSteps && optionsWithNextBtn.includes(step) && (
                     <Button
                         type='primary'
@@ -194,8 +200,6 @@ const Steps = () => {
 
             </VStack>
         </StepContainer>
-        //     )}
-        // </Box>
     )
 }
 

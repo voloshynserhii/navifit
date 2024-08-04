@@ -203,9 +203,7 @@ const Steps = ({ option = {}, onGetBack }) => {
                                     />
                                 </Stack>
                             )}
-
                         </Grid>
-
                     </StepContainer>
                 </>
             )}

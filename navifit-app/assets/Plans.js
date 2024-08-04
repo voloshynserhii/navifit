@@ -1,5 +1,13 @@
-import { BMI, OK, warning, body, dumbbells, fire, runningMan } from "./icons"
 import Graphic from './icons/graphic.svg'
+import Lightning from './icons/lightning.svg'
+import BMI from './icons/BMI.svg'
+import OK from './icons/OK.svg'
+import Warning from './icons/warning.svg'
+import Body from './icons/body.svg'
+import Dumbbells from './icons/dumbbells.svg'
+import Fire from './icons/fire.svg'
+import RunningMan from './icons/runningMan.svg'
+import { Keyboard } from 'react-native'
 
 const steps = [
     {
@@ -88,7 +96,7 @@ const steps = [
         title: 'Zmiana zachowania a restrykcyjna dieta',
         subTitle: 'Pracujemy poprzez tworzenie nawyków, co zapewnia długotrwałe rezultaty',
         isGraphic: true,
-        // icon: <Graphic />,
+        icon: <Lightning />,
         image: <Graphic />,
     },
     {
@@ -471,7 +479,7 @@ const steps = [
             normal: {
                 title: 'Obliczanie BMI',
                 text: 'Wskaźnik masy ciała (BMI) to miara procentowa tkanki tłuszczowej powszechnie stosowana do oszacowania poziomu ryzyka potencjalnych problemów zdrowotnych.',
-                icon: BMI
+                icon: <BMI />
             }
         }
     },
@@ -486,27 +494,28 @@ const steps = [
             normal: {
                 title: 'Twoje BMI wynosi number i jest uważane za normalne',
                 text: 'Zaczynasz od świetnego miejsca! Teraz na podstawie Twojego BMI stworzymy program dostosowany do Twoich potrzeb.',
-                icon: OK
+                icon: <OK />
             },
             higherThanNormal: {
                 title: 'Twoje BMI wynosi number, co oznacza nadwaga',
                 text: 'Stracąc trochę wagi, możesz wiele zyskać. Wykorzystamy Twoje BMI do stworzenia programu odchudzania, którego potrzebujesz.',
-                icon: warning
+                icon: <Warning />
             },
             tooHigh: {
                 title: 'Twoje BMI wynosi number, co oznacza otyłość',
                 text: 'Stracąc trochę wagi, możesz wiele zyskać. Wykorzystamy Twoje BMI do stworzenia programu odchudzania, którego potrzebujesz.',
-                icon: warning
+                icon: <Warning />
             },
             lowerThanNormal: {
                 title: 'Twoje BMI wynosi number, co oznacza niedowagę',
                 text: 'Przed Tobą trochę pracy, ale świetnie, że robisz ten pierwszy krok. Wykorzystamy Twoje BMI, aby stworzyć program specjalnie dla Ciebie.',
-                icon: warning
+                icon: <Warning />
             }
         }
     },
     {
-        infoPage: true
+        infoPage: true,
+        title: 'Twój profil dobrego samopoczucia'
     },
     {
         title: 'Ile masz lat?',
@@ -519,7 +528,7 @@ const steps = [
             normal: {
                 title: 'Aby spersonalizować plan, prosimy o podanie wieku',
                 text: 'Stwierdzono, że osoby starsze mają wyższy procent tkanki tłuszczowej w organizmie niż osoby młodsze o tym samym BMI.',
-                icon: body
+                icon: <Body />
 
             }
         }
@@ -535,17 +544,17 @@ const steps = [
             lowerThanNormal: {
                 title: 'O o! Alarm o niskiej wadze!',
                 text: 'Normalny zakres wagi dla Twojego wzrostu wynosi od lowerLimit kg do higherLimit kg. Każda waga poniżej lowerLimit kg jest klasyfikowana jako niedowaga i nie jest zalecana przez Światową Organizację Zdrowia.',
-                icon: warning
+                icon: <Warning />
             },
             gain: {
                 title: 'Ruszaj się: zwiększ swoją wagę o number%.',
                 text: 'Badanie przeprowadzone na Uniwersytecie w Utah wykazało, że zaledwie 5 minut ćwiczeń dziennie może utrzymać poziom sprawności, poprawić poziom energii i zapewnić lepszy sen.',
-                icon: dumbbells
+                icon: <Dumbbells />
             },
             looseNormal: {
                 title: 'Warto: schudnąć number% swojej wagi',
                 text: 'Klinika Mayo przeprowadziła badanie, które wykazało, że osoby z nadwagą, które tracą 20% lub więcej masy ciała, są ponad dwukrotnie bardziej narażone na poprawę zdrowia metabolicznego niż osoby, które tracą tylko 5-10%.',
-                icon: fire
+                icon: <Fire />
 
             }
         }
@@ -558,7 +567,7 @@ const steps = [
             normal: {
                 title: 'Motywacją',
                 text: 'Posiadanie czegoś, na co warto czekać, może być świetną motywacją do osiągnięcia celu. Będziemy pamiętać o tym ważnym wydarzeniu podczas Twojej podróży.',
-                icon: runningMan
+                icon: <RunningMan />
             }
         }
     },
@@ -625,7 +634,7 @@ const getBMIInfo = ({ height, weight }) => {
     }
 }
 
-const getWarning = (currentStep, answers) => {
+const getWarning = (currentStep = {}, answers) => {
     if (currentStep.subTitles) {
         const shouldChoose = Object.keys(currentStep.subTitles).length > 1
 
@@ -636,12 +645,14 @@ const getWarning = (currentStep, answers) => {
         }
 
         if (!shouldChoose) {
+            // Keyboard.dismiss()
             return normal
         } else {
             const { weight, height, gender, desiredWeight } = answers
             const { min, max } = currentStep
 
             if (currentStep.value === 'weight' && weight && weight >= min && weight <= max) {
+                // Keyboard.dismiss()
                 return getBMIInfo({ height, weight })
                 // const BMI = countBMI({ height, weight })
 
@@ -666,6 +677,7 @@ const getWarning = (currentStep, answers) => {
                 const { lowerLimit, higherLimit } = countWeightDiapasone({ height, gender })
 
                 if (+desiredWeight < lowerLimit) {
+                    // Keyboard.dismiss()
                     return {
                         title: currentStep.subTitles.lowerThanNormal.title,
                         text: currentStep.subTitles.lowerThanNormal.text.replaceAll('lowerLimit', lowerLimit).replace('higherLimit', higherLimit),
@@ -674,7 +686,7 @@ const getWarning = (currentStep, answers) => {
                     }
                 } else if (+desiredWeight > +weight) {
                     const weightDiff = Number((desiredWeight - weight) / weight * 100).toFixed(0)
-
+                    // Keyboard.dismiss()
                     return {
                         title: currentStep.subTitles.gain.title.replace('number', weightDiff),
                         text: currentStep.subTitles.gain.text,
@@ -683,7 +695,7 @@ const getWarning = (currentStep, answers) => {
                     }
                 } else if (+desiredWeight < +weight) {
                     const weightDiff = Number((weight - desiredWeight) / weight * 100).toFixed(0)
-
+                    // Keyboard.dismiss()
                     return {
                         title: currentStep.subTitles.looseNormal.title.replace('number', weightDiff),
                         text: currentStep.subTitles.looseNormal.text,
@@ -695,7 +707,7 @@ const getWarning = (currentStep, answers) => {
         }
 
     }
-
+    
     return undefined
 }
 

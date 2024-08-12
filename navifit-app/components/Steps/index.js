@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, VStack, HStack } from 'native-base'
 import { ScrollView } from 'react-native'
-// import Loader from '../Loader'
+import Loader from './Loader'
 import DatePicker from '../DatePicker'
-// import StepContainer from '@src/components/StepContainer'
 import InfoStep from './InfoStep'
 import LastStep from './LastStep'
 import InputNumber from '../InputNumber'
@@ -21,7 +20,7 @@ const optionsWithNextBtn = [4, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
 const Steps = () => {
     const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(23)
+    const [step, setStep] = useState(24)
     const [answers, setAnswers] = useState({})
     const [inputError, setInputError] = useState(false)
 
@@ -32,12 +31,12 @@ const Steps = () => {
         list = filterIngredients(answers['alergy'], list)
     }
 
-    // useEffect(() => {
-    //     if ((step === steps.length || step === steps.length - 1) && answers.weight === answers.desiredWeight) {
-    //         setStep(state => state + 1)
-    //         setLoading(true)
-    //     }
-    // }, [step, answers.weight, answers.desiredWeight])
+    useEffect(() => {
+        if ((step === totalSteps - 2) && answers.weight && answers.weight === answers.desiredWeight) {
+            setStep(state => state + 1)
+            setLoading(true)
+        }
+    }, [step, answers.weight, answers.desiredWeight])
 
     // useEffect(() => {
     //     if (step === 18 && !list.length) setStep(state => state + 1)
@@ -52,7 +51,7 @@ const Steps = () => {
         clearTimeout()
         setDisabled(true)
 
-        if (step === totalSteps) {
+        if (step === totalSteps - 1) {
             setLoading(true)
         } else {
             setTimeout(
@@ -115,7 +114,7 @@ const Steps = () => {
 
     if (currentStep?.typeNumber && !answers[currentStep?.value]) btnDisabled = true
 
-    // if (loading) return <Loader onFinishLoad={finishLoadingHandler} />
+    if (loading) return <Loader />
 
     return (
         <StepContainer

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, VStack, HStack } from 'native-base'
 import { ScrollView } from 'react-native'
+import { router } from 'expo-router';
+import api from '@/utils/api'
 import Loader from './Loader'
 import DatePicker from '../DatePicker'
 import InfoStep from './InfoStep'
@@ -20,7 +22,8 @@ const optionsWithNextBtn = [4, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
 const Steps = () => {
     const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [step, setStep] = useState(24)
+    const [isLoading, setIsLoading] = useState(false)
+    const [step, setStep] = useState(0)
     const [answers, setAnswers] = useState({})
     const [inputError, setInputError] = useState(false)
 
@@ -99,13 +102,31 @@ const Steps = () => {
         }
     }
 
-    const finishLoadingHandler = () => {
-        // dispatch({
-        //     type: 'USER_DATA',
-        //     payload: answers,
-        // });
+    const sendDataHandler = (email) => {
+        const data = {
+            email,
+            userData: answers
+        }
 
-        // router.push('/email', { scroll: false })
+        setIsLoading(true)
+
+        api.user.sendAnswers(data).then(({ user, message }) => {
+            if (!user && message) {
+                setIsLoading(false)
+            } else {
+                setIsLoading(false)
+
+                // dispatch({
+                //     type: 'USER_DATA',
+                //     payload: user,
+                // })
+
+                router.push('/')
+            }
+        }).catch(() => {
+            setLoading(false)
+            router.push('/')
+        })
     }
 
     let btnDisabled = false
@@ -114,7 +135,7 @@ const Steps = () => {
 
     if (currentStep?.typeNumber && !answers[currentStep?.value]) btnDisabled = true
 
-    if (loading) return <Loader />
+    if (loading) return (<Loader loading={isLoading} onSendEmail={sendDataHandler} />)
 
     return (
         <StepContainer

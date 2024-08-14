@@ -2,7 +2,7 @@ import moment from 'moment'
 import { Box, Stack, VStack, Text } from 'native-base'
 import { StyleSheet } from 'react-native';
 
-// import Graphic from './components/Graphic'
+import Graphic from './Graphic'
 
 const countEndMonth = ({ weight, desiredWeight }) => {
     const diff = Math.abs(weight - desiredWeight)
@@ -31,7 +31,7 @@ export default function LastStep({ answers = {} }) {
                 </Stack>
             </VStack>
             <Box style={{ minHeight: 200, padding: '20px 0' }}>
-                {/* <Graphic startWeight={weight} endWeight={desiredWeight} desiredDate={desiredDate} startDate={startDate} endDate={endDate} /> */}
+                <Graphic startWeight={weight} endWeight={desiredWeight} desiredDate={desiredDate} startDate={startDate} endDate={endDate} />
             </Box>
             <Stack>
                 <Text style={styles.helpText} color='secondary.greyDarken1'>*Na podstawie danych użytkowników rejestrujących swoje postępy w aplikacji. Najpierw skonsultuj się z lekarzem. Wykres nie jest ilustracją dostosowaną do indywidualnych potrzeb i wyniki mogą się różnić</Text>

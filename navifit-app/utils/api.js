@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = process.env.NEXT_PUBLIC_DB_HOST
+const url = process.env.EXPO_PUBLIC_DB_HOST
 const options = { withCredentials: true };
 
 axios.interceptors.request.use(conf => ({

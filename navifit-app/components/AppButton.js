@@ -2,7 +2,6 @@ import { Button, ChevronRightIcon } from 'native-base'
 
 const AppButton = ({ title = '', noIcon, disabled, ...props }) => {
     return (
-
         <Button
             bgColor={disabled ? 'secondary.greyLighten2' : 'primary.main'}
             rounded="3xl"

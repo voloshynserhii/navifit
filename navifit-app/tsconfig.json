@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/(tabs)/index.js", "app/(tabs)/explore.tsx", "app/(app)/index.tsx", "components/StepContainer.js"  ]
+, "app/(user)/index.js", "app/(user)/explore.tsx", "app/(app)/index.tsx", "components/StepContainer.js", "app/login.tsx"  ]
 }

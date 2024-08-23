@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Button, Container, FormControl, IconButton, InputLabel, InputAdornment, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import ChooseTypeStep from './ChososeTypeStep'
+import ChooseTypeStep from './ChooseTypeStep'
 import { email as emailIcon, passwordHidden, passwordVisisble, OK } from '@src/utils/icons'
 import { isEmail } from '@src/utils/functions'
 

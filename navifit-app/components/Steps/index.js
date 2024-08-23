@@ -3,6 +3,7 @@ import { Box, Stack, VStack, HStack } from 'native-base'
 import { ScrollView } from 'react-native'
 import { router } from 'expo-router';
 import api from '@/utils/api'
+import { useAppStore } from '@/store'
 import Loader from './Loader'
 import DatePicker from '../DatePicker'
 import InfoStep from './InfoStep'
@@ -20,6 +21,7 @@ const skipSteps = [4, 20, 23, 24]
 const optionsWithNextBtn = [4, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 const Steps = () => {
+    const [_, dispatch] = useAppStore()
     const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -116,16 +118,16 @@ const Steps = () => {
             } else {
                 setIsLoading(false)
 
-                // dispatch({
-                //     type: 'USER_DATA',
-                //     payload: user,
-                // })
+                dispatch({
+                    type: 'USER_DATA',
+                    payload: user,
+                })
 
-                router.push('/')
+                router.push('/(user)')
             }
         }).catch(() => {
             setLoading(false)
-            router.push('/')
+            router.push('/user')
         })
     }
 
@@ -209,6 +211,7 @@ const Steps = () => {
                         </Stack>
                     )}
                 </ScrollView>
+                
                 {step <= totalSteps && optionsWithNextBtn.includes(step) && (
                     <Button
                         type='primary'

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "13781388566",
+    "project_id": "navifit-10310",
+    "storage_bucket": "navifit-10310.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13781388566:android:6d65e5c6cff2eed791d437",
+        "android_client_info": {
+          "package_name": "com.navi.navifit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13781388566-j72r3149q5msln5tjkmh45iabfmtr5a4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNa94cBaOwt8cOge1IWyXc1PVZBKJThgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13781388566-j72r3149q5msln5tjkmh45iabfmtr5a4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "13781388566-t7slqtl32itm28ngg24nvusl9plifclp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.navi.navifit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

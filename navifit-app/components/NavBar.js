@@ -1,14 +1,17 @@
-import { View, Image, Text, StyleSheet } from 'react-native';
-import MenuButton from './MenuButton';
+import { View, Image, Pressable, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import Menu from './Menu';
 
 export default function NavBar(props) {
     return (
         <View style={styles.navBar} {...props}>
-            <Image
-                style={styles.logo}
-                source={require('@/assets/images/navifit-logo.png')}
-            />
-            <MenuButton/>
+            <Pressable onPress={() => router.push('/(app)')}>
+                <Image
+                    style={styles.logo}
+                    source={require('@/assets/images/navifit-logo.png')}
+                />
+            </Pressable>
+            <Menu/>
         </View>
     );
 }

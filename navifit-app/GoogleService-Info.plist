@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>13781388566-t7slqtl32itm28ngg24nvusl9plifclp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.13781388566-t7slqtl32itm28ngg24nvusl9plifclp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA4Sql1FJhaO1uo4i8G4ZOi5ak_salgDy0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>13781388566</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.navi.navifit</string>
+	<key>PROJECT_ID</key>
+	<string>navifit-10310</string>
+	<key>STORAGE_BUCKET</key>
+	<string>navifit-10310.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:13781388566:ios:0d18b7de9e1a498f91d437</string>
+</dict>
+</plist>

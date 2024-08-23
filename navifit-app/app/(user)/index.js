@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import AppView from '@/components/AppView';
@@ -9,19 +9,16 @@ import StepContainer from '@/components/StepContainer';
 
 export default function HomeScreen() {
   return (
-    <StepContainer>
-      
-    </StepContainer>
-    // <AppView
-    //   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-    //   headerImage={
-    //     <Image
-    //       source={require('@/assets/images/bg-mobile.png')}
-    //       style={styles.reactLogo}
-    //     />
-    //   }
-    // >
-    // </AppView>
+    <AppView
+      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerImage={
+        <Image
+          source={require('@/assets/images/bg-mobile.png')}
+          style={styles.reactLogo}
+        />
+      }
+    >
+    </AppView>
   );
 }
 

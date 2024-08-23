@@ -11,7 +11,7 @@ import app from '../../../firebase/config'
 const provider = new GoogleAuthProvider()
 const auth = getAuth(app);
 
-export default function SignUpPage() {
+export default function LogInPage() {
   const router = useRouter()
   const [state, dispatch] = useAppStore()
   const { currentUser = {} } = state

@@ -3,6 +3,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { NativeBaseProvider, extendTheme } from "native-base";
+import '@/firebase/config';
+import { AppStoreProvider } from '@/store';
+
 import {
   useFonts,
   Poppins_100Thin,
@@ -145,11 +148,22 @@ export default function RootLayout() {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <Stack>
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <AppStoreProvider>
+        <Stack>
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+          <Stack.Screen name="(user)" options={{ headerShown: false }} />
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+          <Stack.Screen name="signup" options={{ headerShown: false }} />
+          <Stack.Screen name="shop" options={{ headerShown: false }} />
+          <Stack.Screen name="about" options={{ headerShown: false }} />
+          <Stack.Screen name="contact" options={{ headerShown: false }} />
+          <Stack.Screen name="regulations" options={{ headerShown: false }} />
+          <Stack.Screen name="privacy" options={{ headerShown: false }} />
+          <Stack.Screen name="cookies" options={{ headerShown: false }} />
+          <Stack.Screen name="returns" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+        </Stack>
+      </AppStoreProvider>
     </NativeBaseProvider>
   );
 }

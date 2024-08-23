@@ -50,16 +50,6 @@ const menu = [
         link: '/contact',
         icon: contact
     },
-    // {
-    //     title: 'Wsparcie',
-    //     link: '/about',
-    //     icon: about
-    // },
-    // {
-    //     title: 'Warunki i zasady',
-    //     link: '/conditions',
-    //     icon: conditions
-    // },
     {
         title: 'Regulamin',
         link: '/regulations',
@@ -189,7 +179,6 @@ export default function SwipeableTemporaryDrawer() {
 
                                         return (
                                             <ListItem
-                                                sx={{ z_ndex: 2 }}
                                                 key={title}
                                                 disablePadding
                                                 className={path && userMenuExpanded?.indexOf(path) > -1 ? styles.expanded : ''}
@@ -250,7 +239,7 @@ export default function SwipeableTemporaryDrawer() {
                             />
                             <MenuButton
                                 type='signup'
-                                title='Nowy klient'
+                                title='Zaloz konto'
                                 text='Nowy klient'
                                 mainColor='secondary.brandBlack'
                                 textColor='secondary.brandGreen'

@@ -171,7 +171,7 @@ export default function RecipeForm({ item, onCancel, onUpdate, onCreate }) {
     const disabled = !name || !description || !fats || !carbs || !proteins || !cookingTime || !calories || !mealType.length
 
     const preparedIngredients = [...ingredients.vegetables, ...ingredients.grains, ...ingredients.desiredProducts, ...ingredients.meat].map(item => ({ ...item, title: getTitle(item.title) }))
-console.log(mealType)
+
     return (
         <Fragment>
             <Typography variant="h2" gutterBottom>

@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 // import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { auth } from '@/firebase/config'
 import AppView from '@/components/AppView';
 import { useAppStore } from '@/store'
 import AuthForm from '@/components/AuthForm'
 import api from '@/utils/api'
-
-// import app from '../../../firebase/config'
-
-const provider = new GoogleAuthProvider()
 
 export default function LogInPage() {
   const router = useRouter()

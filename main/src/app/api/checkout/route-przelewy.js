@@ -36,7 +36,6 @@ export async function POST(req) {
     try {
       const body = await req.json();
       const { amount = 1 } = body;
-      console.log(amount);
 
       const order = {
         sessionId: "youneedyourownlogictocreatesessionids",
@@ -54,7 +53,6 @@ export async function POST(req) {
       };
 
       const transactionResult = await p24.createTransaction(order);
-      console.log(transactionResult);
 
       // Send the payment URL back to the client
 

@@ -24,7 +24,7 @@ export default function SignUpPage() {
       type: 'CURRENT_USER',
       payload: user,
     });
-    router.push(`/account/plan/${user._id}`)
+    router.push(`/plan/${user._id}`)
   }
 
   const authWithGoogle = (email: string) => {
@@ -49,12 +49,13 @@ export default function SignUpPage() {
       if (message) {
         setError(message)
       } else if (user) {
+        dispatch({ type: 'LOG_IN' })
         dispatch({
           type: 'CURRENT_USER',
           payload: user,
         });
         
-        router.push('/login')
+        router.push('/')
       }
       setLoading(false)
     }).catch(() => {

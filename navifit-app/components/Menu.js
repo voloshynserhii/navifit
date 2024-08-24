@@ -3,9 +3,10 @@ import { ScrollView, View, Pressable, StyleSheet, Dimensions } from 'react-nativ
 import { Box, Icon, Stack, HStack, VStack, Menu, Text } from "native-base";
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import MenuIcon from '@/assets/icons/menu.svg'
+import { useAppStore } from '@/store'
 import MenuButton from './MenuButton'
 import LogOutButton from './LogOutButton'
+import MenuIcon from '@/assets/icons/menu.svg'
 import SklepIcon from '@/assets/icons/sklep.svg'
 import AboutIcon from '@/assets/icons/about.svg'
 import ContactIcon from '@/assets/icons/contact.svg'
@@ -68,8 +69,9 @@ const menu = [
 ];
 
 export default function AppMenu(props) {
+    const [state, dispatch] = useAppStore()
+    const { isAuthenticated } = state
     const [open, setOpen] = useState(false)
-    const isAuthenticated = false
 
     return (
         <View style={styles.menuContainer} {...props}>
@@ -155,7 +157,7 @@ export default function AppMenu(props) {
                                 title='Wyloguj'
                                 onPress={() => {
                                     // signOut(auth)
-                                    // dispatch({ type: 'LOG_OUT' })
+                                    dispatch({ type: 'LOG_OUT' })
                                     router.push('/')
                                 }} />
                         </Box>

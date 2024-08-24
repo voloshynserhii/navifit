@@ -52,6 +52,7 @@ const AuthForm = ({
     const userId = searchParams.user
     const confirmed = searchParams.confirmed
 
+    const [serverErrorMessage, setServerErrorMessage] = useState('')
     const [loginType, setLoginType] = useState()
     const [validation, setValidation] = useState(defaultValidationValue)
     const [email, setEmail] = useState(currentUser.email)
@@ -60,7 +61,11 @@ const AuthForm = ({
     const [resetPassword, setResetPassword] = useState(false)
     const [confirmPassword, setConfirmPassword] = useState('')
     const [formIsValid, setFormIsValid] = useState(false)
-
+    
+    useEffect(()=> {
+        setServerErrorMessage(serverError)
+    }, [serverError])
+    
     let login = true
     let header = title
     let subHeader = subTitle
@@ -115,7 +120,11 @@ const AuthForm = ({
                 setFormIsValid(true)
             }
         } else {
-            setFormIsValid(false)
+            if (resetPassword && !emailError) {
+                setFormIsValid(true)
+            } else {
+                setFormIsValid(false)
+            }
         }
     }, [validation])
 
@@ -136,6 +145,7 @@ const AuthForm = ({
     }
 
     const confirmRestorePasswordHandler = () => {
+        setResetPassword(false)
         onRestorePassword({ email })
     }
 
@@ -232,7 +242,7 @@ const AuthForm = ({
                         <VStack space={5}>
                             {!changePassword && (
                                 <FormControl
-                                    isInvalid={!!serverError || (email && !!validation.emailError)}
+                                    isInvalid={!!serverErrorMessage || (email && !!validation.emailError)}
                                 >
                                     <CustomInput
                                         value={email || ''}
@@ -252,7 +262,7 @@ const AuthForm = ({
                                 </FormControl>)
                             }
 
-                            {!resetPassword && <FormControl isInvalid={!!serverError}>
+                            {!resetPassword && <FormControl isInvalid={!!serverErrorMessage}>
                                 <CustomInput
                                     value={password || ''}
                                     type={showPassword ? 'text' : 'password'}
@@ -270,7 +280,7 @@ const AuthForm = ({
                                     onEndEditing={() => confirmPassword ? validateFields('passwordMatch', confirmPassword) : () => { }}
                                     placeholder={changePassword ? "New Password" : "Password"}
                                 />
-                                
+
                                 {(signup || changePassword) && password && (
                                     <>
                                         <Text style={styles.helperText} color='primary.contrastText'>
@@ -293,7 +303,7 @@ const AuthForm = ({
                                 <FormControl>
                                     <CustomInput
                                         value={confirmPassword || ''}
-                                        error={!!serverError}
+                                        error={!!serverErrorMessage}
                                         type={showPassword ? 'text' : 'password'}
                                         onBlur={() => validateFields('passwordMatch', confirmPassword)}
                                         onChangeText={text => setConfirmPassword(text.trim())}
@@ -318,11 +328,14 @@ const AuthForm = ({
                         <VStack style={{ position: 'relative', paddingHorizontal: 8, marginTop: 4 }}>
                             <HStack justifyContent='space-between' style={{ marginBottom: 12 }}>
                                 <Text style={styles.helperText} color='secondary.red'>
-                                    {serverError ? serverError : ''}
+                                    {serverErrorMessage ? serverErrorMessage : ''}
                                 </Text>
 
                                 {!resetPassword && !changePassword && !signup && (
-                                    <Pressable onPress={() => setResetPassword(true)}>
+                                    <Pressable onPress={() => {
+                                        setServerErrorMessage(undefined)
+                                        setResetPassword(true);
+                                    }}>
                                         <Text style={styles.helperText} color='primary.blueAccent'>
                                             Zapomniales hasla?
                                         </Text>

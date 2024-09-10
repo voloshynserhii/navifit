@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, VStack, HStack } from 'native-base'
-import { ScrollView } from 'react-native'
+import { View } from 'react-native'
 import { router } from 'expo-router';
 import api from '@/utils/api'
 import { useAppStore } from '@/store'
@@ -149,12 +149,11 @@ const Steps = () => {
             onStepBack={stepBackHandler}
         >
             <VStack>
-                <ScrollView
+                <View
                     justifyContent='center'
                 >
                     {step === 20 && (
                         <InfoStep
-                            step={step}
                             steps={steps}
                             answers={answers}
                             showWarning={getBMIInfo({ height: answers.height, weight: answers.weight })}
@@ -210,7 +209,7 @@ const Steps = () => {
                             />
                         </Stack>
                     )}
-                </ScrollView>
+                </View>
                 
                 {step <= totalSteps && optionsWithNextBtn.includes(step) && (
                     <Button

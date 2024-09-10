@@ -22,7 +22,7 @@ export default function LogInPage() {
       type: 'CURRENT_USER',
       payload: user,
     });
-    router.push(`/plan/${user._id}`)
+    router.push('/(user)')
   }
 
   const authWithGoogle = (email: string) => {

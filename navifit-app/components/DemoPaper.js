@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { View } from 'react-native';
 
 export function DemoPaper({ style, ...otherProps }) {
@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 1)',
         marginLeft: 8,
         marginRight: 8,
-        padding: 12
+        padding: 12,
+        maxHeight: Dimensions.get('window').height - 150,
+        overflow: 'hidden'
     },
 });

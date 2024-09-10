@@ -19,7 +19,7 @@ const userInfo = {
 }
 const values = ['bodyType', 'dayType', 'training', 'weight', 'height']
 
-export default function InfoStep({ answers = {}, step = 1, steps, totalSteps, showWarning }) {
+export default function InfoStep({ answers = {}, steps, showWarning }) {
     const { bodyType = '1', dayType = '3', training = '2', weight = '72', height = '175' } = answers || {}
     const stepsForInfo = steps.filter(step => values.includes(step.value))
 

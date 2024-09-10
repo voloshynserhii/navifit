@@ -1,5 +1,5 @@
 import { StyleSheet, View, Pressable } from 'react-native';
-import { Center, VStack, Heading, Text, HStack } from 'native-base';
+import { Center, VStack, Heading, Text, HStack, ScrollView } from 'native-base';
 
 import AppProgressBar from '@/components/AppProgressBar';
 import InfoMessage from './InfoMessage';
@@ -44,56 +44,61 @@ export default function StepContainer({ currentStep = {}, step = 0, totalSteps, 
     return (
         <View style={styles.mainView}>
             <DemoPaper>
-                <VStack>
-                    <AppProgressBar step={step + 1} removeProgressBar={removeProgressBar} totalSteps={totalSteps} onStepBack={onStepBack} />
-                    <VStack py={6} space={3} mb={3}>
-                        <Heading style={{
-                            fontFamily: 'Poppins_600Regular',
-                        }}>
-                            {getFormattedQuestion(question).map(item => (
-                                <Text
-                                    key={item}
-                                >
-                                    {item}
-                                </Text>
-                            ))}
-                        </Heading>
-                        {description && !styled && <Text style={{
-                            fontFamily: 'Poppins_400Regular',
-                        }} fontSize="md" color="secondary.greyDarken2">
-                            {description}
-                        </Text>}
-                        {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />}
+                <AppProgressBar step={step + 1} removeProgressBar={removeProgressBar} totalSteps={totalSteps} onStepBack={onStepBack} />
+                
+                <ScrollView>
+                    <VStack>
+                        <VStack py={6} space={3}>
+                            <Heading style={{
+                                fontFamily: 'Poppins_600Regular',
+                            }}>
+                                {getFormattedQuestion(question).map(item => (
+                                    <Text
+                                        key={item}
+                                    >
+                                        {item}
+                                    </Text>
+                                ))}
+                            </Heading>
+                            {description && !styled && <Text style={{
+                                fontFamily: 'Poppins_400Regular',
+                            }} fontSize="md" color="secondary.greyDarken2">
+                                {description}
+                            </Text>}
+                            {(showWarning || (description && styled)) && <InfoMessage icon={icon} text={description} showWarning={showWarning} />}
+                        </VStack>
                     </VStack>
-                </VStack>
-                <VStack space={4} mb={2}>
-                    {children}
-                    {step === 0 && <Center mt={3}>
-                        <Text
-                            fontSize='xs'
-                            style={{
-                                fontFamily: 'Poppins_400Regular',
-                            }}
-                        >
-                            Wybierając cel i kontynuując, wyrażasz zgodę na nasze
-                        </Text>
-                        <HStack alignItems='center'>
-                            <Pressable style={styles.link}>
+
+
+                    <VStack space={4} mb={2}>
+                        {children}
+                        {step === 0 && <Center mt={3}>
+                            <Text
+                                fontSize='xs'
+                                style={{
+                                    fontFamily: 'Poppins_400Regular',
+                                }}
+                            >
+                                Wybierając cel i kontynuując, wyrażasz zgodę na nasze
+                            </Text>
+                            <HStack alignItems='center'>
+                                <Pressable style={styles.link}>
+                                    <Text style={{
+                                        fontFamily: 'Poppins_400Regular',
+                                    }} fontSize='xs' color="#1565C0">Warunki korzystania </Text>
+                                </Pressable>
                                 <Text style={{
                                     fontFamily: 'Poppins_400Regular',
-                                }} fontSize='xs' color="#1565C0">Warunki korzystania </Text>
-                            </Pressable>
-                            <Text style={{
-                                fontFamily: 'Poppins_400Regular',
-                            }} fontSize='xs' color='secondary.brandBlack'> z usługi | </Text>
-                            <Pressable style={styles.link}>
-                                <Text style={{
-                                    fontFamily: 'Poppins_400Regular',
-                                }} fontSize='xs' color="#1565C0">Polityka prywatności</Text>
-                            </Pressable>
-                        </HStack>
-                    </Center>}
-                </VStack>
+                                }} fontSize='xs' color='secondary.brandBlack'> z usługi | </Text>
+                                <Pressable style={styles.link}>
+                                    <Text style={{
+                                        fontFamily: 'Poppins_400Regular',
+                                    }} fontSize='xs' color="#1565C0">Polityka prywatności</Text>
+                                </Pressable>
+                            </HStack>
+                        </Center>}
+                    </VStack>
+                </ScrollView>
             </DemoPaper>
         </View>
     )

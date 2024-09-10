@@ -11,10 +11,10 @@ const countEndMonth = ({ weight, desiredWeight }) => {
 }
 
 export default function LastStep({ answers = {} }) {
-    const { weight = 88, desiredWeight = 78, desiredDate } = answers ?? {}
+    const { weight = 87, desiredWeight = 76, desiredDate } = answers ?? {}
     const diff = countEndMonth({ weight, desiredWeight })
-    const startDate = moment(new Date())
-    const endDate = moment(new Date()).add(diff, 'M').format('DD MMMM YYYY')
+    const startDate = moment()
+    const endDate = moment().add(diff, 'M')
     
     return (
         <Box style={styles.container}>
@@ -22,7 +22,7 @@ export default function LastStep({ answers = {} }) {
                 <Text style={styles.title} color='primary.contrastText'>Przewidujemy, że będziesz </Text>
                 <Text style={styles.title} color='primary.contrastText'>
                     <Text style={styles.coloredTitle} color='primary.main'>{desiredWeight} kg</Text> do 
-                    <Text style={styles.coloredTitle} color='primary.main'> {endDate}</Text>
+                    <Text style={styles.coloredTitle} color='primary.main'> {endDate.format('DD MMMM YYYY')}</Text>
                 </Text>
                 <Stack backgroundColor='secondary.greyLighten4' style={styles.badge}>
                     <Text color='black' style={styles.title}>

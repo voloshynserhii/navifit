@@ -7,13 +7,13 @@
  * @param {*} [action.payload] - optional data object or the function to get data object
  */
 const AppReducer = (state: any, action: any) => {
-  // console.log('AppReducer() - action:', action);
+  // console.log('AppReducer() - action:', action.type, action?.payload);
   switch (action.type || action.action) {
     case 'CURRENT_USER':
       return {
         ...state,
-        currentUser: action?.currentUser || action?.payload,
-        isAuthenticated: action?.currentUser || action?.payload ? true : false,
+        currentUser: action?.payload,
+        isAuthenticated: !!action?.payload,
       };
     case 'USER_DATA':
       return {

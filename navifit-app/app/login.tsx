@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { onAuthStateChanged } from "firebase/auth";
 // import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
@@ -16,7 +17,8 @@ export default function LogInPage() {
   const [error, setError] = useState<string | null>()
   const [userMessage, setUserMessage] = useState<string>()
 
-  const authenticate = (user: { _id: string, email: string }) => {
+  const authenticate = async (user: { _id: string, email: string }) => {
+    await AsyncStorage.setItem('loggedUser', JSON.stringify(user));
     dispatch({ type: 'LOG_IN' })
     dispatch({
       type: 'CURRENT_USER',

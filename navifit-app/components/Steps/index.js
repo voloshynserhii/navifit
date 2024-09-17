@@ -123,11 +123,11 @@ const Steps = () => {
                     payload: user,
                 })
 
-                router.push('/(user)')
+                router.push('/signup')
             }
         }).catch(() => {
             setLoading(false)
-            router.push('/user')
+            router.push('/')
         })
     }
 

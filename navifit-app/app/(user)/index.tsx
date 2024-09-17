@@ -1,10 +1,14 @@
-import { View, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
+import { useAppStore } from '@/store'
+import AppUserView from '@/components/AppUserView';
 
-
-export default function HomeScreen() {
+export default function UserScreen() {
+  const [state, dispatch] = useAppStore()
+  console.log('currentUser', state.currentUser,  state.userData)
   return (
-    <View>
-    </View>
+    <AppUserView title='Diary'>
+      <Text></Text>
+    </AppUserView>
   );
 }
 

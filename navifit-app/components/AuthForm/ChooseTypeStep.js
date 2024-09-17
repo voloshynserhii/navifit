@@ -7,6 +7,7 @@ const ChooseTypeStep = ({ login = false, onGoogleLogin, onChooseEmailType, onCha
     return (
         <VStack w='100%'>
             <Button
+                disabled
                 style={styles.googleButton}
                 borderColor='primary.lightGrey'
                 _text={styles.googleButtonText}

@@ -1,9 +1,12 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import BookIcon from '@/assets/icons/book.svg';
+import CutleryIcon from '@/assets/icons/cutlery.svg';
+import DumbellIcon from '@/assets/icons/dumbell.svg';
+import FlagIcon from '@/assets/icons/flag.svg';
+import MenuIcon from '@/assets/icons/menu-tab.svg';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,6 +14,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarInactiveTintColor: "#1C2227",
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}>
@@ -18,44 +22,44 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Diary',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <BookIcon style={{ color }} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="mealPlan"
         options={{
           title: 'Meal plan',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <CutleryIcon style={{ color }} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore1"
+        name="workout"
         options={{
           title: 'Workout',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <DumbellIcon style={{ color }} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore2"
+        name="challenge"
         options={{
           title: 'Challenge',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <FlagIcon style={{ color }} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore3"
+        name="more"
         options={{
           title: 'More',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <MenuIcon style={{ color }} />
           ),
         }}
       />

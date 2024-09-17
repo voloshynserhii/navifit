@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView, View, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { Box, Icon, Stack, HStack, VStack, Menu, Text } from "native-base";
 import { router } from 'expo-router';
@@ -72,6 +73,13 @@ export default function AppMenu(props) {
     const [state, dispatch] = useAppStore()
     const { isAuthenticated } = state
     const [open, setOpen] = useState(false)
+
+    const logOutHandler = async () => {
+        // signOut(auth)
+        await AsyncStorage.setItem('loggedUser', '');
+        dispatch({ type: 'LOG_OUT' })
+        router.push('/')
+    }
 
     return (
         <View style={styles.menuContainer} {...props}>
@@ -155,11 +163,7 @@ export default function AppMenu(props) {
                         <Box style={{ paddingHorizontal: 24 }}>
                             <LogOutButton
                                 title='Wyloguj'
-                                onPress={() => {
-                                    // signOut(auth)
-                                    dispatch({ type: 'LOG_OUT' })
-                                    router.push('/')
-                                }} />
+                                onPress={logOutHandler} />
                         </Box>
                     )}
                 </VStack>

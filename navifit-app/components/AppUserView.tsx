@@ -7,11 +7,11 @@ type Props = PropsWithChildren<{
   children: ReactElement;
 }>;
 
-export default function AppUserView({ title, children }: Props) {
+export default function AppUserView({ title = '', children }: Props) {
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
-        <Heading style={styles.header}>{title}</Heading>
+        {title && <Heading style={styles.header}>{title}</Heading>}
         {children}
       </ScrollView>
     </SafeAreaView>
